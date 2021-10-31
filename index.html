@@ -4,7 +4,7 @@ Author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 -->
-hola mundo
+
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -102,12 +102,18 @@ hola mundo
 					newItem += `
 						<div class="shop_desc">
 							<h3><a href="#">${task.name}</a></h3>
-							<p>${task.description}</p>
-							<span class="reducedfrom">${task.originalPrice}</span>
-							<span class="actual">${task.price}</span><br>
-							<ul class="buttons">
-								<li class="cart"><a href="#">Agregar</a></li>
+							<p>${task.description}</p>`;
+
+				if(task.onSale === true){
+					newItem += 
+					`<span class="reducedfrom">${task.originalPrice}</span>
+					`
+				}
+							
+				newItem += 	`<span class="actual">${task.price}</span><br>
+							<ul class="buttons">								
 								<li class="shop_btn"><a href="#">Descripción</a></li>
+								<li class="cart"><a href="#">Agregar</a></li>
 								<div class="clear"> </div>
 							</ul>
 						</div>
@@ -129,7 +135,7 @@ hola mundo
 			  <div class="col-md-12">
 				 <div class="header-left">
 					 <div class="logo">
-						<a href="index.html"><img src="images/l2.png" alt=""/></a>
+						<a href="index.html"><img src="images/logo.png" alt=""/></a>
 					 </div>
 					 <div class="menu">
 						  <a class="toggleMenu" href="#"><img src="images/nav.png" alt="" /></a>
@@ -137,11 +143,13 @@ hola mundo
 						    	<li class="current"><a href="index.html">Menú</a></li>						    							    						    	
 								<li><a href="contact.html">Contactanos</a></li>								
 								<div class="clear"></div>
-							</ul>							
+							</ul>	
+							<script type="text/javascript" src="js/responsive-nav.js"></script>						
 				    </div>							
 	    		    <div class="clear"></div>
 	    	    </div>
-	            <div class="header_right">	    		
+	            
+				<div class="header_right">	    		
 				    <ul class="icon1 sub-icon1 profile_img">
 					 <li><a class="active-icon c1" href="#"> </a>
 						<ul class="sub-icon1 list">
@@ -164,6 +172,7 @@ hola mundo
 				   </ul>
 		        <div class="clear"></div>
 	       </div>
+
 	      </div>
 		 </div>
 	    </div>
@@ -182,8 +191,8 @@ hola mundo
 							<h4>Síguenos</h4>
 						
 							<ul class="social">	
-							  <li class="facebook"><a href="#"><span> </span></a></li>							  
-							  <li class="instagram"><a href="#"><span> </span></a></li>	
+							  <li class="facebook"><a href="https://www.facebook.com/Hot-Wings-CTG-102904348862417"><span> </span></a></li>							  
+							  <li class="instagram"><a href="https://www.instagram.com/hotwingsctg"><span> </span></a></li>	
 						    </ul>
 		   					
 						</ul>

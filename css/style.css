@@ -1047,10 +1047,10 @@ ul.buttons{
 	margin-top: 10px;
 }
 .cart{
-	float:left;
+	float:right;
 }
 .shop_btn{
-	float:right;
+	float:left;
 }
 .shop_btn a, .cart a{
 	color: #000;

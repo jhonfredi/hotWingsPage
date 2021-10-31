@@ -775,7 +775,7 @@ p.m_5{
 }
 /*--footer--*/
 .footer{
-	background:#000;
+	background:rgb(182, 7, 7);
 	padding:1%;
 }		
 ul.footer_box{
@@ -821,29 +821,18 @@ li.facebook a span {
 	display: block;
 	background: url(../images/img-sprite.png)no-repeat -256px -276px;
 }
-li.twitter a span {
-	height: 25px;
-	width: 25px;
+
+li.whatsapp a span {
+	height: 22px;
+	width: 22px;
 	display: block;
-	background: url(../images/img-sprite.png)no-repeat -298px -276px;
+	background: url(../images/wpp.png)no-repeat;
 }
 li.instagram a span {
 	height: 25px;
 	width: 25px;
 	display: block;
 	background: url(../images/img-sprite.png)no-repeat -346px -276px;
-}
-li.pinterest a span {
-	height: 25px;
-	width: 25px;
-	display: block;
-	background: url(../images/img-sprite.png)no-repeat -391px -276px;
-}	
-li.youtube a span {
-	height: 25px;
-	width: 47px;
-	display: block;
-	background: url(../images/img-sprite.png)no-repeat -437px -276px;
 }	
 .dropdown dd, .dropdown dt, .dropdown ul { margin:0px; padding:0px; }
 .dropdown dd { position:relative; }

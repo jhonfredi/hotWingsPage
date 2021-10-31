@@ -52,7 +52,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-analytics.js";
 		import { getFirestore,getDocs,collection } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-firestore.js";
 		
-		
 		// TODO: Add SDKs for Firebase products that you want to use
 		// https://firebase.google.com/docs/web/setup#available-libraries
 	  
@@ -67,8 +66,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		  appId: "1:1042930989666:web:7ad46b390d7998fa08af3b",
 		  measurementId: "G-9CYS2LFT7C"
 		};
-	  
-		
+	  		
 		// Initialize Firebase
 		const app = initializeApp(firebaseConfig);
 		const analytics = getAnalytics(app);
@@ -76,15 +74,51 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		//get db connection to firebase
 		const db = getFirestore(app);
 
+		const comboxContainer = document.getElementById('combox-container');
+
 		const querySnapshot = await getDocs(collection(db, "combos"));
 			querySnapshot.forEach((doc) => {
-			console.log(`${doc.id} => ${doc.data()}`);
+			const task =doc.data();
+			
+			var newItem = 
+				`<div class="col-md-4 mar-top-10">
+					<a href="single.html">
+						<img src="${task.image}" class="img-responsive" alt=""/>`;
+
+						if(task.isNew === true){
+
+							newItem+=`<span class="new-box">
+							<span class="new-label">Nuevo</span>
+							</span>`;
+						}					
+						if(task.onSale === true){
+							var discount = (task.originalPrice - task.price )/task.originalPrice*100;
+							newItem+=`<span class="sale-box">
+							<span class="sale-label">-${discount} %</span>
+						</span>`;
+						}
+
+					newItem += `
+						<div class="shop_desc">
+							<h3><a href="#">Combo 1</a></h3>
+							<p>6 alas + gaseosa</p>
+							<span class="reducedfrom">$66.00</span>
+							<span class="actual">$12.00</span><br>
+							<ul class="buttons">
+								<li class="cart"><a href="#">Add To Cart</a></li>
+								<li class="shop_btn"><a href="#">Read More</a></li>
+								<div class="clear"> </div>
+							</ul>
+						</div>
+					</a>
+				</div>`;	
+				
+				comboxContainer.innerHTML += newItem; 
+
+				
 		});
 
 	  </script>
-
-
-	  
 </head>
 
 <body>
@@ -135,105 +169,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	  </div>
      <div class="main">
       <div class="shop_top">
-		<div class="container">
-			<div class="row shop_box-top">
-				<div class="col-md-3 shop_box"><a href="single.html">
-					<img src="images/pic5.jpg" class="img-responsive" alt=""/>
-					<span class="new-box">
-						<span class="new-label">New</span>
-					</span>
-					<span class="sale-box">
-						<span class="sale-label">Sale!</span>
-					</span>
-					<div class="shop_desc">
-						<h3><a href="#">aliquam volutp</a></h3>
-						<p>Lorem ipsum consectetuer adipiscing </p>
-						<span class="reducedfrom">$66.00</span>
-						<span class="actual">$12.00</span><br>
-						<ul class="buttons">
-							<li class="cart"><a href="#">Add To Cart</a></li>
-							<li class="shop_btn"><a href="#">Read More</a></li>
-							<div class="clear"> </div>
-					    </ul>
-				    </div>
-				</a></div>
-
-				<div class="col-md-3 shop_box"><a href="single.html">
-					<img src="images/pic6.jpg" class="img-responsive" alt=""/>
-					<span class="new-box">
-						<span class="new-label">New</span>
-					</span>
-					<div class="shop_desc">
-						<h3><a href="#">aliquam volutp</a></h3>
-						<p>Lorem ipsum consectetuer adipiscing </p>
-						<span class="actual">$12.00</span><br>
-						<ul class="buttons">
-							<li class="cart"><a href="#">Add To Cart</a></li>
-							<li class="shop_btn"><a href="#">Read More</a></li>
-							<div class="clear"> </div>
-					    </ul>
-				    </div>
-				</a></div>
-
-				<div class="col-md-3 shop_box"><a href="single.html">
-					<img src="images/pic7.jpg" class="img-responsive" alt=""/>
-					<span class="new-box">
-						<span class="new-label">New</span>
-					</span>
-					<span class="sale-box">
-						<span class="sale-label">Sale!</span>
-					</span>
-					<div class="shop_desc">
-						<h3><a href="#">aliquam volutp</a></h3>
-						<p>Lorem ipsum consectetuer adipiscing </p>
-						<span class="reducedfrom">$66.00</span>
-						<span class="actual">$12.00</span><br>
-						<ul class="buttons">
-							<li class="cart"><a href="#">Add To Cart</a></li>
-							<li class="shop_btn"><a href="#">Read More</a></li>
-							<div class="clear"> </div>
-					    </ul>
-				    </div>
-				</a></div>
-				<div class="col-md-3 shop_box"><a href="single.html">
-					<img src="images/pic8.jpg" class="img-responsive" alt=""/>
-					<span class="new-box">
-						<span class="new-label">New</span>
-					</span>
-					<div class="shop_desc">
-						<h3><a href="#">aliquam volutp</a></h3>
-						<p>Lorem ipsum consectetuer adipiscing </p>
-						<span class="reducedfrom">$66.00</span>
-						<span class="actual">$12.00</span><br>
-						<ul class="buttons">
-							<li class="cart"><a href="#">Add To Cart</a></li>
-							<li class="shop_btn"><a href="#">Read More</a></li>
-							<div class="clear"> </div>
-					    </ul>
-				    </div>
-				</a></div>
-			</div>
-			<div class="row">
-				<div class="col-md-3 shop_box"><a href="single.html">
-					<img src="images/pic9.jpg" class="img-responsive" alt=""/>
-					<span class="new-box">
-						<span class="new-label">New</span>
-					</span>
-					<div class="shop_desc">
-						<h3><a href="#">aliquam volutp</a></h3>
-						<p>Lorem ipsum consectetuer adipiscing </p>
-						<span class="actual">$12.00</span><br>
-						<ul class="buttons">
-							<li class="cart"><a href="#">Add To Cart</a></li>
-							<li class="shop_btn"><a href="#">Read More</a></li>
-							<div class="clear"> </div>
-					    </ul>
-				    </div>
-				</a></div>
-				
+		<div class="container" id="combox-container">
 			
-			</div>
-		 </div>
 	   </div>
 	  </div>
 	  <div class="footer">

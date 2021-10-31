@@ -1,8 +1,3 @@
-
-.mar-top-10{
-	margin-top: 10px;
-}
-
 .clear{clear: both;}
 h4, h5, h6,
 h1, h2, h3 {margin-top: 0;}
@@ -776,7 +771,7 @@ p.m_5{
 /*--footer--*/
 .footer{
 	background:#000;
-	padding:1%;
+	padding:5% 0;
 }		
 ul.footer_box{
 	list-style:none;
@@ -787,7 +782,7 @@ ul.footer_box h4{
 	font-size:1.1em;
 	text-transform:uppercase;
 	font-weight:700;
-	margin-bottom: 0%;
+	margin-bottom: 8%;
 }
 ul.footer_box li a{
 	color: #B8B6B6;
@@ -798,11 +793,45 @@ ul.footer_box li a{
 ul.footer_box li a:hover{
 	color:#fff;
 }
-
+.footer_search {
+	margin-top: 10%;
+	width:100%;
+	position:relative;
+}
+.footer_search input[type="text"] {
+	outline: none;
+	padding: 12px 15px;
+	outline: none;
+	color: #202020;
+	background: #FFF;
+	border: none;
+	width: 74%;
+	line-height: 1.5em;
+	font-size: 0.8125em;
+}
+.footer_search  input[type="submit"] {
+	background: #C7C7C7;
+	padding: 9px 19px;
+	border: none;
+	cursor: pointer;
+	position: absolute;
+	line-height: 1.6em;
+	font-size: 1em;
+	color: #000;
+	font-weight: 800;
+	outline: none;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+.footer_search  input[type="submit"]:hover {
+	background:#222;
+	color:#fff;
+}
 ul.social{
 	list-style:none;
 	padding:0;
-	margin-top: 2%;
+	margin-top: 17%;
 }	
 ul.social li:first-child, ol li:first-child {
 	margin-top: 0px;
@@ -1841,14 +1870,16 @@ fieldset.input input[type="submit"]:hover {
 	margin-top: 10px;
  }
  ul.footer_box h4, ul.team_list h4{
-	margin-bottom: 1px;
+	margin-bottom: 10px;
  }
  ul.footer_box {
-	margin-bottom: 1px;
+	margin-bottom: 20px;
   }
-
+  .footer_search, .footer_bottom{
+	 margin-top:0;
+  }
   ul.social {
-	margin-top: 2px;
+	margin-top: 20px;
  }
  .team1{
  	margin-bottom:20px;

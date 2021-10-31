@@ -47,11 +47,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             });
         });
      </script>
+	 <script src="js/index.js"></script>
 	 <script type="module">
 		// Import the functions you need from the SDKs you need
 		import { initializeApp } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-app.js";
 		import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-analytics.js";
-		import { getFirestore,getDocs,collection } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-firestore.js";
+		import { getFirestore,getDocs,collection,where, orderBy } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-firestore.js";
 		
 		// TODO: Add SDKs for Firebase products that you want to use
 		// https://firebase.google.com/docs/web/setup#available-libraries
@@ -77,23 +78,39 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 		const comboxContainer = document.getElementById('combox-container');
 
-		const querySnapshot = await getDocs(collection(db, "combos"));
+		const querySnapshot = await getDocs(collection(db, "combos"), where("status","==","A"), orderBy("category"));
+
 			querySnapshot.forEach((doc) => {
+
+				//map doc to a new object
+			
 			const task =doc.data();
+				//map task to a new object
+				const combo = {
+					id: doc.id,
+					name: task.name,
+					price: task.price,
+					category: task.category,
+					description: task.description,
+					image: task.image,
+					status: task.status,
+					isNew: task.isNew,
+					onSale: task.onSale,
+					originalPrice: task.originalPrice
+				};
 			
 			var newItem = 
 				`<div class="col-md-4 mar-top-10">
 					<a href="single.html">
-						<img src="${task.image}" class="img-responsive" alt=""/>`;
+						<img src="${combo.image}" class="img-responsive" alt=""/>`;
 
-						if(task.isNew === true){
-
+						if(combo.isNew === true){
 							newItem+=`<span class="new-box">
 							<span class="new-label">Nuevo</span>
 							</span>`;
 						}					
-						if(task.onSale === true){
-							var discount = (task.originalPrice - task.price )/task.originalPrice*100;
+						if(combo.onSale === true){
+							var discount = (combo.originalPrice - combo.price )/combo.originalPrice*100;
 							newItem+=`<span class="sale-box">
 							<span class="sale-label">-${discount} %</span>
 						</span>`;
@@ -101,29 +118,27 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 					newItem += `
 						<div class="shop_desc">
-							<h3><a href="#">${task.name}</a></h3>
-							<p>${task.description}</p>`;
+							<h3><a href="#">${combo.name}</a></h3>
+							<p>${combo.description}</p>`;
 
-				if(task.onSale === true){
+				if(combo.onSale === true){
 					newItem += 
-					`<span class="reducedfrom">${task.originalPrice}</span>
+					`<span class="reducedfrom">${combo.originalPrice}</span>
 					`
 				}
 							
-				newItem += 	`<span class="actual">${task.price}</span><br>
+				newItem += 	`<span class="actual">${combo.price}</span><br>
 							<ul class="buttons">								
 								<li class="shop_btn"><a href="#">Descripción</a></li>
-								<li class="cart"><a href="#">Agregar</a></li>
+								<li class="cart"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.image}','${combo.price}')">Agregar</a></li>
 								<div class="clear"> </div>
 							</ul>
 						</div>
 					</a>
-				</div>`;	
-				
-				comboxContainer.innerHTML += newItem; 
-
-				
+				</div>`;					
+				comboxContainer.innerHTML += newItem; 				
 		});
+
 
 	  </script>
 </head>
@@ -149,18 +164,27 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	    		    <div class="clear"></div>
 	    	    </div>
 	            
-				<div class="header_right">	    		
-				    <ul class="icon1 sub-icon1 profile_img">
+				<div class="header_right">	 
+					
+					
+				    <ul class="icon1 sub-icon1 profile_img" >
+
 					 <li><a class="active-icon c1" href="#"> </a>
-						<ul class="sub-icon1 list">
+
+						<ul class="sub-icon1 list" >
+
+
 						  <div class="product_control_buttons">
 						  	<a href="#"><img src="images/edit.png" alt=""/></a>
 						  		<a href="#"><img src="images/close_edit.png" alt=""/></a>
 						  </div>
 						   <div class="clear"></div>
-						  <li class="list_img"><img src="images/1.jpg" alt=""/></li>
-						  <li class="list_desc"><h4><a href="#">velit esse molestie</a></h4><span class="actual">1 x
-                          $12.00</span></li>
+
+						   <div  id="cart_div_id">
+							
+						   </div>
+						  					 
+						  
 						  <div class="login_buttons">
 							 <div class="check_button"><a href="checkout.html">Check out</a></div>
 							 <div class="login_button"><a href="login.html">Login</a></div>
@@ -168,9 +192,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						  </div>
 						  <div class="clear"></div>
 						</ul>
+						
+						
 					 </li>
+
 				   </ul>
 		        <div class="clear"></div>
+
+
 	       </div>
 
 	      </div>

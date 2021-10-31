@@ -20,7 +20,7 @@ body a{
 	-o-transition: 0.5s all;
 }
 .header{
-	background:rgb(211, 26, 26);
+	background:rgb(0, 0, 0);
 	padding: 1.5% 0;
 }
 .header-left{

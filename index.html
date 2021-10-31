@@ -101,13 +101,13 @@ hola mundo
 
 					newItem += `
 						<div class="shop_desc">
-							<h3><a href="#">Combo 1</a></h3>
-							<p>6 alas + gaseosa</p>
-							<span class="reducedfrom">$66.00</span>
+							<h3><a href="#">${task.name}</a></h3>
+							<p>${task.description}</p>
+							<span class="reducedfrom">${task.originalPrice}</span>
 							<span class="actual">${task.price}</span><br>
 							<ul class="buttons">
-								<li class="cart"><a href="#">Add To Cart</a></li>
-								<li class="shop_btn"><a href="#">Read More</a></li>
+								<li class="cart"><a href="#">Agregar</a></li>
+								<li class="shop_btn"><a href="#">Descripción</a></li>
 								<div class="clear"> </div>
 							</ul>
 						</div>

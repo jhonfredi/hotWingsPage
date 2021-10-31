@@ -20,7 +20,7 @@ body a{
 	-o-transition: 0.5s all;
 }
 .header{
-	background:#000;
+	background:rgb(0, 0, 0);
 	padding: 1.5% 0;
 }
 .header-left{
@@ -1036,10 +1036,10 @@ ul.buttons{
 	margin-top: 10px;
 }
 .cart{
-	float:left;
+	float:right;
 }
 .shop_btn{
-	float:right;
+	float:left;
 }
 .shop_btn a, .cart a{
 	color: #000;

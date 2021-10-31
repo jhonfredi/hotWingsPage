@@ -101,13 +101,19 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 					newItem += `
 						<div class="shop_desc">
-							<h3><a href="#">Combo 1</a></h3>
-							<p>6 alas + gaseosa</p>
-							<span class="reducedfrom">$66.00</span>
-							<span class="actual">$12.00</span><br>
-							<ul class="buttons">
-								<li class="cart"><a href="#">Add To Cart</a></li>
-								<li class="shop_btn"><a href="#">Read More</a></li>
+							<h3><a href="#">${task.name}</a></h3>
+							<p>${task.description}</p>`;
+
+				if(task.onSale === true){
+					newItem += 
+					`<span class="reducedfrom">${task.originalPrice}</span>
+					`
+				}
+							
+				newItem += 	`<span class="actual">${task.price}</span><br>
+							<ul class="buttons">								
+								<li class="shop_btn"><a href="#">Descripción</a></li>
+								<li class="cart"><a href="#">Agregar</a></li>
 								<div class="clear"> </div>
 							</ul>
 						</div>
@@ -142,7 +148,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				    </div>							
 	    		    <div class="clear"></div>
 	    	    </div>
-	            <div class="header_right">	    		
+	            
+				<div class="header_right">	    		
 				    <ul class="icon1 sub-icon1 profile_img">
 					 <li><a class="active-icon c1" href="#"> </a>
 						<ul class="sub-icon1 list">
@@ -165,6 +172,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				   </ul>
 		        <div class="clear"></div>
 	       </div>
+
 	      </div>
 		 </div>
 	    </div>

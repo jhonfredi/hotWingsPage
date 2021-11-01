@@ -1,8 +1,16 @@
+/*change font*/
+body {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #333;
+	background-color: #fff;
+}
+
 
 .mar-top-10{
 	margin-top: 10px;
 }
-
 .total_items_cart
 {
 	color: #fff;
@@ -11,6 +19,8 @@
 	border-radius: 5px;
 	font-size: 12px;
 	font-weight: bold;	
+	
+
 
 }
 

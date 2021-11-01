@@ -1,15 +1,10 @@
 //create this file like a module and export it
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-analytics.js";
-import { getFirestore,getDocs,collection,where, orderBy } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-firestore.js";
 
 $(document).ready(function(){        
     updateCart();
   })
 
   //search component by id "total_items_cart"
-
-
 
 function addToCart(id,name, image, price) {
        
@@ -54,7 +49,7 @@ function addToCart(id,name, image, price) {
 
     }
     
-    //showToastAdded();
+    showToastAdded();
     updateCart();
     
 }
@@ -108,7 +103,6 @@ function updateCart(){
          goToPayElement.innerHTML = `Ver menú`;
          trashbinIcon.style.display = 'none';
     }
-
 }
 
 function showToastAdded(){

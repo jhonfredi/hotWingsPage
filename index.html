@@ -47,7 +47,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             });
         });
      </script>
-	 <script src="js/index.js"></script>
+	 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="js/cart.js"></script>
+
 	 <script type="module">
 		// Import the functions you need from the SDKs you need
 		import { initializeApp } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-app.js";
@@ -125,18 +127,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					newItem += 
 					`<span class="reducedfrom">${combo.originalPrice}</span>
 					`
-				}
+								}
 							
 				newItem += 	`<span class="actual">${combo.price}</span><br>
 							<ul class="buttons">								
-								<li class="shop_btn"><a href="#">Descripción</a></li>
 								<li class="cart"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.image}','${combo.price}')">Agregar</a></li>
 								<div class="clear"> </div>
 							</ul>
 						</div>
 					</a>
 				</div>`;					
-				comboxContainer.innerHTML += newItem; 				
+				comboxContainer.innerHTML += newItem; 		
+				
+				
+				
+
 		});
 
 
@@ -164,30 +169,23 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	    		    <div class="clear"></div>
 	    	    </div>
 	            
-				<div class="header_right">	 
-					
-					
-				    <ul class="icon1 sub-icon1 profile_img" >
+				<div class="header_right">
+				    <ul class="icon1 sub-icon1 profile_img">
 
 					 <li><a class="active-icon c1" href="#"> </a>
-
+						<span class = "" id="total_items_cart"></span>
 						<ul class="sub-icon1 list" >
-
-
 						  <div class="product_control_buttons">
-						  	<a href="#"><img src="images/edit.png" alt=""/></a>
+						  		<a href="javascript:deleteAllCart()" id="trashbin_icon_id"><img src="images/trashbin.png" alt=""/></a>
 						  		<a href="#"><img src="images/close_edit.png" alt=""/></a>
 						  </div>
 						   <div class="clear"></div>
-
-						   <div  id="cart_div_id">
-							
-						   </div>
-						  					 
+						   <div  id="cart_div_id">							
+						   </div>										 
 						  
 						  <div class="login_buttons">
-							 <div class="check_button"><a href="checkout.html">Check out</a></div>
-							 <div class="login_button"><a href="login.html">Login</a></div>
+							 <div class="check_button"><a href="checkout.html" id="go_to_pay_id">Ir a Pagar </a></div>
+							 <div class="login_button"><a href="login.html">Ingreso</a></div>
 							 <div class="clear"></div>
 						  </div>
 						  <div class="clear"></div>
@@ -198,10 +196,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 				   </ul>
 		        <div class="clear"></div>
-
-
 	       </div>
-
 	      </div>
 		 </div>
 	    </div>

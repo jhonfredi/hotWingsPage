@@ -46,7 +46,7 @@ body a{
 	-o-transition: 0.5s all;
 }
 .header{
-	background:rgb(0, 0, 0);
+	background:#000;
 	padding: 1.5% 0;
 }
 .header-left{
@@ -388,9 +388,9 @@ li.list_desc h4 a:hover{
 	color:red;
 }
 .c1{
-	background: url(../images/img-sprite.png) no-repeat -66px -8px;
-	width: 22px;
-	height: 24px;
+	background: url(../images/shop.png) no-repeat;
+	width: 30px;
+	height: 30px;
 	display: inline-block;
 	vertical-align: middle;
 }
@@ -852,8 +852,8 @@ li.facebook a span {
 }
 
 li.whatsapp a span {
-	height: 22px;
-	width: 22px;
+	height: 25px;
+	width: 25px;
 	display: block;
 	background: url(../images/wpp.png)no-repeat;
 }
@@ -1065,10 +1065,10 @@ ul.buttons{
 	margin-top: 10px;
 }
 .cart{
-	float:right;
+	float:left;
 }
 .shop_btn{
-	float:left;
+	float:right;
 }
 .shop_btn a, .cart a{
 	color: #000;

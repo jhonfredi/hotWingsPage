@@ -6,8 +6,12 @@ $(document).ready(function(){
 
   //search component by id "total_items_cart"
 
-function addToCart(id,name, image, price) {
+async function addToCart(id,name, image, price,categoryId) {
        
+    const myCategory=await getItemBycategoryId(categoryId);
+    
+    console.log(myCategory);
+    
     const newCombo = {
         id: id,
         name: name,
@@ -169,5 +173,21 @@ function deleteAllCart(){
             
           }
       });
+
+}
+
+function closeCart(){
+    const cart = document.getElementById('ul_cart_id');
+    
+    cart.style.visibility = 'hidden';
+    
+    const comboxContainer = document.getElementById('combox-container');
+    
+    
+    comboxContainer.click();
+      
+    
+   
+
 
 }

@@ -3,6 +3,12 @@ $(document).ready(function() {
 	connectFirebase();
 });
 
+const category ={
+	id: "",
+	name: "",
+	order: 0,
+	status: "A"
+}
 
 const firebaseConfig = {
     apiKey: "AIzaSyCYuuQM8vQus29Jsq2z9ZfTijblR38I13c",
@@ -29,7 +35,7 @@ db.collection("combos").where("status", "==", "A").onSnapshot(function(querySnap
 					id: doc.id,
 					name: task.name,
 					price: task.price,
-					category: task.category,
+					category: task.categoryId,
 					description: task.description,
 					image: task.image,
 					status: task.status,
@@ -68,7 +74,7 @@ db.collection("combos").where("status", "==", "A").onSnapshot(function(querySnap
 							
 				newItem += 	`<span class="actual">${combo.price}</span><br>
 							<ul class="buttons">								
-								<li class="cart"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.image}','${combo.price}')">Agregar</a></li>
+								<li class="cart"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.image}','${combo.price}','${combo.category}')">Agregar</a></li>
 								<div class="clear"> </div>
 							</ul>
 						</div>
@@ -78,23 +84,134 @@ db.collection("combos").where("status", "==", "A").onSnapshot(function(querySnap
 
 	});
 });
-
-}
- 
+} 
 
 //create function to get item from firebase by id
-function getItem(id){
-	const db = firebase.firestore();
-	const item = db.collection("combos").doc(id);
-	return item;
+async function getItemBycategoryId(id){
+	//Get category collection
+	var db = firebase.firestore();
+	
+	//get categories collection where doc id= id
+
+	const snapshot=await db.collection('categories').doc(id).get();
+
+	return new Promise(resolve => {		
+		const category = snapshot.data();
+		category.id=snapshot.id;			
+		//category.status = snapshot.data().status
+		
+		category.menuOptions = [];
+		if(category.status.localeCompare('A') ==0){
+
+			//Get all menuOptionOnItem by category
+			db.collection("menuOptionOnItemInCar").where("categoryId","==", category.id.toString()).onSnapshot(function(querySnapshot) {
+				
+				querySnapshot.forEach(function(doc) {
+					//get the collection OptionsOnItemInCart for each doc
+					
+					let data = doc.data();					
+					let menuOption = {};					
+					menuOption.id = doc.id;
+					menuOption.categoryId = data.categoryId;
+					menuOption.name = data.name;					
+					menuOption.order = data.order;
+					menuOption.OptionsOnItemInCart = data.OptionsOnItemInCart;
+					
+					//menuOption.optionItems =await getItemsMenuByMenuOptionId (menuOption.id);
+					menuOption.optionItems = [];
+					//gettin the menuItem
+					
+					db.collection("OptionOnItemInCar").where("menuOptionOnItemInCarId","==",doc.id.toString()).onSnapshot(function(querySnapshotM) {
+						querySnapshotM.forEach(function(docM) {
+							
+							let dataItem = docM.data();
+							let optionItem = {};
+							optionItem.id = docM.id;
+							optionItem.fieldType = dataItem.fieldType;
+							optionItem.name = dataItem.name;
+							optionItem.menuOptionOnItemInCarId = dataItem.menuOptionOnItemInCarId;
+							optionItem.order = dataItem.order;
+							console.log(optionItem);
+							menuOption.optionItems.push(optionItem);
+
+						});
+
+					});
+					
+					/*
+					db.collection("optionOnItemInCar").where("menuOptionOnItemInCarId", "==", menuOption.id).onSnapshot(function(querySnapshotM) {
+						
+						querySnapshotM.forEach(function(docM) {
+							console.log("aaaa");
+							console.log(docM.data());
+							let dataItem = docM.data();
+							let optionItem = {};
+							optionItem.id = docM.id;
+							optionItem.fieldType = dataItem.fieldType;
+							optionItem.name = dataItem.name;
+							optionItem.menuOptionOnItemInCarId = dataItem.menuOptionOnItemInCarId;
+							optionItem.order = dataItem.order;
+							menuOption.optionItems.push(optionItem);
+						});
+					});*/
+
+					//add menuOption to category
+					category.menuOptions.push(menuOption);
+
+				});
+			});
+
+			resolve(category);
+		}else{
+			resolve (null);
+		}
+		
+	});
 }
+/*
+  async function getItemsMenuByMenuOptionId (menuOptionId){
+	
+	var db = firebase.firestore();
 
-  
+	var optionItems =[];	
+	
+	const snapshot =await db.collection("optionOnItemInCar").where("menuOptionOnItemInCarId", "==", menuOptionId);
+	
+	return new Promise(resolve => {
+			snapshot.onSnapshot(function(querySnapshot) {
+				querySnapshot.forEach(function(doc) {
+					console.log(doc.data());
+					let dataItem = doc.data();
+					let optionItem = {};
+					optionItem.id = doc.id;
+					optionItem.fieldType = dataItem.fieldType;
+					optionItem.name = dataItem.name;
+					optionItem.menuOptionOnItemInCarId = dataItem.menuOptionOnItemInCarId;
+					optionItem.order = dataItem.order;
+					optionItems.push(optionItem);
+					console.log("option "+optionItem.name);
+					//return optionItem;
+					//optionItems.push(optionItem);
+					//return optionItems;
+				});				
+			});	
+			resolve(optionItems);
+ 
+	});
+}*/
 
+async function  getItemsMenuByMenuOptionId(menuOptionId){
+	var db = firebase.firestore();	
+	let citiesRef = db.collection("optionOnItemInCar").where("menuOptionOnItemInCarId", "==", menuOptionId);
+	let allCities = await citiesRef.get();
 
+	console.log(allCities);
+	for(const doc of allCities.docs){
+		console.log("the log");
+	  console.log(doc.id, '=>', doc.data());
+	}
 
-  
-
+}
   // Initialize Firestore through Firebase
 
 /*

@@ -277,27 +277,30 @@ ul.icon1 {
 *html .icon1 li a:hover { /* IE6 only */
 	color: #fafafa;
 }
+/*To show the cart*/
 .icon1 ul {
 	width:300px;
 	margin: 20px 0 0 0;
 	_margin: 0;
-	opacity: 0;
+	opacity: 0;		
 	visibility: hidden;
 	position: absolute;
 	top:67px;
 	z-index: 1;
-	right: -140px;
-	background: #ffffff;
+	right: -140px;	
+	background: #ffffff;	
 	-webkit-transition: all .2s ease-in-out;
 	-moz-transition: all .2s ease-in-out;
 	-ms-transition: all .2s ease-in-out;
 	-o-transition: all .2s ease-in-out;
 	transition: all .2s ease-in-out;
+
 	box-shadow: 0 0 10px #AAA;
 	-webkit-box-shadow: 0 0 10px #AAA;
 	-moz-box-shadow: 0 0 10px #AAA;
 	-o-box-shadow: 0 0 10px #AAA;
 }
+
 .icon1 li:hover > ul {
 	opacity: 1;
 	visibility: visible;

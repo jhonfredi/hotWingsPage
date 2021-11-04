@@ -131,7 +131,6 @@ async function getItemBycategoryId(id){
 							optionItem.name = dataItem.name;
 							optionItem.menuOptionOnItemInCarId = dataItem.menuOptionOnItemInCarId;
 							optionItem.order = dataItem.order;
-							console.log(optionItem);
 							menuOption.optionItems.push(optionItem);
 
 						});

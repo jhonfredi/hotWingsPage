@@ -12,6 +12,50 @@ async function addToCart(id,name, description,image, price,categoryId) {
     
     showModalToAditionals(id,name, description,image, price,myCategory);
         
+}
+var modalWrap = null;
+function showModalToAditionals(id,name, description,image, price,myCategory, callback){  
+
+    //to avoid create multiple modal
+    if(modalWrap != null){
+        modalWrap.remove();
+    }
+    
+    modalWrap =document.createElement('div');
+
+    modalWrap.innerHTML = `
+        <div class="modal"> tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-light">
+                        <h5 class="modal-title">${name}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>${description}</p>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary modal-success-btn">Add to cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    modalWrap.querySelector('.modal-success-btn').addEventListener('click', function(){
+        
+        addAditionalToCart(id,name, description,image, price,myCategory);
+        //call data-bs-dismiss="modal" to close the modal
+        modalWrap.querySelector('.btn-close').click();
+    });
+
+    document.body.append(modalWrap);
+    $('.modal').modal('show');
+
+
+}
+
+function addAditionalToCart (id,name, description,image, price,categoryId){
     const newCombo = {
         id: id,
         name: name,
@@ -55,43 +99,6 @@ async function addToCart(id,name, description,image, price,categoryId) {
     
     showToastAdded();
     updateCart();
-    
-}
-
-function showModalToAditionals(id,name, description,image, price,myCategory){  
-
-    var modalWrap = null;
-    //to avoid create multiple modal
-    if(modalWrap != null){
-        modalWrap.remove();
-    }
-    
-    modalWrap =document.createElement('div');
-    modalWrap.innerHTML = `
-        <div class="modal"> tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">${name}</h5>
-                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>${description}</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Add to cart</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    let showModal;
-    document.body.append(modalWrap);
-    $('.modal').modal('show');
-
-
 }
 
 function updateCart(){
@@ -167,7 +174,27 @@ function formatNumberToMil(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
+function showAditionalOrder(){
+    
+     //show Swal alert dialog
+     Swal.fire({  
+        title: 'Seguro que desea eliminar todos los productos?',  
+        showDenyButton: true,  showCancelButton: false,  
+        confirmButtonText: `Si`,  
+        denyButtonText: `Cancelar`,
+      }).then((result) => {  
+          /* Read more about isConfirmed, isDenied below */  
+          if (result.isConfirmed) {    
+            const trashbinIcon = document.getElementById('trashbin_icon_id');
+            localStorage.removeItem('cart');
+            updateCart();
+            //hide the trashbin icon
+            trashbinIcon.style.display = 'none';
+            
+          }
+      });
 
+}
 
 function deleteAllCart(){
 
@@ -192,14 +219,7 @@ function deleteAllCart(){
 }
 
 function closeCart(){
-    const cart = document.getElementById('ul_cart_id');
-    
-    cart.style.visibility = 'hidden';
-    
-    const comboxContainer = document.getElementById('combox-container');
-    
-    
-    comboxContainer.click();
+  
       
     
    

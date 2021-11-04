@@ -6,12 +6,12 @@ $(document).ready(function(){
 
   //search component by id "total_items_cart"
 
-async function addToCart(id,name, image, price,categoryId) {
+async function addToCart(id,name, description,image, price,categoryId) {
        
     const myCategory=await getItemBycategoryId(categoryId);
     
-    console.log(myCategory);
-    
+    showModalToAditionals(id,name, description,image, price,myCategory);
+        
     const newCombo = {
         id: id,
         name: name,
@@ -56,6 +56,42 @@ async function addToCart(id,name, image, price,categoryId) {
     showToastAdded();
     updateCart();
     
+}
+
+function showModalToAditionals(id,name, description,image, price,myCategory){  
+
+    var modalWrap = null;
+    //to avoid create multiple modal
+    if(modalWrap != null){
+        modalWrap.remove();
+    }
+    
+    modalWrap =document.createElement('div');
+    modalWrap.innerHTML = `
+        <div class="modal"> tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">${name}</h5>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>${description}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Add to cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    let showModal;
+    document.body.append(modalWrap);
+    $('.modal').modal('show');
+
+
 }
 
 function updateCart(){
@@ -131,28 +167,7 @@ function formatNumberToMil(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
-function showAditionalOrder(){
 
-    console.log("showing aditionals")
-     //show Swal alert dialog
-     Swal.fire({  
-        title: 'Seguro que desea eliminar todos los productos?',  
-        showDenyButton: true,  showCancelButton: false,  
-        confirmButtonText: `Si`,  
-        denyButtonText: `Cancelar`,
-      }).then((result) => {  
-          /* Read more about isConfirmed, isDenied below */  
-          if (result.isConfirmed) {    
-            const trashbinIcon = document.getElementById('trashbin_icon_id');
-            localStorage.removeItem('cart');
-            updateCart();
-            //hide the trashbin icon
-            trashbinIcon.style.display = 'none';
-            
-          }
-      });
-
-}
 
 function deleteAllCart(){
 

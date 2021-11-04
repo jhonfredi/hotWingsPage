@@ -74,7 +74,7 @@ db.collection("combos").where("status", "==", "A").onSnapshot(function(querySnap
 							
 				newItem += 	`<span class="actual">${combo.price}</span><br>
 							<ul class="buttons">								
-								<li class="cart"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.image}','${combo.price}','${combo.category}')">Agregar</a></li>
+								<li class="cart"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${combo.image}','${combo.price}','${combo.category}')">Agregar</a></li>
 								<div class="clear"> </div>
 							</ul>
 						</div>

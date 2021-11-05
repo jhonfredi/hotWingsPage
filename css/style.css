@@ -20,12 +20,18 @@ body {
 	font-size: 12px;
 	font-weight: bold;	
 	
-
-
 }
 
 .colored-toast.swal2-icon-success {
     background-color: #a5dc86 !important;
+  }
+
+  .modal.modal-wide .modal-dialog {
+	width: 90%;
+  }
+  
+  .modal-wide .modal-body {
+	overflow-y: auto;
   }
 /* end my owns*/
 

@@ -9,10 +9,106 @@ $(document).ready(function(){
 async function addToCart(id,name, description,image, price,categoryId) {
        
     const myCategory=await getItemBycategoryId(categoryId);
-    
+    console.log(myCategory);
+    console.log("el tipo:" +typeof myCategory.menuOptions);
+
     showModalToAditionals(id,name, description,image, price,myCategory);
         
 }
+
+function createField(optionItem){
+ 
+
+  if(optionItem.fieldType === 'text'){
+    return `
+    <div class="form-group">
+        <label for="${optionItem.id}">${optionItem.name}</label>
+        <input type="text" class="form-control" id="${optionItem.id}" aria-describedby="${optionItem.name}" placeholder="${optionItem.name}">
+    </div>
+    `;
+  }else if(optionItem.fieldType === 'select'){ 
+    return `
+    <div class="form-group">
+        <label for="${optionItem.id}">${optionItem.name}</label>
+        <select class="form-control" id="${optionItem.id}">
+        <option>${optionItem.name}</option>
+        </select>
+    </div>
+    `;
+  }else if(optionItem.fieldType === 'checkbox'){
+    return `
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="${optionItem.id}">
+        <label class="form-check-label" for="${optionItem.id}">${optionItem.name}</label>
+    </div>
+    `;
+  }else if(optionItem.fieldType === 'amount'){
+    return `
+    <div class="form-group">
+        <label for="${optionItem.id}">${optionItem.name}</label>
+        <input type="number" class="form-control" id="${optionItem.id}" aria-describedby="${optionItem.name}" placeholder="${optionItem.name}">
+    </div>
+    `;
+  }
+
+}
+
+
+function createElements(category){
+  
+  
+  var menuOptionObject = {
+  id:"",
+  categoryId:"",      
+  name:""
+  }
+
+  var optionItemObject = {
+  fieldType:"",
+  id:"",
+  menuOptionOnItemInCarId:"",
+  name:"",
+  order:0
+  };
+
+  var elements = "";
+
+//create an new array from category
+  let menuOptions = [];
+ menuOptions = category.menuOptions
+
+ console.log(menuOptions);
+
+
+//print each element of the arra
+for (const variable of menuOptions) {
+  console.log(variable);
+}
+
+
+
+
+
+  //loop menuOptions
+/**
+ *   menuOptions.forEach(element => {    
+  var optionItems = element.optionItems;
+      //order optionItems by order
+    optionItems.sort(function(a, b){
+        return a.order - b.order; 
+        });
+      //loop optionItems
+      optionItems.forEach(element => {
+        var optionItem = element;
+        var field = createField(optionItem);
+        elements += field;
+      });
+  });
+ *  */
+
+  return elements;
+}
+
 var modalWrap = null;
 function showModalToAditionals(id,name, description,image, price,myCategory, callback){  
 
@@ -20,14 +116,18 @@ function showModalToAditionals(id,name, description,image, price,myCategory, cal
     if(modalWrap != null){
         modalWrap.remove();
     }
-    
-    console.log(myCategory);
+
     modalWrap =document.createElement('div');
 
     var priceMiles = formatNumberToMil(price);
 
+    var elements = createElements(myCategory);
+    console.log(elements);
+
+    //create dynamic form for the body of the modal with the data of myCategory divide by menuOptions and their optionItems
+    
     modalWrap.innerHTML = `
-        <div class="modal" tabindex="-1" id="contenedor-modal">
+        <div class="modal modal-wide" tabindex="-1" id="contenedor-modal">
             <div class="modal-xl modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-light">
@@ -37,35 +137,26 @@ function showModalToAditionals(id,name, description,image, price,myCategory, cal
                         
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-
-
+                    <div class="modal-body">                        
+                        <div class="container-fluid">   
                         <p class="fs-6">${description} lorem sasa sa </p>
-                        <div class="container-fluid">
                         <div class="row">
-                          <div class="col-md-4">.col-md-4</div>
-                          <div class="col-md-4 ml-auto">.col-md-4 .ml-auto</div>
+                        </div>                     
+                        <div class="row  mt-2">
+                          <div class="col-md-4" ><img src="${image}" class="img-responsive" alt=""/></div>
+                          <div class="col-md-8 ml-auto">
+                            <form id="form-modal">
+                              ${elements}
+                            </form>
+                          </div>
+                          
                         </div>
                         <div class="row">
                           <div class="col-md-3 ml-auto">.col-md-3 .ml-auto</div>
                           <div class="col-md-2 ml-auto">.col-md-2 .ml-auto</div>
                         </div>
-                        <div class="row">
-                          <div class="col-md-6 ml-auto">.col-md-6 .ml-auto</div>
-                        </div>
-                        <div class="row">
-                          <div class="col-sm-9">
-                            Level 1: .col-sm-9
-                            <div class="row">
-                              <div class="col-8 col-sm-6">
-                                Level 2: .col-8 .col-sm-6
-                              </div>
-                              <div class="col-4 col-sm-6">
-                                Level 2: .col-4 .col-sm-6
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        
+                       
                       </div>
                     
 

@@ -21,27 +21,86 @@ function showModalToAditionals(id,name, description,image, price,myCategory, cal
         modalWrap.remove();
     }
     
+    console.log(myCategory);
     modalWrap =document.createElement('div');
 
+    var priceMiles = formatNumberToMil(price);
+
     modalWrap.innerHTML = `
-        <div class="modal"> tabindex="-1">
-            <div class="modal-dialog">
+        <div class="modal" tabindex="-1" id="contenedor-modal">
+            <div class="modal-xl modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-light">
-                        <h5 class="modal-title">${name}</h5>
+                    <div>
+                        <h5 class="modal-title fw-bold">${name} - $${priceMiles}</h5>                        
+                    </div>
+                        
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>${description}</p>
+
+
+                        <p class="fs-6">${description} lorem sasa sa </p>
+                        <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-md-4">.col-md-4</div>
+                          <div class="col-md-4 ml-auto">.col-md-4 .ml-auto</div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-3 ml-auto">.col-md-3 .ml-auto</div>
+                          <div class="col-md-2 ml-auto">.col-md-2 .ml-auto</div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6 ml-auto">.col-md-6 .ml-auto</div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-9">
+                            Level 1: .col-sm-9
+                            <div class="row">
+                              <div class="col-8 col-sm-6">
+                                Level 2: .col-8 .col-sm-6
+                              </div>
+                              <div class="col-4 col-sm-6">
+                                Level 2: .col-4 .col-sm-6
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    
+
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary modal-success-btn">Add to cart</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary modal-success-btn">Agregar</button>
                     </div>
                 </div>
             </div>
         </div>
     `;
+
+
+/*    modalWrap.innerHTML = 
+    `<div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary modal-success-btn">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    `;*/
+    //get the modal by class
+    
     modalWrap.querySelector('.modal-success-btn').addEventListener('click', function(){
         
         addAditionalToCart(id,name, description,image, price,myCategory);

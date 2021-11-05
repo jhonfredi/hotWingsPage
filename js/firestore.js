@@ -96,11 +96,20 @@ async function getItemBycategoryId(id){
 	const snapshot=await db.collection('categories').doc(id).get();
 
 	return new Promise(resolve => {		
+
 		const category = snapshot.data();
-		category.id=snapshot.id;			
-		//category.status = snapshot.data().status
+
+		var myCategory = {
+			id: snapshot.id,
+			name: category.name,
+			order: category.order,
+			status: category.status,
+			menuOptions:[]
+		}
+		category.id=snapshot.id;					//category.status = snapshot.data().status
 		
 		category.menuOptions = [];
+		
 		if(category.status.localeCompare('A') ==0){
 
 			//Get all menuOptionOnItem by category
@@ -153,20 +162,57 @@ async function getItemBycategoryId(id){
 							menuOption.optionItems.push(optionItem);
 						});
 					});*/
-
 					//add menuOption to category
-					category.menuOptions.push(menuOption);
+					myCategory.menuOptions.push(menuOption);
 
 				});
 			});
 
-			resolve(category);
+			resolve(myCategory);
 		}else{
 			resolve (null);
 		}
 		
 	});
 }
+
+//funtion to get collection categories with two parameters id and callback
+async function getCategorieById(id,callback){
+	//Get category collection
+	var db = firebase.firestore();
+
+	const snapshot=await db.collection('categories').doc(id).get();
+
+	callback(snapshot);
+
+}
+
+async function getMenuOptionByCategoryId(category,callback){
+	
+	var db = firebase.firestore();
+	db.collection("menuOptionOnItemInCar").where("categoryId","==", category.id.toString()).onSnapshot(function(querySnapshot) {
+		callback(querySnapshot,category);
+	});
+	
+}
+
+async function getMenuOptionByCategoryId(category,callback,onFinishCallback){	
+	var db = firebase.firestore();
+	db.collection("menuOptionOnItemInCar").where("categoryId","==", category.id.toString()).onSnapshot(function(querySnapshot) {
+		callback(querySnapshot,category, onFinishCallback);
+	});
+}
+
+async function getMenuOptionOnItemByMenuId(menuOption,callback){	
+	var db = firebase.firestore();	
+	db.collection("OptionOnItemInCar").where("menuOptionOnItemInCarId","==", menuOption.id.toString()).onSnapshot(function(querySnapshot) {
+		callback(querySnapshot,menuOption);
+	});
+}
+
+
+
+
 /*
   async function getItemsMenuByMenuOptionId (menuOptionId){
 	
@@ -211,28 +257,3 @@ async function  getItemsMenuByMenuOptionId(menuOptionId){
 	}
 
 }
-  // Initialize Firestore through Firebase
-
-/*
-		//get db connection to firebase
-		const db = getFirestore(app);
-
-		
-
-		const querySnapshot =  getDocs(collection(db, "combos"), where("status","==","A"), orderBy("category"));
-
-			querySnapshot.forEach((doc) => {
-
-				//map doc to a new object
-			
-			
-			
-
-					
-				
-				
-				
-
-		});
-
-        */

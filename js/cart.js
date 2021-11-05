@@ -8,17 +8,70 @@ $(document).ready(function(){
 
 async function addToCart(id,name, description,image, price,categoryId) {
        
-    const myCategory=await getItemBycategoryId(categoryId);
-    console.log(myCategory);
-    console.log("el tipo:" +typeof myCategory.menuOptions);
+    //const myCategory=await getItemBycategoryId(categoryId);
 
-    showModalToAditionals(id,name, description,image, price,myCategory);
-        
+    getCategorieById(categoryId,(snapshot) => {      
+      const data = snapshot.data();
+      var myCategory = {
+        id: snapshot.id,
+        name: data.name,
+        order: data.order,
+        status: data.status,
+        menuOptions:[]
+      };   
+
+      //at the end onFinishCallback is called
+      getMenuOptionByCategoryId(myCategory,onCompleteMenuOptionsByCategory,(completeCategory)=>{          
+        console.log(completeCategory);
+        showModalToAditionals(id,name, description,image, price,completeCategory);    
+      });      
+  });
+}
+
+function onCompleteMenuOptionsByCategory(querySnapshot,category,onFinishCallback){
+  
+  querySnapshot.forEach(function(doc) {
+    var data = doc.data();
+
+    let menuOption = {
+      id: doc.id,
+      categoryId: data.categoryId,
+      name: data.name,
+      order: data.order,
+      order: data.order,
+      optionItems:[]
+    };      
+    
+      getMenuOptionOnItemByMenuId(menuOption,(querySnapshotMenu,newMenuOption)=>{
+
+        querySnapshotMenu.forEach(function(docItem) {
+          var dataItem = docItem.data();
+      
+          let menuItem = {
+            id: docItem.id,
+            fieldType: dataItem.fieldType,
+            name: dataItem.name,
+            order: dataItem.order
+          };  
+          newMenuOption.optionItems.push(menuItem);
+          
+       });
+
+       //category.menuOptions.push(menuOption);
+       
+    });        
+    
+  });
+  
+  //onFinishCallback(category);
+
+
 }
 
 function createField(optionItem){
  
 
+  console.log(optionItem);
   if(optionItem.fieldType === 'text'){
     return `
     <div class="form-group">
@@ -74,37 +127,24 @@ function createElements(category){
   var elements = "";
 
 //create an new array from category
-  let menuOptions = [];
- menuOptions = category.menuOptions
+  var menuOptions = menuOptions = category.menuOptions
 
- console.log(menuOptions);
+ menuOptions.forEach(element => {    
 
-
-//print each element of the arra
-for (const variable of menuOptions) {
-  console.log(variable);
-}
-
-
-
-
-
-  //loop menuOptions
-/**
- *   menuOptions.forEach(element => {    
-  var optionItems = element.optionItems;
-      //order optionItems by order
+  
+  var optionItems = element.optionItems;     
+  /*
     optionItems.sort(function(a, b){
         return a.order - b.order; 
-        });
+    });*/
+    
       //loop optionItems
-      optionItems.forEach(element => {
-        var optionItem = element;
-        var field = createField(optionItem);
+      optionItems.forEach(element => {        
+        var field = createField(element);      
         elements += field;
       });
   });
- *  */
+
 
   return elements;
 }
@@ -121,8 +161,7 @@ function showModalToAditionals(id,name, description,image, price,myCategory, cal
 
     var priceMiles = formatNumberToMil(price);
 
-    var elements = createElements(myCategory);
-    console.log(elements);
+    var elements = createElements(myCategory);    
 
     //create dynamic form for the body of the modal with the data of myCategory divide by menuOptions and their optionItems
     

@@ -1,4 +1,5 @@
 //create this file like a module and export it
+var currentSubtotal=0;
 
 $(document).ready(function(){        
     updateCart();
@@ -10,6 +11,7 @@ $(document).ready(function(){
 
 async function addToCart(id,name, description,image, price,categoryId) {
        
+  currentSubtotal=price;
     //const myCategory=await getItemBycategoryId(categoryId);
     globalCategory = null;
   await getCategorieById(categoryId,(snapshot) => {      
@@ -32,31 +34,19 @@ async function addToCart(id,name, description,image, price,categoryId) {
 async function onCompleteMenuOptionsByCategory(querySnapshot,category, onFinishCallback){
   
   querySnapshot.forEach(function(doc) {
-    var data = doc.data();
-
-    let menuOption = {
-      id: doc.id,
-      categoryId: data.categoryId,
-      name: data.name,
-      order: data.order,
-      order: data.order,
-      optionItems:[]
-    };   
-
+    var menuOption = doc.data();
+    menuOption.id = doc.id;
+    menuOption.optionItems = [];  
     category.menuOptions.push(menuOption);
     globalCategory = category;
     
   });
 
   getItemsMenuByMenuOptionId(category,onFinishCallback);
-
 }
 
 async function getItemsMenuByMenuOptionId(category,onFinishCallback){
 
-//foreach menuOption
-
-var cat2=null;
   for (let index = 0; index < category.menuOptions.length; index++) {
     menuOption= category.menuOptions[index];
     getMenuOptionOnItemByMenuId(menuOption,index,category,onCompleteGetItemsMenuByMenuOptionId,onFinishCallback);   
@@ -69,49 +59,47 @@ function onCompleteGetItemsMenuByMenuOptionId(querySnapshot, menuOption,index, c
   querySnapshot.forEach(function(doc) {
     var data = doc.data();
 
-    let optionItem = {
-      id: doc.id,
-      fieldType: data.fieldType,
-      name: data.name,
-      order: data.order,
-      menuOptionOnItemInCarId: data.menuOptionOnItemInCarId,
-      price: data.price
-    }; 
+    let optionItem = data;
+    optionItem.id = doc.id;
 
     category.menuOptions[index].optionItems.push(optionItem);
     globalCategory.menuOptions[index].optionItems.push(optionItem);    
     
-    var field=createField(optionItem,menuOption);
-
-    //$("#form-modal-id").append(field);
+    createField(optionItem,menuOption);
+    
   });
 }
 
+function createField(optionItem,menuOption){ 
 
-function createField(optionItem, menuOption){
- 
-  console.log(optionItem);
-  var form=$("#form-modal-id");
-  
+  //var optionItem = menuOption.optionItems[optionItemIndex];
 
-  //search for a fieldset field id menuOptionId
-  var fieldset = document.getElementById(menuOption.id);
+  var form=$("#form-modal-id");  
+  //search the section to the current menuOption
+  var fieldset = document.getElementById("cart_fi_"+menuOption.id);
   if(fieldset == null){
     fieldset = document.createElement("fieldset");
-    fieldset.setAttribute("id",menuOption.id);    
+    fieldset.setAttribute("id","cart_fi_"+menuOption.id);    
     fieldset.setAttribute("data-menu-option-id",menuOption.id); 
     form.append(fieldset);
 
-    var legend = document.createElement("legend");
+    var legend = document.createElement("legend");    
+    legend.setAttribute("class","h4");
     legend.innerHTML = menuOption.name;
-    fieldset.appendChild(legend);
     
+    if(menuOption.maxLimit > 0 || menuOption.minLimit > 0){      
+      //add span to legend
+      var messageValidation = document.createElement("div");
+      messageValidation.setAttribute("class","badge-info h6");
+      messageValidation.innerHTML=" "+menuOption.limitDescription;
+      legend.append(messageValidation);
+    }
+    
+    fieldset.appendChild(legend);    
     form.append(fieldset);
     
   }
-
   var fieldContent = "";
-  //create element with class form-group
   
   if(optionItem.fieldType === 'text'){
     fieldContent = `
@@ -119,6 +107,7 @@ function createField(optionItem, menuOption){
         <label for="${optionItem.id}">${optionItem.name}</label>
         <input type="text" class="form-control" id="${optionItem.id}" aria-describedby="${optionItem.name}" placeholder="${optionItem.name}">
     </div>
+    <hr/>
     `;
   }else if(optionItem.fieldType === 'select'){ 
     fieldContent = `
@@ -128,51 +117,135 @@ function createField(optionItem, menuOption){
         <option>${optionItem.name}</option>
         </select>
     </div>
+    <hr/>
     `;
-  }else if(optionItem.fieldType === 'check'){
+  }else if(optionItem.fieldType === 'check'){    
     fieldContent = `
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="${optionItem.id}">
-        <label class="form-check-label" for="${optionItem.id}">${optionItem.name}</label>
-    </div>
+        <input class="form-check-input" type="checkbox" id="check_${optionItem.id}" >
+        <label class="form-check-label" for="check_${optionItem.id}">${optionItem.name}</label>
+    </div>    
+    <hr/>
     `;
+    fieldset.innerHTML += fieldContent;
+    //add event to fieldset to check if the checkbox is checked
+    fieldset.addEventListener("change", function(event){     
+
+      var totalChecked = 0;
+      var checkboxes = fieldset.getElementsByTagName("input");
+      for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].type == 'checkbox' && checkboxes[i].checked) {
+          totalChecked++;
+        }
+      }
+      if(totalChecked > menuOption.maxLimit){
+        $("#"+optionItem.id).prop('checked', false);        
+        var element = event.target;
+        element.checked = false;
+      }
+    });
+
   }else if(optionItem.fieldType === 'amount'){
-    fieldContent = `
-    <div class="form-group">
-        <label for="${optionItem.id}">${optionItem.name}</label>
-        <input type="number" class="form-control" id="${optionItem.id}" aria-describedby="${optionItem.name}" placeholder="${optionItem.name}">
-    </div>
-    `;
 
+    getAditionalById(optionItem.aditionalId, (snapshot)=>{
+      var aditional = snapshot.data();      
+       aditional.id = snapshot.id;
+      
+       fieldContent = `
+       <div class="form-group">
+            <div class="row">             
+              <div class="col-6">
+                <label for="${optionItem.id}">${aditional.name} + $${formatNumberToMil(aditional.price)}</label>               
+              </div>
+              <div class="col-6">                
+              <i class="material-icons btn border" id="i_remove_${aditional.id} parent="${aditional.id}"  hidden>remove</i>               
+                  <span id="amount_${aditional.id}" class="ml-2 mr-2" parent="${aditional.id}" >0</span>
+                  <i class="material-icons btn border" id="i_add_${aditional.id}" parent="${aditional.id}">add</i>                                              
+              </div>  
+              </div>
+       </div>
+       <hr/>
+       `;
+       
+       fieldset.innerHTML += fieldContent;  
+
+       //add event onClick to the fieldset
+        fieldset.addEventListener("click", function(event){
+          
+          var element = event.target;
+          //get parent attribute from the element
+          var id = element.getAttribute("parent");               
+          //remove hiiden from $("#i_remove_"+aditional.id)
+          $("#i_remove_"+id).removeAttr("hidden");
+                        
+          var totalAmounts =0;
+          var amounts = element.getElementsByTagName("span");          
+          for (var i = 0; i < amounts.length; i++) {
+            //validate if the amounts[i] is a span and the id start with amount_
+            if (amounts[i].id.startsWith("amount_")) {
+              totalAmounts = Number(totalAmounts) + Number(amounts[i].textContent);
+            }
+          }
+
+          if(totalAmounts < menuOption.maxLimit){                                
+
+            //show the id="i_add_${aditional.id}"
+            $("#i_add_"+id).show();            
+            var amount = $("#amount_"+id).text();
+            amount++;          
+            //sum two numbers
+            currentSubtotal = parseFloat(currentSubtotal) + parseFloat(aditional.price);
+            //update span with id sp_current_subtotal_id
+            $("#sp_current_subtotal_id").text(formatNumberToMil(currentSubtotal));
+            $("#amount_"+id).text(amount);
+          }
+
+          if(totalAmounts >= menuOption.maxLimit-1){
+            $("#i_add_"+id).hide();
+            $("#i_remove_"+id).show();
+          }
+
+        });
+      
+       
+        
+        //add on clicklistener to remove button
+        $("#i_remove_"+aditional.id).click(function(){    
+          
+          var totalAmounts =0;
+          var amounts = fieldset.getElementsByTagName("span");          
+          for (var i = 0; i < amounts.length; i++) {
+            //validate if the amounts[i] is a span and the id start with amount_
+            if (amounts[i].id.startsWith("amount_")) {
+              totalAmounts = Number(totalAmounts) + Number(amounts[i].textContent);
+            }
+          }
+
+          if(totalAmounts <= menuOption.maxLimit){            
+            $("#i_add_"+aditional.id).show();
+          }
+
+          if(totalAmounts == 1){            
+            $("#i_remove_"+aditional.id).hide();            
+          }
+
+
+          var amount = $("#amount_"+aditional.id).text();
+          if(amount > 0){
+            amount--;
+            currentSubtotal = parseFloat(currentSubtotal) - parseFloat(aditional.price);
+            $("#sp_current_subtotal_id").text(formatNumberToMil(currentSubtotal));
+            $("#amount_"+aditional.id).text(amount);
+          }
+        });  
+    });     
   }
-
-  fieldset.innerHTML += fieldContent;
-  console.log(fieldContent);
-  return fieldContent;
-
-
 }
 
 
 function createElements(category){
   
-  
-  var menuOptionObject = {
-  id:"",
-  categoryId:"",      
-  name:""
-  }
-
-  var optionItemObject = {
-  fieldType:"",
-  id:"",
-  menuOptionOnItemInCarId:"",
-  name:"",
-  order:0
-  };
-
   var elements = "";
-
 //create an new array from category
   var menuOptions = menuOptions = category.menuOptions
 
@@ -197,6 +270,7 @@ function createElements(category){
 }
 
 var modalWrap = null;
+
 function showModalToAditionals(id,name, description,image, price,myCategory, callback){  
 
     //to avoid create multiple modal
@@ -223,14 +297,13 @@ function showModalToAditionals(id,name, description,image, price,myCategory, cal
                     </div>
                     <div class="modal-body">                        
                         <div class="container-fluid">   
-                        <p class="fs-6">${description} lorem sasa sa </p>
+                        <p class="fs-6">${description}</p>
                         <div class="row">
                         </div>                     
                         <div class="row  mt-2">
                           <div class="col-md-4" ><img src="${image}" class="img-responsive" alt=""/></div>
                           <div class="col-md-8 ml-auto">
-                            <form id="form-modal-id">
-                             
+                            <form id="form-modal-id" class="h6">                             
                             </form>
                           </div>
                           
@@ -239,15 +312,18 @@ function showModalToAditionals(id,name, description,image, price,myCategory, cal
                           <div class="col-md-3 ml-auto"></div>
                           <div class="col-md-2 ml-auto"></div>
                         </div>
-                        
-                       
                       </div>
                     
 
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary modal-success-btn">Agregar</button>
+                        <div class="col-sm-4">
+                          <span>Subtotal: $</span><span id="sp_current_subtotal_id">${formatNumberToMil(currentSubtotal)}</span>
+                        </div>
+                        <div class="col-sm-6">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                          <button type="button" class="btn btn-primary modal-success-btn">Agregar</button>
+                        </div>
                     </div>
                 </div>
             </div>

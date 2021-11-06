@@ -192,8 +192,7 @@ async function getMenuOptionByCategoryId(category,callback,onFinishCallback){
 	var db = firebase.firestore();
 	db.collection("menuOptionOnItemInCar").where("categoryId","==", category.id.toString()).onSnapshot(function(querySnapshot) {
 		callback(querySnapshot,category,onFinishCallback);
-	});
-	
+	});	
 }
 
 async function getMenuOptionByCategoryId(category,callback,onFinishCallback){	
@@ -214,7 +213,13 @@ async function getMenuOptionOnItemByMenuId(menuOption,index,category,callback,on
 	return category;
 }
 
+async function getAditionalById(aditionalId,onGetAditionalByIdComplete){
+	
+	var db = firebase.firestore();
 
+	const snapshot=await db.collection('aditionals').doc(aditionalId).get();
+	onGetAditionalByIdComplete(snapshot);
+}
 
 
 /*

@@ -33,6 +33,13 @@ body {
   .modal-wide .modal-body {
 	overflow-y: auto;
   }
+
+  html {
+	font-size: 1rem;
+  }
+  
+ 
+  
 /* end my owns*/
 
 .clear{clear: both;}

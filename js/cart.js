@@ -6,11 +6,13 @@ $(document).ready(function(){
 
   //search component by id "total_items_cart"
 
+  var globalCategory = null;
+
 async function addToCart(id,name, description,image, price,categoryId) {
        
     //const myCategory=await getItemBycategoryId(categoryId);
-
-    getCategorieById(categoryId,(snapshot) => {      
+    globalCategory = null;
+  await getCategorieById(categoryId,(snapshot) => {      
       const data = snapshot.data();
       var myCategory = {
         id: snapshot.id,
@@ -19,16 +21,15 @@ async function addToCart(id,name, description,image, price,categoryId) {
         status: data.status,
         menuOptions:[]
       };   
-
+    globalCategory = myCategory;
       //at the end onFinishCallback is called
-      getMenuOptionByCategoryId(myCategory,onCompleteMenuOptionsByCategory,(completeCategory)=>{          
-        console.log(completeCategory);
-        showModalToAditionals(id,name, description,image, price,completeCategory);    
-      });      
-  });
+       getMenuOptionByCategoryId(myCategory,onCompleteMenuOptionsByCategory, (category) => {       
+        showModalToAditionals(id,name, description,image, price,category);   
+      });
+  });  
 }
 
-function onCompleteMenuOptionsByCategory(querySnapshot,category,onFinishCallback){
+async function onCompleteMenuOptionsByCategory(querySnapshot,category, onFinishCallback){
   
   querySnapshot.forEach(function(doc) {
     var data = doc.data();
@@ -40,47 +41,87 @@ function onCompleteMenuOptionsByCategory(querySnapshot,category,onFinishCallback
       order: data.order,
       order: data.order,
       optionItems:[]
-    };      
-    
-      getMenuOptionOnItemByMenuId(menuOption,(querySnapshotMenu,newMenuOption)=>{
+    };   
 
-        querySnapshotMenu.forEach(function(docItem) {
-          var dataItem = docItem.data();
-      
-          let menuItem = {
-            id: docItem.id,
-            fieldType: dataItem.fieldType,
-            name: dataItem.name,
-            order: dataItem.order
-          };  
-          newMenuOption.optionItems.push(menuItem);
-          
-       });
-
-       //category.menuOptions.push(menuOption);
-       
-    });        
+    category.menuOptions.push(menuOption);
+    globalCategory = category;
     
   });
-  
-  //onFinishCallback(category);
 
+  getItemsMenuByMenuOptionId(category,onFinishCallback);
 
 }
 
-function createField(optionItem){
- 
+async function getItemsMenuByMenuOptionId(category,onFinishCallback){
 
+//foreach menuOption
+
+var cat2=null;
+  for (let index = 0; index < category.menuOptions.length; index++) {
+    menuOption= category.menuOptions[index];
+    getMenuOptionOnItemByMenuId(menuOption,index,category,onCompleteGetItemsMenuByMenuOptionId,onFinishCallback);   
+  }  
+  onFinishCallback(category);
+}
+
+function onCompleteGetItemsMenuByMenuOptionId(querySnapshot, menuOption,index, category,onFinishCallback){
+  
+  querySnapshot.forEach(function(doc) {
+    var data = doc.data();
+
+    let optionItem = {
+      id: doc.id,
+      fieldType: data.fieldType,
+      name: data.name,
+      order: data.order,
+      menuOptionOnItemInCarId: data.menuOptionOnItemInCarId,
+      price: data.price
+    }; 
+
+    category.menuOptions[index].optionItems.push(optionItem);
+    globalCategory.menuOptions[index].optionItems.push(optionItem);    
+    
+    var field=createField(optionItem,menuOption);
+
+    //$("#form-modal-id").append(field);
+  });
+}
+
+
+function createField(optionItem, menuOption){
+ 
   console.log(optionItem);
+  var form=$("#form-modal-id");
+  
+
+  //search for a fieldset field id menuOptionId
+  var fieldset = document.getElementById(menuOption.id);
+  if(fieldset == null){
+    fieldset = document.createElement("fieldset");
+    fieldset.setAttribute("id",menuOption.id);    
+    fieldset.setAttribute("data-menu-option-id",menuOption.id); 
+    form.append(fieldset);
+
+    var legend = document.createElement("legend");
+    legend.innerHTML = menuOption.name;
+    fieldset.appendChild(legend);
+    
+    form.append(fieldset);
+    
+  }
+
+  var fieldContent = "";
+  //create element with class form-group
+  
   if(optionItem.fieldType === 'text'){
-    return `
+    fieldContent = `
     <div class="form-group">
         <label for="${optionItem.id}">${optionItem.name}</label>
         <input type="text" class="form-control" id="${optionItem.id}" aria-describedby="${optionItem.name}" placeholder="${optionItem.name}">
     </div>
     `;
   }else if(optionItem.fieldType === 'select'){ 
-    return `
+    fieldContent = `
     <div class="form-group">
         <label for="${optionItem.id}">${optionItem.name}</label>
         <select class="form-control" id="${optionItem.id}">
@@ -88,21 +129,27 @@ function createField(optionItem){
         </select>
     </div>
     `;
-  }else if(optionItem.fieldType === 'checkbox'){
-    return `
+  }else if(optionItem.fieldType === 'check'){
+    fieldContent = `
     <div class="form-check">
         <input class="form-check-input" type="checkbox" id="${optionItem.id}">
         <label class="form-check-label" for="${optionItem.id}">${optionItem.name}</label>
     </div>
     `;
   }else if(optionItem.fieldType === 'amount'){
-    return `
+    fieldContent = `
     <div class="form-group">
         <label for="${optionItem.id}">${optionItem.name}</label>
         <input type="number" class="form-control" id="${optionItem.id}" aria-describedby="${optionItem.name}" placeholder="${optionItem.name}">
     </div>
     `;
+
   }
+
+  fieldset.innerHTML += fieldContent;
+  console.log(fieldContent);
+  return fieldContent;
+
 
 }
 
@@ -161,8 +208,6 @@ function showModalToAditionals(id,name, description,image, price,myCategory, cal
 
     var priceMiles = formatNumberToMil(price);
 
-    var elements = createElements(myCategory);    
-
     //create dynamic form for the body of the modal with the data of myCategory divide by menuOptions and their optionItems
     
     modalWrap.innerHTML = `
@@ -184,15 +229,15 @@ function showModalToAditionals(id,name, description,image, price,myCategory, cal
                         <div class="row  mt-2">
                           <div class="col-md-4" ><img src="${image}" class="img-responsive" alt=""/></div>
                           <div class="col-md-8 ml-auto">
-                            <form id="form-modal">
-                              ${elements}
+                            <form id="form-modal-id">
+                             
                             </form>
                           </div>
                           
                         </div>
                         <div class="row">
-                          <div class="col-md-3 ml-auto">.col-md-3 .ml-auto</div>
-                          <div class="col-md-2 ml-auto">.col-md-2 .ml-auto</div>
+                          <div class="col-md-3 ml-auto"></div>
+                          <div class="col-md-2 ml-auto"></div>
                         </div>
                         
                        
@@ -209,28 +254,6 @@ function showModalToAditionals(id,name, description,image, price,myCategory, cal
         </div>
     `;
 
-
-/*    modalWrap.innerHTML = 
-    `<div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary modal-success-btn">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div>
-    `;*/
-    //get the modal by class
-    
     modalWrap.querySelector('.modal-success-btn').addEventListener('click', function(){
         
         addAditionalToCart(id,name, description,image, price,myCategory);
@@ -241,6 +264,7 @@ function showModalToAditionals(id,name, description,image, price,myCategory, cal
     document.body.append(modalWrap);
     $('.modal').modal('show');
 
+    createElements(myCategory); 
 
 }
 
@@ -283,7 +307,6 @@ function addAditionalToCart (id,name, description,image, price,categoryId){
             cart.totalPrice += Number(element.totalPrice);            
         }); 
         localStorage.setItem('cart', JSON.stringify(cart));
-
     }
     
     showToastAdded();
@@ -330,7 +353,6 @@ function updateCart(){
            
             //display trashbin inline
             trashbinIcon.style.display = 'inline'
-
         }
     }else{
          //delete all classes from the element
@@ -382,7 +404,6 @@ function showAditionalOrder(){
             
           }
       });
-
 }
 
 function deleteAllCart(){

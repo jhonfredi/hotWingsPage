@@ -841,25 +841,10 @@ ul.social li{
 ul.social li a span:hover{
 	opacity:0.5;
 }		
-li.facebook a span {
-	height: 25px;
-	width: 25px;
-	display: block;
-	background: url(../images/img-sprite.png)no-repeat -256px -276px;
-}
 
-li.whatsapp a span {
-	height: 25px;
-	width: 25px;
-	display: block;
-	background: url(../images/wpp.png)no-repeat;
-}
-li.instagram a span {
-	height: 25px;
-	width: 25px;
-	display: block;
-	background: url(../images/img-sprite.png)no-repeat -346px -276px;
-}	
+
+
+
 .dropdown dd, .dropdown dt, .dropdown ul { margin:0px; padding:0px; }
 .dropdown dd { position:relative; }
 .dropdown a, .dropdown a:visited { color:#fff; text-decoration:none; outline:none;}
@@ -1299,7 +1284,7 @@ i.icon-twitter{
 .btn1-twitter:hover i{
 	background: url(../images/img-sprite.png)no-repeat -260px -341px;
 }
-i.icon-facebook{
+/*i.icon-facebook{
 	height: 20px;
 	width: 20px;
 	background: url(../images/img-sprite.png)no-repeat -292px -317px;
@@ -1312,7 +1297,7 @@ i.icon-facebook{
 .btn1-facebook:hover {
 	color: #FFF;
 	background-color:#435F9F;
-}
+}*/
 i.icon-google{
 	height: 20px;
 	width: 20px;

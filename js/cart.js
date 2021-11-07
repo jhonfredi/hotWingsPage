@@ -1,13 +1,15 @@
 //create this file like a module and export it
 var currentSubtotal=0;
+var globalCategory = null;
+var currentAdictionals = [
+
+];
 
 $(document).ready(function(){        
     updateCart();
   })
 
-  //search component by id "total_items_cart"
-
-  var globalCategory = null;
+  //search component by id "total_items_cart" 
 
 async function addToCart(id,name, description,image, price,categoryId) {
        
@@ -65,9 +67,48 @@ function onCompleteGetItemsMenuByMenuOptionId(querySnapshot, menuOption,index, c
     category.menuOptions[index].optionItems.push(optionItem);
     globalCategory.menuOptions[index].optionItems.push(optionItem);    
     
-    createField(optionItem,menuOption);
-    
+    createField(optionItem,menuOption);    
   });
+}
+
+function saveProductOnLocalStorage (id,name, description,image, price,categoryId){
+
+
+  const newCombo = {
+      id: id,
+      name: name,
+      image: image,
+      price: price,
+      cont:1,
+      totalPrice:price,
+      currentAdictionals:JSON.stringify(currentAdictionals)
+  };
+  
+  var cart = JSON.parse(localStorage.getItem('cart'));
+  if(cart == null) {
+
+      let cart = {
+          items: [],
+          totalPrice:0
+      };        
+      //add property total price to cart
+      cart.totalPrice = newCombo.price;   
+
+      cart.items.push(newCombo);
+      localStorage.setItem('cart', JSON.stringify(cart));
+  }else{      
+      cart.items.push(newCombo);                  
+
+      //calculate the total sum the totalPrice of each item
+      cart.totalPrice = 0;
+      cart.items.forEach(element => {        
+          cart.totalPrice += Number(element.totalPrice);            
+      }); 
+      localStorage.setItem('cart', JSON.stringify(cart));
+  }
+  
+  showToastAdded();
+  updateCart();
 }
 
 function createField(optionItem,menuOption){ 
@@ -75,6 +116,7 @@ function createField(optionItem,menuOption){
   //var optionItem = menuOption.optionItems[optionItemIndex];
 
   var form=$("#form-modal-id");  
+  var menuId = menuOption.id;
   //search the section to the current menuOption
   var fieldset = document.getElementById("cart_fi_"+menuOption.id);
   if(fieldset == null){
@@ -100,50 +142,62 @@ function createField(optionItem,menuOption){
     
   }
   var fieldContent = "";
-  
-  if(optionItem.fieldType === 'text'){
-    fieldContent = `
-    <div class="form-group">
-        <label for="${optionItem.id}">${optionItem.name}</label>
-        <input type="text" class="form-control" id="${optionItem.id}" aria-describedby="${optionItem.name}" placeholder="${optionItem.name}">
-    </div>
-    <hr/>
-    `;
-  }else if(optionItem.fieldType === 'select'){ 
-    fieldContent = `
-    <div class="form-group">
-        <label for="${optionItem.id}">${optionItem.name}</label>
-        <select class="form-control" id="${optionItem.id}">
-        <option>${optionItem.name}</option>
-        </select>
-    </div>
-    <hr/>
-    `;
-  }else if(optionItem.fieldType === 'check'){    
+
+  if(optionItem.fieldType === 'check'){    
     fieldContent = `
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="check_${optionItem.id}" >
+        <input class="form-check-input" type="checkbox" id="check_${optionItem.id}" data-option-item-id="${optionItem.id}" 
+        data-option-item-name="${optionItem.name}" data-option-item-price="${optionItem.price}" data-option-item-order="${optionItem.order}" >
         <label class="form-check-label" for="check_${optionItem.id}">${optionItem.name}</label>
     </div>    
     <hr/>
     `;
     fieldset.innerHTML += fieldContent;
-    //add event to fieldset to check if the checkbox is checked
-    fieldset.addEventListener("change", function(event){     
+    
+    if(fieldset.getAttribute("data-event-change") == null){
+      fieldset.setAttribute("data-event-change","true");  
 
-      var totalChecked = 0;
-      var checkboxes = fieldset.getElementsByTagName("input");
-      for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].type == 'checkbox' && checkboxes[i].checked) {
-          totalChecked++;
-        }
-      }
-      if(totalChecked > menuOption.maxLimit){
-        $("#"+optionItem.id).prop('checked', false);        
+      fieldset.addEventListener("change", function(event){     
+
         var element = event.target;
-        element.checked = false;
-      }
-    });
+
+        var totalChecked = 0;
+        var checkboxes = fieldset.getElementsByTagName("input");
+        for (var i = 0; i < checkboxes.length; i++) {
+          if (checkboxes[i].type == 'checkbox' && checkboxes[i].checked) {            
+            totalChecked++;                    
+          }
+        }
+        if(totalChecked > menuOption.maxLimit){
+          $("#"+optionItem.id).prop('checked', false);        
+          var element = event.target;
+          element.checked = false;
+        }else{
+          var checksByMenuId = [];
+          if(currentAdictionals[menuId]!=null){
+            checksByMenuId = currentAdictionals[menuId];
+          }  
+         //get data-option-item-id from element
+          var optionItemId = element.getAttribute("data-option-item-id");
+          var optionItemName = element.getAttribute("data-option-item-name");
+          var optionItemPrice = element.getAttribute("data-option-item-price");
+
+          var currentCheckOption = {
+            id: optionItemId,
+            name: optionItemName,
+            price: optionItemPrice            
+          };
+
+          if(element.checked){            
+            checksByMenuId[optionItemId]=currentCheckOption;            
+          }         
+          else{
+            delete checksByMenuId[optionItemId];                       
+          }
+          currentAdictionals[menuId]=checksByMenuId;                  
+        }
+      });
+  }
 
   }else if(optionItem.fieldType === 'amount'){
 
@@ -157,10 +211,10 @@ function createField(optionItem,menuOption){
               <div class="col-6">
                 <label for="${optionItem.id}">${aditional.name} + $${formatNumberToMil(aditional.price)}</label>               
               </div>
-              <div class="col-6">                
-              <i class="material-icons btn border" id="i_remove_${aditional.id} parent="${aditional.id}"  hidden>remove</i>               
+              <div class="col-6" data-menu-max-limit="${menuOption.maxLimit}" data-aditional-name="${aditional.name}" aditional-price="${aditional.price}" parent-field-id="${"cart_fi_"+menuOption.id}">                
+              <i class="material-icons btn border opacity-25" id="i_remove_${aditional.id}" parent-aditional-id="${aditional.id}" >remove</i>               
                   <span id="amount_${aditional.id}" class="ml-2 mr-2" parent="${aditional.id}" >0</span>
-                  <i class="material-icons btn border" id="i_add_${aditional.id}" parent="${aditional.id}">add</i>                                              
+              <i class="material-icons btn border" id="i_add_${aditional.id}" parent-aditional-id="${aditional.id}">add</i>                                              
               </div>  
               </div>
        </div>
@@ -169,75 +223,128 @@ function createField(optionItem,menuOption){
        
        fieldset.innerHTML += fieldContent;  
 
-       //add event onClick to the fieldset
-        fieldset.addEventListener("click", function(event){
+      //get the element with  id="i_remove_${aditional.id}"
+
+       //add event onClick to the fieldset just if the fieldset does not have the event       
+        if(fieldset.getAttribute("data-event-click") == null){
+          fieldset.setAttribute("data-event-click","true");          
+
+          fieldset.addEventListener("click", function(event){            
+            var element = event.target;
+            //The id of the aditional
+            var id = element.getAttribute("parent-aditional-id");
+            var parenNode = element.parentNode;
+            
+            //get menuOption from parentNode
+            var menuOptionMaxLimit = parenNode.getAttribute("data-menu-max-limit");
+            var aditionalPrice = parenNode.getAttribute("aditional-price");
+            var currentSubtotalElement = document.getElementById("sp_current_subtotal_id");
+            var optionItemName = parenNode.getAttribute("data-aditional-name");
+
+            //get the text on the current subtotal and convert to number
+            var localSubtotal = currentSubtotalElement.innerHTML; 
+            localSubtotal = localSubtotal.replace("$","");
+            localSubtotal = localSubtotal.replace(",","");
+            localSubtotal = localSubtotal.replace(".","");
+            localSubtotal = parseFloat(localSubtotal);
+            if(element.id.startsWith("i_add_")){    
+            
+                var removeElement = $("#i_remove_"+id);
+                
+                removeElement.removeClass("opacity-25");
+                
+                var totalAmounts =0;
+                var amounts = fieldset.getElementsByTagName("span"); 
+                
+                for (var i = 0; i < amounts.length; i++) {                
+                  if (amounts[i].id.startsWith("amount_")) {
+                    totalAmounts = Number(totalAmounts) + Number(amounts[i].textContent);
+                  }
+                }
+
+                var addElement = $("#i_add_"+id);
+                if(totalAmounts < menuOptionMaxLimit){                                
+
+                  //show the id="i_add_${aditional.id}"
+                  addElement.removeClass("opacity-25");
+                              
+                  var amount = $("#amount_"+id).text();
+                  amount++;          
+                                    
+                  localSubtotal +=  parseFloat(aditionalPrice);                  
+                  //update span with id sp_current_subtotal_id
+                  $("#sp_current_subtotal_id").text(formatNumberToMil(localSubtotal));
+                  $("#amount_"+id).text(amount);
+
+                  //Saving on currentAdictionals
+                  var amountByMenuId = [];
+                  if(currentAdictionals[menuId]!=null){
+                    amountByMenuId = currentAdictionals[menuId];
+                  }                    
+                  var currentCheckOption = {
+                    id: id,
+                    name: optionItemName,
+                    price: aditionalPrice,           
+                    amount: amount
+                  };
+                  amountByMenuId[currentCheckOption.id]=currentCheckOption;                                                                          
+                  currentAdictionals[menuId]=amountByMenuId;                   
+                }
+
+                if(totalAmounts >= menuOptionMaxLimit-1){
+                  //add class to addElement
+                  addElement.addClass("opacity-25");
+                  removeElement.removeClass("opacity-25");
+                }
+
+              }else if(element.id.startsWith("i_remove_")){                     
           
-          var element = event.target;
-          //get parent attribute from the element
-          var id = element.getAttribute("parent");               
-          //remove hiiden from $("#i_remove_"+aditional.id)
-          $("#i_remove_"+id).removeAttr("hidden");
-                        
-          var totalAmounts =0;
-          var amounts = element.getElementsByTagName("span");          
-          for (var i = 0; i < amounts.length; i++) {
-            //validate if the amounts[i] is a span and the id start with amount_
-            if (amounts[i].id.startsWith("amount_")) {
-              totalAmounts = Number(totalAmounts) + Number(amounts[i].textContent);
-            }
-          }
+                var addElement = $("#i_add_"+id);
+                var removeElement = $("#i_remove_"+id);
 
-          if(totalAmounts < menuOption.maxLimit){                                
+                  var totalAmounts =0;
+                  var amountsR = parenNode.getElementsByTagName("span");          
+                  for (var i = 0; i < amountsR.length; i++) {
+                    //validate if the amounts[i] is a span and the id start with amount_
+                    if (amountsR[i].id.startsWith("amount_")) {
+                      totalAmounts = Number(totalAmounts) + Number(amountsR[i].textContent);
+                    }
+                  }                 
 
-            //show the id="i_add_${aditional.id}"
-            $("#i_add_"+id).show();            
-            var amount = $("#amount_"+id).text();
-            amount++;          
-            //sum two numbers
-            currentSubtotal = parseFloat(currentSubtotal) + parseFloat(aditional.price);
-            //update span with id sp_current_subtotal_id
-            $("#sp_current_subtotal_id").text(formatNumberToMil(currentSubtotal));
-            $("#amount_"+id).text(amount);
-          }
+                  if(totalAmounts <= menuOptionMaxLimit){            
+                    addElement.removeClass("opacity-25");
+                  }
 
-          if(totalAmounts >= menuOption.maxLimit-1){
-            $("#i_add_"+id).hide();
-            $("#i_remove_"+id).show();
-          }
+                  if(totalAmounts == 1){            
+                    removeElement.addClass("opacity-25");                   
+                  }
+                  
+                  var amount = $("#amount_"+id).text();
+                  if(amount > 0){
+                    amount--;
+                    localSubtotal -= parseFloat(aditionalPrice);                                      
+                    $("#sp_current_subtotal_id").text(formatNumberToMil(localSubtotal)); 
+                    $("#amount_"+id).text(amount);
+                  
+                    //Saving on currentAdictionals
+                    var amountByMenuId = [];
+                    if(currentAdictionals[menuId]!=null){
+                      amountByMenuId = currentAdictionals[menuId];
+                    }                    
+                    var currentCheckOption = amountByMenuId[id]
+                    //validate the amout if it is zero, delete the option
+                    if(currentCheckOption.amount == 1){
+                      delete amountByMenuId[id];
+                    }else{
+                      //decrease the amount 
+                      currentCheckOption.amount--;                                                             
+                    }
+                    currentAdictionals[menuId]=amountByMenuId;                     
+                  }
+              }
 
-        });
-      
-       
-        
-        //add on clicklistener to remove button
-        $("#i_remove_"+aditional.id).click(function(){    
-          
-          var totalAmounts =0;
-          var amounts = fieldset.getElementsByTagName("span");          
-          for (var i = 0; i < amounts.length; i++) {
-            //validate if the amounts[i] is a span and the id start with amount_
-            if (amounts[i].id.startsWith("amount_")) {
-              totalAmounts = Number(totalAmounts) + Number(amounts[i].textContent);
-            }
-          }
-
-          if(totalAmounts <= menuOption.maxLimit){            
-            $("#i_add_"+aditional.id).show();
-          }
-
-          if(totalAmounts == 1){            
-            $("#i_remove_"+aditional.id).hide();            
-          }
-
-
-          var amount = $("#amount_"+aditional.id).text();
-          if(amount > 0){
-            amount--;
-            currentSubtotal = parseFloat(currentSubtotal) - parseFloat(aditional.price);
-            $("#sp_current_subtotal_id").text(formatNumberToMil(currentSubtotal));
-            $("#amount_"+aditional.id).text(amount);
-          }
-        });  
+          });
+        }       
     });     
   }
 }
@@ -245,34 +352,30 @@ function createField(optionItem,menuOption){
 
 function createElements(category){
   
-  var elements = "";
 //create an new array from category
   var menuOptions = menuOptions = category.menuOptions
 
  menuOptions.forEach(element => {    
-
   
-  var optionItems = element.optionItems;     
-  /*
+  var optionItems = element.optionItems;      
     optionItems.sort(function(a, b){
         return a.order - b.order; 
-    });*/
+    });
     
       //loop optionItems
-      optionItems.forEach(element => {        
-        var field = createField(element);      
-        elements += field;
+      optionItems.forEach(element => {     
+
+        createField(element);      
+
       });
   });
-
-
-  return elements;
 }
 
 var modalWrap = null;
 
 function showModalToAditionals(id,name, description,image, price,myCategory, callback){  
 
+    currentAdictionals = {};
     //to avoid create multiple modal
     if(modalWrap != null){
         modalWrap.remove();
@@ -301,10 +404,17 @@ function showModalToAditionals(id,name, description,image, price,myCategory, cal
                         <div class="row">
                         </div>                     
                         <div class="row  mt-2">
-                          <div class="col-md-4" ><img src="${image}" class="img-responsive" alt=""/></div>
+                          <div class="col-md-4" ><img src="${image}" class="img-responsive" alt=""/>
+                          </div>
+                          
                           <div class="col-md-8 ml-auto">
-                            <form id="form-modal-id" class="h6">                             
+                            <form id="form-modal-id" class="h6">
+                                                        
                             </form>
+                            <div class="form-floating">
+                              <textarea class="form-control" placeholder="Añada instrucciones o comentarios" id="floatingTextarea2" style="height: 100px"></textarea>
+                              <label for="floatingTextarea2">Añada instrucciones o comentarios</label>
+                            </div>
                           </div>
                           
                         </div>
@@ -331,63 +441,27 @@ function showModalToAditionals(id,name, description,image, price,myCategory, cal
     `;
 
     modalWrap.querySelector('.modal-success-btn').addEventListener('click', function(){
-        
-        addAditionalToCart(id,name, description,image, price,myCategory);
-        //call data-bs-dismiss="modal" to close the modal
+         
+         //get the value from sp_current_subtotal_id
+          var currentSubtotal = $("#sp_current_subtotal_id").text();
+          //replace $ and , and . 
+          currentSubtotal = currentSubtotal.replace(/\$/g, '');
+          currentSubtotal = currentSubtotal.replace(/,/g, '');
+          currentSubtotal = currentSubtotal.replace(/\./g, '');
+          currentSubtotal = parseFloat(currentSubtotal);
+
+        saveProductOnLocalStorage(id,name, description,image, currentSubtotal,myCategory);                
         modalWrap.querySelector('.btn-close').click();
+      
     });
 
     document.body.append(modalWrap);
     $('.modal').modal('show');
-
     createElements(myCategory); 
 
 }
 
-function addAditionalToCart (id,name, description,image, price,categoryId){
-    const newCombo = {
-        id: id,
-        name: name,
-        image: image,
-        price: price,
-        cont:1,
-        totalPrice:price
-    };
-   
-    showAditionalOrder();
-    var cart = JSON.parse(localStorage.getItem('cart'));
-    if(cart == null) {
 
-        let cart = {
-            items: [],
-            totalPrice:0
-        };        
-        //add property total price to cart
-        cart.totalPrice = newCombo.price;   
-
-        cart.items.push(newCombo);
-        localStorage.setItem('cart', JSON.stringify(cart));
-    }else{
-        var index = cart.items.findIndex(x => x.id == id);
-        if(index == -1){
-            cart.items.push(newCombo);            
-        }else{
-            cart.items[index].cont++;
-            cart.items[index].totalPrice = cart.items[index].cont * cart.items[index].price;            
-        }
-
-        //calculate the total sum the totalPrice of each item
-        cart.totalPrice = 0;
-        cart.items.forEach(element => {
-            //cast to number
-            cart.totalPrice += Number(element.totalPrice);            
-        }); 
-        localStorage.setItem('cart', JSON.stringify(cart));
-    }
-    
-    showToastAdded();
-    updateCart();
-}
 
 function updateCart(){
     //get cart from local storage

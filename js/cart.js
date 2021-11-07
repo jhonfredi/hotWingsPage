@@ -1,9 +1,7 @@
 //create this file like a module and export it
 var currentSubtotal=0;
 var globalCategory = null;
-var currentAdictionals = [
-
-];
+var currentAdictionals = [];
 
 $(document).ready(function(){        
     updateCart();
@@ -73,7 +71,6 @@ function onCompleteGetItemsMenuByMenuOptionId(querySnapshot, menuOption,index, c
 
 function saveProductOnLocalStorage (id,name, description,image, price,categoryId){
 
-
   const newCombo = {
       id: id,
       name: name,
@@ -81,7 +78,7 @@ function saveProductOnLocalStorage (id,name, description,image, price,categoryId
       price: price,
       cont:1,
       totalPrice:price,
-      currentAdictionals:JSON.stringify(currentAdictionals)
+      currentAdictionals:currentAdictionals   
   };
   
   var cart = JSON.parse(localStorage.getItem('cart'));
@@ -172,11 +169,8 @@ function createField(optionItem,menuOption){
           $("#"+optionItem.id).prop('checked', false);        
           var element = event.target;
           element.checked = false;
-        }else{
-          var checksByMenuId = [];
-          if(currentAdictionals[menuId]!=null){
-            checksByMenuId = currentAdictionals[menuId];
-          }  
+        }else{       
+ 
          //get data-option-item-id from element
           var optionItemId = element.getAttribute("data-option-item-id");
           var optionItemName = element.getAttribute("data-option-item-name");
@@ -185,17 +179,24 @@ function createField(optionItem,menuOption){
           var currentCheckOption = {
             id: optionItemId,
             name: optionItemName,
-            price: optionItemPrice            
+            price: optionItemPrice,
+            menuId: menuId            
           };
-
-          if(element.checked){            
-            checksByMenuId[optionItemId]=currentCheckOption;            
+          
+          if(element.checked){  
+            currentAdictionals.push(currentCheckOption);                            
           }         
           else{
-            delete checksByMenuId[optionItemId];                       
-          }
-          currentAdictionals[menuId]=checksByMenuId;                  
+            var index = currentAdictionals.findIndex(function(element){
+              return element.id == optionItemId && element.menuId == menuId;
+            });     
+            
+            if(index > -1){
+              currentAdictionals.splice(index, 1);
+            }
+          }         
         }
+        
       });
   }
 
@@ -278,17 +279,26 @@ function createField(optionItem,menuOption){
 
                   //Saving on currentAdictionals
                   var amountByMenuId = [];
-                  if(currentAdictionals[menuId]!=null){
-                    amountByMenuId = currentAdictionals[menuId];
-                  }                    
-                  var currentCheckOption = {
+                  
+                   //Option item             
+                   var currentCheckOption = {
                     id: id,
                     name: optionItemName,
                     price: aditionalPrice,           
-                    amount: amount
+                    amount: amount,
+                    menuId: menuId
                   };
-                  amountByMenuId[currentCheckOption.id]=currentCheckOption;                                                                          
-                  currentAdictionals[menuId]=amountByMenuId;                   
+                  
+                  var index = currentAdictionals.findIndex(function(element){
+                    return element.id == id && element.menuId == menuId;
+                  }); 
+                  //if the aditional is not in the currentAdictionals
+                  if(index == -1){
+                    currentAdictionals.push(currentCheckOption);
+                  }
+                  else{
+                    currentAdictionals[index].amount = amount;
+                  }                
                 }
 
                 if(totalAmounts >= menuOptionMaxLimit-1){
@@ -327,19 +337,18 @@ function createField(optionItem,menuOption){
                     $("#amount_"+id).text(amount);
                   
                     //Saving on currentAdictionals
-                    var amountByMenuId = [];
-                    if(currentAdictionals[menuId]!=null){
-                      amountByMenuId = currentAdictionals[menuId];
-                    }                    
-                    var currentCheckOption = amountByMenuId[id]
-                    //validate the amout if it is zero, delete the option
-                    if(currentCheckOption.amount == 1){
-                      delete amountByMenuId[id];
-                    }else{
-                      //decrease the amount 
-                      currentCheckOption.amount--;                                                             
+                    //search  the aditional in the currentAdictionals by id and menuId
+                    var index = currentAdictionals.findIndex(function(element){
+                      return element.id == id && element.menuId == menuId;
+                    });
+                    if(index != -1){
+                      currentAdictionals[index].amount = amount;
                     }
-                    currentAdictionals[menuId]=amountByMenuId;                     
+                    //if the amount is 0 remove the aditional from the currentAdictionals
+                    if(amount == 0){
+                      currentAdictionals.splice(index,1);
+                    }
+                    //localStorage.setItem('currentAdictionals', JSON.stringify(currentAdictionals));
                   }
               }
 
@@ -347,6 +356,7 @@ function createField(optionItem,menuOption){
         }       
     });     
   }
+  
 }
 
 
@@ -375,7 +385,11 @@ var modalWrap = null;
 
 function showModalToAditionals(id,name, description,image, price,myCategory, callback){  
 
-    currentAdictionals = {};
+    currentAdictionals = []; 
+    //delete currentAdictionals from localStorage
+    localStorage.removeItem('currentAdictionals');
+
+    
     //to avoid create multiple modal
     if(modalWrap != null){
         modalWrap.remove();

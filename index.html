@@ -8,12 +8,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE HTML>
 <html>
 <head>
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
 <title>Menú</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
 <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
 <link href="css/style.css" rel='stylesheet' type='text/css' />
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <script src="js/jquery.min.js"></script>
@@ -48,6 +57,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             });
         });
      </script>
+	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 	 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 	 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>	 
 	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -59,7 +69,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 <body>
 	<div class="header">
-		<div class="container">
+		<div class="container" >
 			<div class="row">
 			  <div class="col-md-12">
 				 <div class="header-left">
@@ -79,15 +89,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	    	    </div>
 	            
 
-				<div class="header_right">
-				    <ul class="icon1 sub-icon1 profile_img">
+				<div class="header_right" data-bs-dismiss="modal">
+				    <ul class="icon1 sub-icon1 profile_img" >
 
-					 <li><a class="active-icon c1" href="#"> </a>
+					 <li><a class="active-icon c1" href="#" > </a>
 						<span class = "" id="total_items_cart"></span>
-						<ul class="sub-icon1 list" >
+						<ul class="sub-icon1 list" id="ul_cart_id">
 						  <div class="product_control_buttons">
 						  		<a href="javascript:deleteAllCart()" id="trashbin_icon_id"><img src="images/trashbin.png" alt=""/></a>
-						  		<a href="#"><img src="images/close_edit.png" alt=""/></a>
+						  		<a href="javascript:closeCart()"  data-bs-dismiss="modal"><img src="images/close_edit.png" alt=""/></a>
 						  </div>
 						   <div class="clear"></div>
 						   <div  id="cart_div_id">							
@@ -95,17 +105,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						  
 						  <div class="login_buttons">
 							 <div class="check_button"><a href="checkout.html" id="go_to_pay_id">Ir a Pagar </a></div>
-							 <div class="login_button"><a href="login.html">Ingreso</a></div>
+							
 							 <div class="clear"></div>
 						  </div>
 						  <div class="clear"></div>
-						</ul>
-						
+						</ul>					
 						
 					 </li>
-
+					 <li>
+						<div class="login_button"><a href="login.html">Ingreso</a></div>	 
+					 </li>
+					 
 				   </ul>
+				   
 		        <div class="clear"></div>
+				
 	       </div>
 	      </div>
 		 </div>
@@ -116,14 +130,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		<div class="container" id="combox-container">
 			
 	   </div>
+	   <div>
+		
 	  </div>
-	  <div class="footer">
+	    <div class="footer">
+		  
 			<div class="container">
 				<div class="row">
 					<div class="col-md-3">
 						<ul class="footer_box">
-							<h4>Síguenos</h4>
-						
+							<h4>Síguenos</h4>						
 							<ul class="social">	
 							  <li class="facebook"><a href="https://www.facebook.com/Hot-Wings-CTG-102904348862417"><i class="white fab fa-facebook-square"></i></a></li>							  
 							  <li class="instagram"><a href="https://www.instagram.com/hotwingsctg"></a></li>	

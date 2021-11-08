@@ -38,8 +38,34 @@ body {
 	font-size: 1rem;
   }
   
- 
+  i.white{
+	color: white;
+	transition: .2s;
+	display: inline-block;
+	padding: 0 10px;
+	background: #333;
+	line-height: 35px;
+	font-size: 18px;
+	box-shadow: 0 3px 5px 0px rgba(0, 0, 0, .2);
+	
+
+}
+
+i.white:hover{
+	transform: translateY(-3px) scale(1.05);
+	color: rgba(0, 0, 0, 0.9);
+
+}
+
   
+.footer{
+	background:rgb(182, 7, 7);
+	padding:1%;
+	text-align: center;
+}
+span.shadown{
+
+}
 /* end my owns*/
 
 .clear{clear: both;}
@@ -817,13 +843,11 @@ p.m_5{
 	font-size:0.85em;
 }
 /*--footer--*/
-.footer{
-	background:rgb(182, 7, 7);
-	padding:1%;
-}		
+		
 ul.footer_box{
 	list-style:none;
 	padding:0;
+	
 }	
 ul.footer_box h4{
 	color:#fff;
@@ -846,6 +870,7 @@ ul.social{
 	list-style:none;
 	padding:0;
 	margin-top: 2%;
+	
 }	
 ul.social li:first-child, ol li:first-child {
 	margin-top: 0px;
@@ -855,9 +880,8 @@ ul.social li{
 	display:inline-block;
 	margin-right:8px;
 }	
-ul.social li a span:hover{
-	opacity:0.5;
-}		
+		
+
 
 
 
@@ -1286,62 +1310,6 @@ p.m_8{
 	background: #FFF;
 	padding: 5px 10px;
 	font-size: 0.85em;
-}
-.btn1-twitter:hover {
-	color: #FFF;
-	background-color: #00AAF0;
-}
-i.icon-twitter{
-	height: 20px;
-	width: 20px;
-	background: url(../images/img-sprite.png)no-repeat -260px -318px;
-	float: left;
-	margin-right: 2px;
-}
-.btn1-twitter:hover i{
-	background: url(../images/img-sprite.png)no-repeat -260px -341px;
-}
-/*i.icon-facebook{
-	height: 20px;
-	width: 20px;
-	background: url(../images/img-sprite.png)no-repeat -292px -317px;
-	float: left;
-	margin-right: 2px;
-}
-.btn1-facebook:hover i{
-	background: url(../images/img-sprite.png)no-repeat -292px -341px;
-}
-.btn1-facebook:hover {
-	color: #FFF;
-	background-color:#435F9F;
-}*/
-i.icon-google{
-	height: 20px;
-	width: 20px;
-	background: url(../images/img-sprite.png)no-repeat -321px -317px;
-	float: left;
-	margin-right: 2px;
-}
-.btn1-google:hover i{
-	background: url(../images/img-sprite.png)no-repeat -321px -341px;
-}
-.btn1-google:hover {
-	color: #FFF;
-	background-color:#E04B34;
-}
-i.icon-pinterest{
-	height: 20px;
-	width: 20px;
-	background: url(../images/img-sprite.png)no-repeat -353px -318px;
-	float: left;
-	margin-right: 2px;
-}
-.btn1-pinterest:hover i{
-	background: url(../images/img-sprite.png)no-repeat -353px -342px;
-}
-.btn1-pinterest:hover {
-	color: #FFF;
-	background-color:#CE1F21;
 }
 .social_buttons h4{
 	color: #08080B;
@@ -2004,9 +1972,11 @@ h4.m_11 {
 	 width:50px !important;
 	 height:50px !important;
   }
-  .register-top-grid(
-  	margin-bottom:20px;
-  )
+  .register-top-grid{
+	margin-bottom:20px;
+  }
+  	
+  
   .nav {
 	top: 66px;
 	right: 8px;

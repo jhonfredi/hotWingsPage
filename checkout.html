@@ -6,39 +6,48 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 <!DOCTYPE HTML>
 <html>
+
 <head>
-<title>Free Snow Bootstrap Website Template | Checkout :: w3layouts</title>
-<link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
-<link href="css/style.css" rel='stylesheet' type='text/css' />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<script src="js/jquery.min.js"></script>
-<script src="js/cart.js"></script>
-<script src="js/payment.js"></script>
-<script type="text/javascript">
+    <title>Free Snow Bootstrap Website Template | Checkout :: w3layouts</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="css/style.css" rel='stylesheet' type='text/css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <script type="application/x-javascript">
+        addEventListener("load", function() {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/payment.js"></script>
+    <script type="text/javascript">
         $(document).ready(function() {
             $(".dropdown img.flag").addClass("flagvisibility");
 
             $(".dropdown dt a").click(function() {
                 $(".dropdown dd ul").toggle();
             });
-                        
+
             $(".dropdown dd ul li a").click(function() {
                 var text = $(this).html();
                 $(".dropdown dt a span").html(text);
                 $(".dropdown dd ul").hide();
                 $("#result").html("Selected value is: " + getSelectedValue("sample"));
             });
-                        
+
             function getSelectedValue(id) {
                 return $("#" + id).find("dt a span.value").html();
             }
 
             $(document).bind('click', function(e) {
                 var $clicked = $(e.target);
-                if (! $clicked.parents().hasClass("dropdown"))
+                if (!$clicked.parents().hasClass("dropdown"))
                     $(".dropdown dd ul").hide();
             });
 
@@ -47,97 +56,159 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 $(".dropdown img.flag").toggleClass("flagvisibility");
             });
         });
-     </script>
- </head>
+    </script>
+</head>
+
 <body>
-	<div class="header">
-		<div class="container">
-			<div class="row">
-			  <div class="col-md-12">
-				 <div class="header-left">
-					 <div class="logo">
-						<a href="index.html"><img src="images/logo.png" alt=""/></a>
-					 </div>
-					 <div class="menu">
-						  <a class="toggleMenu" href="#"><img src="images/nav.png" alt="" /></a>
-						    <ul class="nav" id="nav">
-						    	<li ><a href="index.html">Menú</a></li>						    							    						    	
-								<li><a href="contact.html">Contactanos</a></li>								
-								<div class="clear"></div>
-							</ul>
-							<script type="text/javascript" src="js/responsive-nav.js"></script>
-				    </div>							
-	    		    <div class="clear"></div>
-	    	    </div>
-	            <div class="header_right">
-	    		 
-				
-				    <ul class="icon1 sub-icon1 profile_img">
-					 <li><a class="active-icon c1" href="#"> </a>
-						<ul class="sub-icon1 list">
-						  <div class="product_control_buttons">
-						  	<a href="#"><img src="images/edit.png" alt=""/></a>
-						  		<a href="#"><img src="images/close_edit.png" alt=""/></a>
-						  </div>
-						 <!--the same logic as index.html!-->
-
-						  <div class="login_buttons">
-							 <div class="check_button"><a href="checkout.html">Check out</a></div>
-							 <div class="login_button"><a href="login.html">Login</a></div>
-							 <div class="clear"></div>
-						  </div>
-						  <div class="clear"></div>
-						</ul>
-					 </li>
-				   </ul>
-		        <div class="clear"></div>
-	       </div>
-	      </div>
-		 </div>
-	    </div>
-	  </div>
-
-     <div class="main">
-      <div class="shop_top">
-		<div class="container">
-			<h4 class="title">Tu pedido</h4>
-			
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="header-left">
+                        <div class="logo">
+                            <a href="index.html"><img src="images/logo.png" alt="" /></a>
+                        </div>
+                        <div class="menu">
+                            <a class="toggleMenu" href="#"><img src="images/nav.png" alt="" /></a>
+                            <ul class="nav" id="nav">
+                                <li><a href="index.html">Menú</a></li>
+                                <li><a href="contact.html">Contactanos</a></li>
+                                <div class="clear"></div>
+                            </ul>
+                            <script type="text/javascript" src="js/responsive-nav.js"></script>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="header_right">
 
 
-			<div class="card border-primary mb-3" style="max-width: 18rem;">
-				<div class="card-header">Header</div>
-				<div class="card-body text-primary">
-				  <h5 class="card-title">Primary card title</h5>
-				  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-				</div>
-			  </div>
+                        <ul class="icon1 sub-icon1 profile_img">
+                            <li>
+                                <a class="active-icon c1" href="#"> </a>
+                                <ul class="sub-icon1 list">
+                                    <div class="product_control_buttons">
+                                        <a href="#"><img src="images/edit.png" alt="" /></a>
+                                        <a href="#"><img src="images/close_edit.png" alt="" /></a>
+                                    </div>
+                                    <!--the same logic as index.html!-->
+
+                                    <div class="login_buttons">
+                                        <div class="check_button"><a href="checkout.html">Check out</a></div>
+                                        <div class="login_button"><a href="login.html">Login</a></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="clear"></div>
+                                </ul>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="shop_top">
+            <div class="container">
+                <h4 class="title">Tu pedido</h4>
+                <div class="container-fluid">
+                    <div class="row  mt-2">
+                        <div class="col-md-8">
+                            <!-- create field to enter address !-->
+                            <div class="form-group">
+                                <label for="address">Dirección</label>
+                                <input type="text" class="form-control" id="address" placeholder="Dirección">
+                                <br/>
+                            </div>
+                            <!-- create card with cart resumen-->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Resumen de tu pedido</h4>
+                                </div>
+                                <div class="card-body">
+                                    <!--create div to show the list of products -->
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped" id="cart_list_id">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Producto</th>
+                                                            <th>Opciones</th>
+                                                            <th>Precio</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="table_cart_body">
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p>Subtotal</p>
+                                            <p>Envio</p>
+                                            <p>Total</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p id="check_subtotal"></p>
+                                            <p id="check_shipment"></p>
+                                            <p id="check_total"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
+                        </div>
+                        <div class="col-md-4 ml-auto">
+                            <form id="form-modal-id" class="h6">
 
-			<p class="cart"><br>Click<a href="index.html"> acá</a> para volver al menú</p>
+                            </form>
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Añada instrucciones o comentarios" id="floatingTextarea2" style="height: 100px"></textarea>
+                                <label for="floatingTextarea2">Añada instrucciones o comentarios</label>
+                            </div>
+                        </div>
 
-			<a href="https://wa.me/573208649988?text=I%20am%20interested%20in%20your%20car%20for%20sale" target="_blank" id="send_order_whatsapp_id">Enviar pedido a whatsap</a>
-	     </div>
-	   </div>
-	  </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 ml-auto"></div>
+                        <div class="col-md-2 ml-auto"></div>
+                    </div>
+                </div>
 
-	  <div class="footer">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-3">
-					<ul class="footer_box">
-						<h4>Síguenos</h4>
-					
-						<ul class="social">	
-						  <li class="facebook"><a href="https://www.facebook.com/Hot-Wings-CTG-102904348862417"><span> </span></a></li>							  
-						  <li class="instagram"><a href="https://www.instagram.com/hotwingsctg"><span> </span></a></li>	
-						  <li class="whatsapp"><a href="https://wa.me/message/XPI5CC3DXRLZL1"><span> </span></a></li>	
-						</ul>
-						   
-					</ul>
-				</div>
-			</div>		
-		</div>
-	</div>
-</body>	
+
+                <p class="cart"><br>Click<a href="index.html"> acá</a> para volver al menú</p>
+
+                <a href="https://wa.me/573208649988?text=I%20am%20interested%20in%20your%20car%20for%20sale" target="_blank" id="send_order_whatsapp_id">Enviar pedido a whatsap</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="footer_box">
+                        <h4>Síguenos</h4>
+
+                        <ul class="social">
+                            <li class="facebook"><a href="https://www.facebook.com/Hot-Wings-CTG-102904348862417"><span>
+									</span></a></li>
+                            <li class="instagram"><a href="https://www.instagram.com/hotwingsctg"><span> </span></a>
+                            </li>
+                            <li class="whatsapp"><a href="https://wa.me/message/XPI5CC3DXRLZL1"><span> </span></a></li>
+                        </ul>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
 </html>

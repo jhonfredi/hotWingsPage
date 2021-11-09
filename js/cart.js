@@ -14,13 +14,15 @@ async function addToCart(id,name, description,image, price,categoryId) {
   currentSubtotal=price;
     //const myCategory=await getItemBycategoryId(categoryId);
     globalCategory = null;
-  await getCategorieById(categoryId,(snapshot) => {      
+  await getCategorieById(categoryId,(snapshot) => {   
+
       const data = snapshot.data();
       var myCategory = {
         id: snapshot.id,
         name: data.name,
         order: data.order,
         status: data.status,
+        amount: 1,
         menuOptions:[]
       };   
     globalCategory = myCategory;
@@ -408,8 +410,7 @@ function showModalToAditionals(id,name, description,image, price,myCategory, cal
                     <div class="modal-header bg-light">
                     <div>
                         <h5 class="modal-title fw-bold">${name} - $${priceMiles}</h5>                        
-                    </div>
-                        
+                    </div>                        
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">                        

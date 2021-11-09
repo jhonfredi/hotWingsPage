@@ -1,4 +1,9 @@
 /*change font*/
+.icon1 ul li {
+	/*--float: none;--*/
+	display: inline-block !important;
+	border: 0;
+}
 body {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 14px;
@@ -63,9 +68,7 @@ i.white:hover{
 	padding:1%;
 	text-align: center;
 }
-span.shadown{
 
-}
 /* end my owns*/
 
 .clear{clear: both;}
@@ -354,7 +357,7 @@ ul.icon1 {
 }
 .icon1 ul li {
 	/*--float: none;--*/
-	display: block;
+	display: inline-block;
 	border: 0;
 }
 .icon1 ul li:first-child{
@@ -378,7 +381,7 @@ ul.icon1 {
 	text-transform: none;
 }
 .active-icon{
-	display: block;
+	display: inline-block;
 }
 .icon1 ul li:first-child > a:after {
 	content: '';

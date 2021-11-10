@@ -21,8 +21,11 @@ function loadCurrentCart() {
     var checkShipment = $("#check_shipment");
     var checkTotal = $("#check_total");
     checkSubtotal.html(`$${formatNumberToMil(cart.totalPrice)}`);
-    checkShipment.html(`$10.000 podría variar según dirección`);
-    checkTotal.html(`$${formatNumberToMil(cart.totalPrice + 10000)}`);
+    checkShipment.html(`~$10.000 podría variar según dirección`);
+    checkTotal.html(`~$${formatNumberToMil(cart.totalPrice + 10000)}`);
+
+    //create var stringto store all the items with the currentAdictionals
+    var cartToWhatsapp = "";
 
     var items = cart.items;
     //loop over currentAdictionals and append to cartList
@@ -38,6 +41,7 @@ function loadCurrentCart() {
         //loop over adictionals
         //validate if adictionals is not null and is define
         var adi = "";
+        var adiToWhatsapp = "";
 
         if (adictionals) {
             //sort adictionals by menuId
@@ -48,19 +52,24 @@ function loadCurrentCart() {
             for (var j = 0; j < adictionals.length; j++) {
                 var adiItem = adictionals[j];
                 adi += adiItem.name + "";
+                adiToWhatsapp += adiItem.name + "";
                 //validate  adiItem.price is undefined
 
                 if (adiItem.amount && adiItem.amount != "" && adiItem.amount != "undefined") {
-                    adi += ", " + adiItem.amount + "x";
+                    adi += " " + adiItem.amount + "x";
+                    adiToWhatsapp += " x" + adiItem.amount;
                 }
                 if (adiItem.price && adiItem.price != "" && adiItem.price != "undefined") {
                     adi += " $" + formatNumberToMil(adiItem.price);
                 }
 
                 adi += ", </br>";
+                adiToWhatsapp += ", ";
             }
-            //remove last comma
-            adi = adi.substring(0, adi.length - 1);
+            //remove last , </br>
+            adi = adi.substring(0, adi.length - 7);
+            adiToWhatsapp = adiToWhatsapp.substring(0, adiToWhatsapp.length - 2);
+
         }
 
         var row = $("<tr></tr>");
@@ -78,15 +87,25 @@ function loadCurrentCart() {
         row.append(`<td>${image}</td>`);
         row.append(`<td>${adi}</td>`);
         row.append(`<td>$${formatNumberToMil(price)}</td>`);
-        row.append(`<td><i class = "material-icons btn border" id = "remove_item_${id}" index = "${i}"> delete </i> </td>`);
+        //row.append(`<td><i class = "material-icons btn border" id = "remove_item_${id}" index = "${i}"> delete </i> </td>`);
         tableBody.append(row);
 
-        //add event to delete button
-        $("#remove_item_" + id).click(function() {
-            removeItem(this);
-            console.log("removing " + id);
-        });
+        //add the currentAdictional to the cartItems
+        cartToWhatsapp += `${name}: ${adiToWhatsapp} `;
     }
+
+    //create button to call whatsapp and send message
+    var button = $("<button></button>");
+    button.attr("id", "send_whatsapp");
+    button.attr("class", "btn btn-continue-whatsapp");
+    button.html("Ordenar via whatsapp");
+    $("#cart_resumen_price_id").append(button);
+
+    //add event to button
+    $("#send_whatsapp").click(function() {
+        sendWhatsapp(cartToWhatsapp);
+    });
+
 
     function compareAdictional(a, b) {
         if (a.menuId < b.menuId)
@@ -95,8 +114,16 @@ function loadCurrentCart() {
             return 1;
         return 0;
     }
-
 }
+
+function sendWhatsapp(cartToWhatsapp) {
+    var message = `${cartToWhatsapp}`;
+    console.log(message);
+    var url = `https://wa.me/573208649988?text=${message}`;
+    console.log(url);
+    window.open(url);
+}
+
 
 function formatNumberToMil(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");

@@ -64,7 +64,28 @@ i.white:hover {
     color: #fff;
 }
 
-span.shadown {}
+
+/*Show see password*/
+
+.toggle {
+    align-items: center;
+    display: flex;
+    border: 1px solid #cbd5e0;
+    margin: 1rem auto;
+}
+
+.toggle__input {
+    border: none;
+    flex: 1;
+    padding: 0.5rem;
+}
+
+.toggle__button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
 
 
 /* end my owns*/
@@ -239,7 +260,7 @@ body a {
 
 .header_right {
     float: right;
-    width: 6%;
+    width: 20%;
     margin-top: 16px;
 }
 
@@ -255,7 +276,8 @@ body a {
     -webkit-transition: width 0.3s;
     -moz-transition: width 0.3s;
     transition: width 0.3s;
-    -webkit-backface-visibility: hidden;
+    z-index: 0;
+    margin-left: 20px;
 }
 
 .sb-search-input {
@@ -321,8 +343,8 @@ body a {
 
 .sb-icon-search {
     color: #FFF;
-    background: #000 url('../images/img-sprite.png') no-repeat 0px 1px;
     z-index: 90;
+    padding: 10px;
 }
 
 
@@ -2146,7 +2168,7 @@ fieldset.input input[type="submit"]:hover {
         padding: 5px 10px;
     }
     .header_right {
-        width: 7%;
+        width: 10%;
     }
     .icon1 ul {
         width: 250px;

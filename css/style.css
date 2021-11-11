@@ -42,25 +42,27 @@ body {
   html {
 	font-size: 1rem;
   }
-  
-  i.white{
-	color: white;
-	transition: .2s;
-	display: inline-block;
-	padding: 0 10px;
-	background: #333;
-	line-height: 35px;
-	font-size: 18px;
-	box-shadow: 0 3px 5px 0px rgba(0, 0, 0, .2);
+  ul.social{
+	list-style:none;
+	padding:0;
+	margin-top: 2%;
 	
+}
+ul.social li{
+	display:inline-block;
+	margin-right:8px;
+}	
+.social span a i{
+	  color: white;
+	
+}
+.social span a i:hover{
+	color:#c4c4c4;
 
 }
 
-i.white:hover{
-	transform: translateY(-3px) scale(1.05);
-	color: rgba(0, 0, 0, 0.9);
-
-}
+  
+  
 
   
 .footer{
@@ -869,20 +871,8 @@ ul.footer_box li a:hover{
 	color:#fff;
 }
 
-ul.social{
-	list-style:none;
-	padding:0;
-	margin-top: 2%;
 	
-}	
-ul.social li:first-child, ol li:first-child {
-	margin-top: 0px;
-	margin-left: 0;
-}
-ul.social li{
-	display:inline-block;
-	margin-right:8px;
-}	
+
 		
 
 

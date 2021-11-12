@@ -1,6 +1,55 @@
 $(document).ready(function() {
     connectFirebase();
+    checkLogged(userLogCheckedCallBack)
 });
+
+
+function userLogCheckedCallBack(logged) {
+    console.log("userLogCheckedCallBack: " + logged);
+
+    var btnLogout = document.getElementById('btn-user-log');
+
+    if (logged) {
+
+        btnLogout.innerHTML = `<a href="#">
+            <i class="header-btn-righ fas fa-sign-out-alt"></i>            
+            </a>`;
+
+        btnLogout.onclick = function() {
+            logout();
+        }
+
+    } else {
+        btnLogout.innerHTML = `<a href="login.html">
+        <i class="header-btn-righ fas fa-sign-in-alt"></i>							                            
+        </a>`;
+
+
+
+    }
+
+}
+
+function checkLogged(userLogCheckedCallBack) {
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // User is signed in.            
+            userLogCheckedCallBack(true)
+        } else {
+            userLogCheckedCallBack(false)
+        }
+    });
+}
+
+function logout() {
+    firebase.auth().signOut().then(function() {
+        // Sign-out successful.
+        window.location.href = "index.html";
+        console.log("Signed out");
+    }).catch(function(error) {
+        // An error happened.
+    });
+}
 
 function connectFirebase() {
 

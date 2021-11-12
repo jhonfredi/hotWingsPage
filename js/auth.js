@@ -32,6 +32,7 @@ function catchFormRegister() {
 }
 
 
+
 function processForm(e) {
     if (e.preventDefault) e.preventDefault();
 
@@ -65,21 +66,31 @@ function processForm(e) {
 
     createUserWitEmailAndPassword(email, password, sucessRegisterCallback, errorRegisterCallback);
 
-
     // You must return false to prevent the default form behavior
     return false;
-
 }
 
 function sucessRegisterCallback(user) {
-    console.log("sucessRegisterCallback");
+    window.location.href = "index.html";
+    showToastSuccessMessage('success', 'Registro exitoso');
 }
 
 function errorRegisterCallback(errorCode, errorMessage) {
-    console.log("errorRegisterCallback");
-    showToastMessage('error', errorMessage);
+    console.log("erroode" + errorCode);
+    switch (errorCode) {
+        case 'auth/email-already-in-use':
+            showToastMessage('error', "El email ya se encuentra en uso");
+            break;
+        case 'auth/invalid-email':
+            showToastMessage('error', "Email incorrecto");
+            break;
+        case 'auth/weak-password':
+            showToastMessage('error', "Contraseña débil");
+            break;
+        default:
+            showToastMessage('error', errorMessage);
+    }
 }
-
 
 function showToastMessage(icon, message) {
     const Toast = Swal.mixin({

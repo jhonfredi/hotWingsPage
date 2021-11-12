@@ -189,3 +189,13 @@ function createUserWitEmailAndPassword(email, password, sucessCallback, errorCal
             errorCallback(errorCode, errorMessage);
         });
 }
+
+function loginWithEmail(email, password, sucessCallback, errorCallback) {
+    firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
+        sucessCallback();
+    }).catch(function(error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        errorCallback(errorCode, errorMessage);
+    });
+}

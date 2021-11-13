@@ -159,6 +159,14 @@ ul.social li {
 }
 
 
+/*Login buttons area*/
+
+#login-with-google {}
+
+
+/*End logins btn area*/
+
+
 /* end my owns*/
 
 .clear {
@@ -2167,6 +2175,7 @@ div.k2AccountPage input[type="text"] {
 
 .remember {
     margin-top: 6%;
+    background-color: rebeccapurple;
 }
 
 p#login-form-remember {

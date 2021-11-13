@@ -29,9 +29,69 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    catchForm();
+    const logWithGoogle = document.getElementById('log-with-google');
+    console.log(logWithGoogle);
+    if (logWithGoogle) {
+        logWithGoogle.addEventListener('click', function() {
+            console.log("click");
+            loginWithGoogle();
+        });
+        catchForm();
+    }
 
 });
+
+function loginWithGoogle() {
+    var provider = new firebase.auth.GoogleAuthProvider();
+    console.log(provider);
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        var token = result.credential.accessToken;
+        // The signed-in user info.
+        var user = result.user;
+        // ...
+        sucessRegisterCallback(user);
+    }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // The email of the user's account used.
+        var email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential;
+        // ...
+        errorRegisterCallback(errorCode, errorMessage);
+    });
+}
+
+function sucessRegisterCallback(user) {
+    window.location.href = "index.html";
+    showToastSuccessMessage('success', 'Registro exitoso');
+}
+
+function sucessLoginCallback(user) {
+    window.location.href = "index.html";
+    showToastSuccessMessage('success', 'Bienvenido');
+}
+
+
+function errorRegisterCallback(errorCode, errorMessage) {
+    console.log("erroode" + errorCode);
+    switch (errorCode) {
+        case 'auth/email-already-in-use':
+            showToastMessage('error', "El email ya se encuentra en uso");
+            break;
+        case 'auth/invalid-email':
+            showToastMessage('error', "Email incorrecto");
+            break;
+        case 'auth/weak-password':
+            showToastMessage('error', "Contraseña débil");
+            break;
+        default:
+            showToastMessage('error', errorMessage);
+    }
+}
+
 
 function checkLogged() {
     firebase.auth().onAuthStateChanged(function(user) {
@@ -125,33 +185,7 @@ function processForm(e) {
 }
 
 
-function sucessRegisterCallback(user) {
-    window.location.href = "index.html";
-    showToastSuccessMessage('success', 'Registro exitoso');
-}
 
-function sucessLoginCallback(user) {
-    window.location.href = "index.html";
-    showToastSuccessMessage('success', 'Bienvenido');
-}
-
-
-function errorRegisterCallback(errorCode, errorMessage) {
-    console.log("erroode" + errorCode);
-    switch (errorCode) {
-        case 'auth/email-already-in-use':
-            showToastMessage('error', "El email ya se encuentra en uso");
-            break;
-        case 'auth/invalid-email':
-            showToastMessage('error', "Email incorrecto");
-            break;
-        case 'auth/weak-password':
-            showToastMessage('error', "Contraseña débil");
-            break;
-        default:
-            showToastMessage('error', errorMessage);
-    }
-}
 
 
 function errorLoginCallback(errorCode, errorMessage) {

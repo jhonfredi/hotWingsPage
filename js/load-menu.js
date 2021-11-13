@@ -15,19 +15,15 @@ function userLogCheckedCallBack(logged) {
             <i class="header-btn-righ fas fa-sign-out-alt"></i>            
             </a>`;
 
+
         btnLogout.onclick = function() {
             logout();
         }
-
     } else {
         btnLogout.innerHTML = `<a href="login.html">
         <i class="header-btn-righ fas fa-sign-in-alt"></i>							                            
         </a>`;
-
-
-
     }
-
 }
 
 function checkLogged(userLogCheckedCallBack) {
@@ -55,6 +51,7 @@ function connectFirebase() {
 
     var db = firebase.firestore();
     const comboxContainer = document.getElementById('combox-container');
+    comboxContainer.innerHTML = "";
 
     //get combos collection where status == "A"
     db.collection("combos").where("status", "==", "A").onSnapshot(function(querySnapshot) {
@@ -75,8 +72,8 @@ function connectFirebase() {
             };
 
             var newItem =
-                `<div class="col-md-4 mar-top-10">
-					<a href="single.html">
+                `<div class="col-md-3 mar-top-10 shop_box">
+					<a >
 						<img src="${combo.image}" class="img-responsive" alt=""/>`;
 
             if (combo.isNew === true) {
@@ -92,9 +89,11 @@ function connectFirebase() {
             }
 
             newItem += `
-						<div class="shop_desc">
+                            <div class="shop_desc">
 							<h3><a href="#">${combo.name}</a></h3>
-							<p>${combo.description}</p>`;
+							<p>${combo.description}</p>
+                            `;
+
 
             if (combo.onSale === true) {
                 newItem +=
@@ -104,11 +103,11 @@ function connectFirebase() {
 
             newItem += `<span class="actual">${combo.price}</span><br>
 							<ul class="buttons">								
-								<li class="cart"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${combo.image}','${combo.price}','${combo.category}')">Agregar</a></li>
+								<li class="btn-primary"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${combo.image}','${combo.price}','${combo.category}')">Agregar</a></li>
 								<div class="clear"> </div>
 							</ul>
-						</div>
-					</a>
+                            </div>
+                            </a>
 				</div>`;
             comboxContainer.innerHTML += newItem;
 

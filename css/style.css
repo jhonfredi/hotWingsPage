@@ -1,9 +1,26 @@
 /*change font*/
 
+* {
+    margin: 0;
+    padding: 0;
+}
+
 .icon1 ul li {
     /*--float: none;--*/
     display: inline-block !important;
     border: 0;
+}
+
+.shop-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.shop_box {
+    box-shadow: 0 10px 10px -6px rgb(87, 19, 19);
+    margin-bottom: 3%;
 }
 
 body {

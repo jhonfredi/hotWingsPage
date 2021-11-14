@@ -11,6 +11,8 @@ $(document).ready(function() {
 
 async function addToCart(id, name, description, image, price, categoryId, option) {
 
+    console.log(image);
+
     currentSubtotal = price;
     //const myCategory=await getItemBycategoryId(categoryId);
     globalCategory = null;
@@ -26,10 +28,11 @@ async function addToCart(id, name, description, image, price, categoryId, option
             menuOptions: []
         };
         globalCategory = myCategory;
-        //at the end onFinishCallback is called
+        /*
         getMenuOptionByCategoryId(myCategory, onCompleteMenuOptionsByCategory, (category) => {
             showModalToAditionals(id, name, description, image, price, category, option);
         });
+        */
     });
 }
 

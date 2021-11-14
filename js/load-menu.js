@@ -40,7 +40,6 @@ function logout() {
     firebase.auth().signOut().then(function() {
         // Sign-out successful.
         window.location.href = "index.html";
-        console.log("Signed out");
     }).catch(function(error) {
         // An error happened.
     });
@@ -49,7 +48,7 @@ function logout() {
 function connectFirebase() {
 
     var db = firebase.firestore();
-    const comboxContainer = document.getElementById('combox-container');
+    var comboxContainer = document.getElementById('combox-container');
     comboxContainer.innerHTML = "";
 
     //get combos collection where status == "A"
@@ -93,23 +92,26 @@ function connectFirebase() {
 							<p>${combo.description}</p>
                             `;
 
-
             if (combo.onSale === true) {
                 newItem +=
                     `<span class="reducedfrom">${combo.originalPrice}</span>
 					`
             }
 
+            imgUrl = combo.image;
+
             newItem += `<span class="actual">${combo.price}</span><br>
 							<ul class="buttons">								
-								<li class="cart btn"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${combo.image}','${combo.price}','${combo.category}',0)">Agregar</a></li>
-								<li class="cart btn btn-primary-dark"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${combo.image}','${combo.price}','${combo.category}',1)">Comprar</a></li>
+								<li id="${combo.category}_${doc.id}_id}" class="cart btn"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',0)">Agregar</a></li>
+								<li class="cart btn btn-primary-dark"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',1)">Comprar</a></li>
                                 <div class="clear"> </div>
 							</ul>
                             </div>
                             </a>
 				</div>`;
             comboxContainer.innerHTML += newItem;
+
+
 
         });
     });

@@ -418,10 +418,10 @@ function showModalToAditionals(id, name, description, image, price, myCategory, 
                         <div class="row">
                         </div>                     
                         <div class="row  mt-2">
-                          <div class="col-md-4" ><img src="${image}" class="img-responsive" alt=""/>
+                          <div class="col-md-4" ><img src="${image}" class="img-fluid" alt=""/>
                           </div>
                           
-                          <div class="col-md-8 ml-auto">
+                          <div class="col-md-8 ">
                             <form id="form-modal-id" class="h6">
                                                         
                             </form>
@@ -431,11 +431,7 @@ function showModalToAditionals(id, name, description, image, price, myCategory, 
                             </div>
                           </div>
                           
-                        </div>
-                        <div class="row">
-                          <div class="col-md-3 ml-auto"></div>
-                          <div class="col-md-2 ml-auto"></div>
-                        </div>
+                        </div>                       
                       </div>
                     
 

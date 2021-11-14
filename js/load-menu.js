@@ -5,7 +5,6 @@ $(document).ready(function() {
 
 
 function userLogCheckedCallBack(logged) {
-    console.log("userLogCheckedCallBack: " + logged);
 
     var btnLogout = document.getElementById('btn-user-log');
 
@@ -74,7 +73,7 @@ function connectFirebase() {
             var newItem =
                 `<div class="col-md-3 mar-top-10 shop_box">
 					<a >
-						<img src="${combo.image}" class="img-responsive" alt=""/>`;
+						<img src="${combo.image}" class="img-fluid" alt=""/>`;
 
             if (combo.isNew === true) {
                 newItem += `<span class="new-box">

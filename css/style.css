@@ -667,17 +667,15 @@ li.list_desc h4 a:hover {
     color: red;
 }
 
-<<<<<<< HEAD
 .shop-cart {
     display: inline-block;
     vertical-align: middle;
     background-color: crimson;
-=======
+}
 .header-btn-righ {
     color: white;
     text-decoration: none;
     margin-right: 10px;
->>>>>>> dev
 }
 
 .icon1 .profile_img {

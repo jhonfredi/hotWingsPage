@@ -11,7 +11,8 @@ $(document).ready(function() {
 
 async function addToCart(id, name, description, image, price, categoryId, option) {
 
-    console.log(image);
+    image = image.replace("/hot2f", "%2F");
+    console.log(option);
 
     currentSubtotal = price;
     //const myCategory=await getItemBycategoryId(categoryId);
@@ -28,11 +29,11 @@ async function addToCart(id, name, description, image, price, categoryId, option
             menuOptions: []
         };
         globalCategory = myCategory;
-        /*
+
         getMenuOptionByCategoryId(myCategory, onCompleteMenuOptionsByCategory, (category) => {
             showModalToAditionals(id, name, description, image, price, category, option);
         });
-        */
+
     });
 }
 
@@ -75,7 +76,7 @@ function onCompleteGetItemsMenuByMenuOptionId(querySnapshot, menuOption, index, 
 }
 
 //final function
-function saveProductOnLocalStorage(id, name, description, image, price, categoryId) {
+function saveProductOnLocalStorage(id, name, description, image, price, categoryId, option) {
 
     const newCombo = {
         id: id,
@@ -112,6 +113,10 @@ function saveProductOnLocalStorage(id, name, description, image, price, category
 
     showToastAdded();
     updateCart();
+    if (option == 1) {
+        //navigate to checkout.html
+        window.location.href = "checkout.html";
+    }
 }
 
 function createField(optionItem, menuOption) {
@@ -469,7 +474,7 @@ function showModalToAditionals(id, name, description, image, price, myCategory, 
         currentSubtotal = currentSubtotal.replace(/\./g, '');
         currentSubtotal = parseFloat(currentSubtotal);
 
-        saveProductOnLocalStorage(id, name, description, image, currentSubtotal, myCategory);
+        saveProductOnLocalStorage(id, name, description, image, currentSubtotal, myCategory, option);
         modalWrap.querySelector('.btn-close').click();
 
     });

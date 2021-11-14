@@ -384,7 +384,7 @@ function createElements(category) {
 
 var modalWrap = null;
 
-function showModalToAditionals(id, name, description, image, price, myCategory, callback, option) {
+function showModalToAditionals(id, name, description, image, price, myCategory, option) {
 
     currentAdictionals = [];
     //delete currentAdictionals from localStorage
@@ -402,7 +402,7 @@ function showModalToAditionals(id, name, description, image, price, myCategory, 
 
     //create dynamic form for the body of the modal with the data of myCategory divide by menuOptions and their optionItems
 
-    modalWrap.innerHTML = `
+    var modal = `
         <div class="modal modal-wide" tabindex="-1" id="contenedor-modal">
             <div class="modal-xl modal-dialog">
                 <div class="modal-content">
@@ -441,14 +441,20 @@ function showModalToAditionals(id, name, description, image, price, myCategory, 
                           <span>Subtotal: $</span><span id="sp_current_subtotal_id">${formatNumberToMil(currentSubtotal)}</span>
                         </div>
                         <div class="col-sm-2">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                          <button type="button" class="btn btn-primary modal-success-btn">Agregar</button>
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>`;
+    if (option == 0) {
+        modal += `<button type="button" class="btn btn-primary modal-success-btn">Agregar</button>`;
+    } else if (option == 1) {
+        modal += `<button type="button" class="btn btn-primary modal-success-btn">Comprar</button>`;
+    }
+    modal += `
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     `;
+    modalWrap.innerHTML = modal;
 
     modalWrap.querySelector('.modal-success-btn').addEventListener('click', function() {
 

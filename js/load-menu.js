@@ -103,8 +103,9 @@ function connectFirebase() {
 
             newItem += `<span class="actual">${combo.price}</span><br>
 							<ul class="buttons">								
-								<li class="btn-primary"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${combo.image}','${combo.price}','${combo.category}')">Agregar</a></li>
-								<div class="clear"> </div>
+								<li class="cart btn"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${combo.image}','${combo.price}','${combo.category}',0)">Agregar</a></li>
+								<li class="cart btn btn-primary-dark"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${combo.image}','${combo.price}','${combo.category}',1)">Comprar</a></li>
+                                <div class="clear"> </div>
 							</ul>
                             </div>
                             </a>

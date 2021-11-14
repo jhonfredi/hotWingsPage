@@ -9,7 +9,7 @@ $(document).ready(function() {
 
 //search component by id "total_items_cart" 
 
-async function addToCart(id, name, description, image, price, categoryId) {
+async function addToCart(id, name, description, image, price, categoryId, option) {
 
     currentSubtotal = price;
     //const myCategory=await getItemBycategoryId(categoryId);
@@ -28,7 +28,7 @@ async function addToCart(id, name, description, image, price, categoryId) {
         globalCategory = myCategory;
         //at the end onFinishCallback is called
         getMenuOptionByCategoryId(myCategory, onCompleteMenuOptionsByCategory, (category) => {
-            showModalToAditionals(id, name, description, image, price, category);
+            showModalToAditionals(id, name, description, image, price, category, option);
         });
     });
 }
@@ -384,7 +384,7 @@ function createElements(category) {
 
 var modalWrap = null;
 
-function showModalToAditionals(id, name, description, image, price, myCategory, callback) {
+function showModalToAditionals(id, name, description, image, price, myCategory, callback, option) {
 
     currentAdictionals = [];
     //delete currentAdictionals from localStorage
@@ -441,10 +441,10 @@ function showModalToAditionals(id, name, description, image, price, myCategory, 
 
                     </div>
                     <div class="modal-footer bg-light">
-                        <div class="col-sm-4">
+                        <div class="col-sm-2">
                           <span>Subtotal: $</span><span id="sp_current_subtotal_id">${formatNumberToMil(currentSubtotal)}</span>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-2">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                           <button type="button" class="btn btn-primary modal-success-btn">Agregar</button>
                         </div>

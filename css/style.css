@@ -207,6 +207,34 @@ html {
 /*End logins btn area*/
 
 
+/*
+Buttons on cart
+*/
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: start-end;
+}
+
+
+/*
+Section for payment
+*/
+
+.form-floating {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.order-comments {
+    height: 80px;
+}
+
+
+/*End payment section*/
+
+
 /* end my owns*/
 
 .clear {
@@ -687,6 +715,7 @@ li.list_desc h4 a:hover {
     vertical-align: middle;
     background-color: crimson;
 }
+
 .header-btn-righ {
     color: white;
     text-decoration: none;
@@ -779,7 +808,6 @@ li.list_desc h4 a:hover {
     -moz-transition: all 0.3s;
     transition: all 0.3s;
     background: #000;
-    
 }
 
 .login_button a:hover {
@@ -2383,8 +2411,6 @@ fieldset.input input[type="submit"]:hover {
     .header_right {
         display: flex;
         align-items: center;
-        
-        
         width: 20%;
     }
     .icon1 ul {

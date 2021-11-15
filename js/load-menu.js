@@ -98,12 +98,12 @@ function connectFirebase() {
 					`
             }
 
-            imgUrl = combo.image;
+            var imgUrl = combo.image.replace("%2F", "/hot2f");
 
             newItem += `<span class="actual">${combo.price}</span><br>
-							<ul class="buttons">								
-								<li id="${combo.category}_${doc.id}_id}" class="cart btn"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',0)">Agregar</a></li>
-								<li class="cart btn btn-primary-dark"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',1)">Comprar</a></li>
+							<ul class="buttons col-md-12">								
+								<li id="${combo.category}_${doc.id}_id}" class="cart btn btn-primary"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',0)">Agregar</a></li>
+								<li id="${combo.category}_${doc.id}_id_buy}" class="cart btn btn-primary"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',1)">Comprar</a></li>
                                 <div class="clear"> </div>
 							</ul>
                             </div>

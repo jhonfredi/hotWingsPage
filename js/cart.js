@@ -39,7 +39,6 @@ async function addToCart(id, name, description, image, price, categoryId, option
                 btnModalOK.disabled = true;
                 //todo add a class to the button to show that it is disabled
 
-
             }
 
         });
@@ -198,8 +197,6 @@ function saveProductOnLocalStorage(id, name, description, image, price, category
         comments: adictionalsComments,
         currentAdictionals: currentAdictionals
     };
-
-    console.log(newCombo);
     var cart = JSON.parse(localStorage.getItem('cart'));
     if (cart == null) {
 

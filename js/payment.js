@@ -88,7 +88,6 @@ function loadCurrentCart() {
                         </div>
                     </div>`;
 
-
         row.append(`<td>${image}</td>`);
         row.append(`<td>${adi}</td>`);
         row.append(`<td>$${formatNumberToMil(price)}</td>`);
@@ -100,7 +99,7 @@ function loadCurrentCart() {
         if (adiToWhatsapp) {
             cartToWhatsapp += `${name}: {${adiToWhatsapp}} `;
         } else {
-            cartToWhatsapp += `${name}`;
+            cartToWhatsapp += `${name} `;
         }
     }
 
@@ -128,14 +127,47 @@ function loadCurrentCart() {
 
 
 function sendWhatsapp(cartToWhatsapp) {
-    var message = `${cartToWhatsapp}`;
-    console.log(message);
-    var url = `https://wa.me/573208649988?text=${message}`;
-    console.log(url);
-    window.open(url);
+
+    //get element with id address
+    var adressElement = $("#address");
+    var address = adressElement.val();
+    //validate if address is not null and is define
+    if (address && address != "" && address != "undefined" && address != "null" && address != " " && address.length > 5) {
+        var message = `${cartToWhatsapp} - Dirección: ${address} `;
+
+        var url = `https://wa.me/573208649988?text=${message}`;
+        window.open(url);
+
+    } else {
+        adressElement.focus();
+        showError("Debe ingresar una dirección válida");
+    }
+
 }
 
 
 function formatNumberToMil(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+function showError(message, callback) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'bottom-right',
+        iconColor: 'red',
+        customClass: {
+            popup: 'colored-toast'
+        },
+        showConfirmButton: false,
+        confirmButtonText: 'Cerrar',
+        timer: 2500,
+    });
+    Toast.fire({
+        icon: 'error',
+        title: message
+    })
+
+
+
+
 }

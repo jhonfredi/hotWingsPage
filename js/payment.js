@@ -21,7 +21,7 @@ function loadCurrentCart() {
     var checkShipment = $("#check_shipment");
     var checkTotal = $("#check_total");
     checkSubtotal.html(`$${formatNumberToMil(cart.totalPrice)}`);
-    checkShipment.html(`~$10.000 podría variar según dirección`);
+    checkShipment.html(`~$10.000 varia según dirección`);
     checkTotal.html(`~$${formatNumberToMil(cart.totalPrice + 10000)}`);
 
     //create var stringto store all the items with the currentAdictionals
@@ -38,6 +38,7 @@ function loadCurrentCart() {
         var price = item.price;
         var amount = item.cont;
         var adictionals = item.currentAdictionals;
+        var comments = item.comments;
         //loop over adictionals
         //validate if adictionals is not null and is define
         var adi = "";
@@ -62,13 +63,17 @@ function loadCurrentCart() {
                 if (adiItem.price && adiItem.price != "" && adiItem.price != "undefined") {
                     adi += " $" + formatNumberToMil(adiItem.price);
                 }
-
                 adi += ", </br>";
                 adiToWhatsapp += ", ";
             }
             //remove last , </br>
             adi = adi.substring(0, adi.length - 7);
+            adi += "</br>";
             adiToWhatsapp = adiToWhatsapp.substring(0, adiToWhatsapp.length - 2);
+            if (comments && comments != "") {
+                adi += "comentarios: " + comments;
+                adiToWhatsapp += ", comentarios: " + comments;
+            }
 
         }
 
@@ -91,7 +96,12 @@ function loadCurrentCart() {
         tableBody.append(row);
 
         //add the currentAdictional to the cartItems
-        cartToWhatsapp += `${name}: ${adiToWhatsapp} `;
+        //validate if adiToWhatsapp is not null and is define
+        if (adiToWhatsapp) {
+            cartToWhatsapp += `${name}: {${adiToWhatsapp}} `;
+        } else {
+            cartToWhatsapp += `${name}`;
+        }
     }
 
     //create button to call whatsapp and send message
@@ -106,7 +116,6 @@ function loadCurrentCart() {
         sendWhatsapp(cartToWhatsapp);
     });
 
-
     function compareAdictional(a, b) {
         if (a.menuId < b.menuId)
             return -1;
@@ -114,7 +123,9 @@ function loadCurrentCart() {
             return 1;
         return 0;
     }
-}
+} //end loadCurrentCart
+
+
 
 function sendWhatsapp(cartToWhatsapp) {
     var message = `${cartToWhatsapp}`;

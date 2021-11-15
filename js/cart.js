@@ -2,20 +2,21 @@
 var currentSubtotal = 0;
 var globalCategory = null;
 var currentAdictionals = [];
+var currentMandatory = false;
 
 $(document).ready(function() {
     updateCart();
 })
 
 //search component by id "total_items_cart" 
-
+/*
+This is call whe n user click on comprar or Agregar al carrito
+*/
 async function addToCart(id, name, description, image, price, categoryId, option) {
 
     image = image.replace("/hot2f", "%2F");
-    console.log(option);
 
     currentSubtotal = price;
-    //const myCategory=await getItemBycategoryId(categoryId);
     globalCategory = null;
     await getCategorieById(categoryId, (snapshot) => {
 
@@ -32,9 +33,112 @@ async function addToCart(id, name, description, image, price, categoryId, option
 
         getMenuOptionByCategoryId(myCategory, onCompleteMenuOptionsByCategory, (category) => {
             showModalToAditionals(id, name, description, image, price, category, option);
+
+            var btnModalOK = document.getElementById('modal-success-btn');
+            if (currentMandatory) {
+                btnModalOK.disabled = true;
+                //todo add a class to the button to show that it is disabled
+
+
+            }
+
         });
+    });
+}
+
+/*
+Once the fields by each category are created, showModalToAditionals is called
+to allow the user selected adictionals
+*/
+function showModalToAditionals(id, name, description, image, price, myCategory, option) {
+
+    currentAdictionals = [];
+    //delete currentAdictionals from localStorage
+    localStorage.removeItem('currentAdictionals');
+
+    //to avoid create multiple modal
+    if (modalWrap != null) {
+        modalWrap.remove();
+    }
+
+    modalWrap = document.createElement('div');
+
+    var priceMiles = formatNumberToMil(price);
+
+    //create dynamic form for the body of the modal with the data of myCategory divide by menuOptions and their optionItems
+
+    var modal = `
+        <div class="modal modal-wide" tabindex="-1" id="contenedor-modal">
+            <div class="modal-xl modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-light">
+                    <div>
+                        <h5 class="modal-title fw-bold">${name} - $${priceMiles}</h5>                        
+                    </div>                        
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">                        
+                        <div class="container-fluid">   
+                        <p class="fs-6">${description}</p>
+                        <div class="row">
+                        </div>                     
+                        <div class="row  mt-2">
+                          <div class="col-md-4" ><img src="${image}" class="img-fluid" alt=""/>
+                          </div>
+                          
+                          <div class="col-md-8 ">
+                            <form id="form-modal-id" class="h6">
+                                                        
+                            </form>
+                            <div class="form-floating">
+                              <textarea class="form-control" placeholder="Añada instrucciones o comentarios" id="adictionals-comments-modal" style="height: 100px"></textarea>
+                              <label for="adictionals-comemnts-modal">Añada instrucciones o comentarios</label>
+                            </div>
+                          </div>                          
+                        </div>                       
+                      </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <div class="col-sm-2">
+                          <span>Subtotal: $</span><span id="sp_current_subtotal_id">${formatNumberToMil(currentSubtotal)}</span>
+                        </div>
+                        <div class="col-sm-2">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>`;
+    if (option == 0) {
+        modal += `<button type="button" class="btn btn-primary modal-success-btn" id="modal-success-btn">Agregar</button>`;
+    } else if (option == 1) {
+        modal += `<button type="button" class="btn btn-primary modal-success-btn"  id="modal-success-btn">Comprar</button>`;
+    }
+    modal += `
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    modalWrap.innerHTML = modal;
+
+
+    modalWrap.querySelector('.modal-success-btn').addEventListener('click', function() {
+
+        //get the value from sp_current_subtotal_id
+        var currentSubtotal = $("#sp_current_subtotal_id").text();
+        //replace $ and , and . 
+        currentSubtotal = currentSubtotal.replace(/\$/g, '');
+        currentSubtotal = currentSubtotal.replace(/,/g, '');
+        currentSubtotal = currentSubtotal.replace(/\./g, '');
+        currentSubtotal = parseFloat(currentSubtotal);
+
+        var adictionalsComments = $("#adictionals-comments-modal").val();
+
+        saveProductOnLocalStorage(id, name, description, image, currentSubtotal, myCategory, option, adictionalsComments);
+        modalWrap.querySelector('.btn-close').click();
 
     });
+
+    document.body.append(modalWrap);
+    $('.modal').modal('show');
+
 }
 
 async function onCompleteMenuOptionsByCategory(querySnapshot, category, onFinishCallback) {
@@ -55,6 +159,10 @@ async function getItemsMenuByMenuOptionId(category, onFinishCallback) {
 
     for (let index = 0; index < category.menuOptions.length; index++) {
         menuOption = category.menuOptions[index];
+        if (menuOption.mandatory == true) {
+            currentMandatory = true;
+        }
+
         getMenuOptionOnItemByMenuId(menuOption, index, category, onCompleteGetItemsMenuByMenuOptionId, onFinishCallback);
     }
     onFinishCallback(category);
@@ -75,8 +183,10 @@ function onCompleteGetItemsMenuByMenuOptionId(querySnapshot, menuOption, index, 
     });
 }
 
-//final function
-function saveProductOnLocalStorage(id, name, description, image, price, categoryId, option) {
+/*
+Once the user select all adictionals, this function is call
+*/
+function saveProductOnLocalStorage(id, name, description, image, price, categoryId, option, adictionalsComments) {
 
     const newCombo = {
         id: id,
@@ -85,9 +195,11 @@ function saveProductOnLocalStorage(id, name, description, image, price, category
         price: price,
         cont: 1,
         totalPrice: price,
+        comments: adictionalsComments,
         currentAdictionals: currentAdictionals
     };
 
+    console.log(newCombo);
     var cart = JSON.parse(localStorage.getItem('cart'));
     if (cart == null) {
 
@@ -119,12 +231,17 @@ function saveProductOnLocalStorage(id, name, description, image, price, category
     }
 }
 
+/*
+Create a field for each optionItem
+*/
 function createField(optionItem, menuOption) {
 
     //var optionItem = menuOption.optionItems[optionItemIndex];
 
     var form = $("#form-modal-id");
     var menuId = menuOption.id;
+    var buttonModalAdd = document.getElementById("modal-success-btn");
+
     //search the section to the current menuOption
     var fieldset = document.getElementById("cart_fi_" + menuOption.id);
     if (fieldset == null) {
@@ -153,13 +270,13 @@ function createField(optionItem, menuOption) {
 
     if (optionItem.fieldType === 'check') {
         fieldContent = `
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="check_${optionItem.id}" data-option-item-id="${optionItem.id}" 
-        data-option-item-name="${optionItem.name}" data-option-item-price="${optionItem.price}" data-option-item-order="${optionItem.order}" >
-        <label class="form-check-label" for="check_${optionItem.id}">${optionItem.name}</label>
-    </div>    
-    <hr/>
-    `;
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="check_${optionItem.id}" data-menu-mandatory="${menuOption.mandatory}" data-option-item-id="${optionItem.id}" 
+                data-option-item-name="${optionItem.name}" data-option-item-price="${optionItem.price}" data-option-item-order="${optionItem.order}" >
+                <label class="form-check-label" for="check_${optionItem.id}">${optionItem.name}</label>
+            </div>    
+            <hr/>
+            `;
         fieldset.innerHTML += fieldContent;
 
         if (fieldset.getAttribute("data-event-change") == null) {
@@ -169,6 +286,8 @@ function createField(optionItem, menuOption) {
 
                 var element = event.target;
 
+                var optionMandatory = element.getAttribute("data-menu-mandatory");
+
                 var totalChecked = 0;
                 var checkboxes = fieldset.getElementsByTagName("input");
                 for (var i = 0; i < checkboxes.length; i++) {
@@ -176,11 +295,23 @@ function createField(optionItem, menuOption) {
                         totalChecked++;
                     }
                 }
+
                 if (totalChecked > menuOption.maxLimit) {
                     $("#" + optionItem.id).prop('checked', false);
                     var element = event.target;
                     element.checked = false;
+                    totalChecked--;
                 } else {
+                    //TODO: wait to btn sucess be created
+                    if (optionMandatory == "true" && (totalChecked >= menuOption.minLimit && totalChecked <= menuOption.maxLimit)) {
+
+                        buttonModalAdd.disabled = false;
+
+                    } else {
+                        //Enable the button to add the product
+                        buttonModalAdd.disabled = true;
+                    }
+
 
                     //get data-option-item-id from element
                     var optionItemId = element.getAttribute("data-option-item-id");
@@ -222,7 +353,7 @@ function createField(optionItem, menuOption) {
               <div class="col-6">
                 <label for="${optionItem.id}">${aditional.name} + $${formatNumberToMil(aditional.price)}</label>               
               </div>
-              <div class="col-6" data-menu-max-limit="${menuOption.maxLimit}" data-aditional-name="${aditional.name}" aditional-price="${aditional.price}" parent-field-id="${"cart_fi_"+menuOption.id}">                
+              <div class="col-6" data-menu-mandatory="${menuOption.mandatory}" data-menu-max-limit="${menuOption.maxLimit}" data-aditional-name="${aditional.name}" aditional-price="${aditional.price}" parent-field-id="${"cart_fi_"+menuOption.id}">                
               <i class="material-icons btn border opacity-25" id="i_remove_${aditional.id}" parent-aditional-id="${aditional.id}" >remove</i>               
                   <span id="amount_${aditional.id}" class="ml-2 mr-2" parent="${aditional.id}" >0</span>
               <i class="material-icons btn border" id="i_add_${aditional.id}" parent-aditional-id="${aditional.id}">add</i>                                              
@@ -233,8 +364,6 @@ function createField(optionItem, menuOption) {
        `;
 
             fieldset.innerHTML += fieldContent;
-
-            //get the element with  id="i_remove_${aditional.id}"
 
             //add event onClick to the fieldset just if the fieldset does not have the event       
             if (fieldset.getAttribute("data-event-click") == null) {
@@ -251,6 +380,7 @@ function createField(optionItem, menuOption) {
                     var aditionalPrice = parenNode.getAttribute("aditional-price");
                     var currentSubtotalElement = document.getElementById("sp_current_subtotal_id");
                     var optionItemName = parenNode.getAttribute("data-aditional-name");
+                    var optionMandatory = parenNode.getAttribute("data-menu-mandatory");
 
                     //get the text on the current subtotal and convert to number
                     var localSubtotal = currentSubtotalElement.innerHTML;
@@ -287,8 +417,6 @@ function createField(optionItem, menuOption) {
                             $("#sp_current_subtotal_id").text(formatNumberToMil(localSubtotal));
                             $("#amount_" + id).text(amount);
 
-                            //Saving on currentAdictionals
-                            var amountByMenuId = [];
 
                             //Option item             
                             var currentCheckOption = {
@@ -360,7 +488,6 @@ function createField(optionItem, menuOption) {
                             //localStorage.setItem('currentAdictionals', JSON.stringify(currentAdictionals));
                         }
                     }
-
                 });
             }
         });
@@ -384,106 +511,13 @@ function createElements(category) {
         //loop optionItems
         optionItems.forEach(element => {
 
-            createField(element);
+            //createField(element);
 
         });
     });
 }
 
 var modalWrap = null;
-
-function showModalToAditionals(id, name, description, image, price, myCategory, option) {
-
-    currentAdictionals = [];
-    //delete currentAdictionals from localStorage
-    localStorage.removeItem('currentAdictionals');
-
-
-    //to avoid create multiple modal
-    if (modalWrap != null) {
-        modalWrap.remove();
-    }
-
-    modalWrap = document.createElement('div');
-
-    var priceMiles = formatNumberToMil(price);
-
-    //create dynamic form for the body of the modal with the data of myCategory divide by menuOptions and their optionItems
-
-    var modal = `
-        <div class="modal modal-wide" tabindex="-1" id="contenedor-modal">
-            <div class="modal-xl modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-light">
-                    <div>
-                        <h5 class="modal-title fw-bold">${name} - $${priceMiles}</h5>                        
-                    </div>                        
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">                        
-                        <div class="container-fluid">   
-                        <p class="fs-6">${description}</p>
-                        <div class="row">
-                        </div>                     
-                        <div class="row  mt-2">
-                          <div class="col-md-4" ><img src="${image}" class="img-fluid" alt=""/>
-                          </div>
-                          
-                          <div class="col-md-8 ">
-                            <form id="form-modal-id" class="h6">
-                                                        
-                            </form>
-                            <div class="form-floating">
-                              <textarea class="form-control" placeholder="Añada instrucciones o comentarios" id="floatingTextarea2" style="height: 100px"></textarea>
-                              <label for="floatingTextarea2">Añada instrucciones o comentarios</label>
-                            </div>
-                          </div>
-                          
-                        </div>                       
-                      </div>
-                    
-
-                    </div>
-                    <div class="modal-footer bg-light">
-                        <div class="col-sm-2">
-                          <span>Subtotal: $</span><span id="sp_current_subtotal_id">${formatNumberToMil(currentSubtotal)}</span>
-                        </div>
-                        <div class="col-sm-2">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>`;
-    if (option == 0) {
-        modal += `<button type="button" class="btn btn-primary modal-success-btn">Agregar</button>`;
-    } else if (option == 1) {
-        modal += `<button type="button" class="btn btn-primary modal-success-btn">Comprar</button>`;
-    }
-    modal += `
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    modalWrap.innerHTML = modal;
-
-    modalWrap.querySelector('.modal-success-btn').addEventListener('click', function() {
-
-        //get the value from sp_current_subtotal_id
-        var currentSubtotal = $("#sp_current_subtotal_id").text();
-        //replace $ and , and . 
-        currentSubtotal = currentSubtotal.replace(/\$/g, '');
-        currentSubtotal = currentSubtotal.replace(/,/g, '');
-        currentSubtotal = currentSubtotal.replace(/\./g, '');
-        currentSubtotal = parseFloat(currentSubtotal);
-
-        saveProductOnLocalStorage(id, name, description, image, currentSubtotal, myCategory, option);
-        modalWrap.querySelector('.btn-close').click();
-
-    });
-
-    document.body.append(modalWrap);
-    $('.modal').modal('show');
-    createElements(myCategory);
-
-}
 
 
 

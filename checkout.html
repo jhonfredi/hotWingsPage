@@ -52,7 +52,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     $(".dropdown dd ul").hide();
             });
 
-
             $("#flagSwitcher").click(function() {
                 $(".dropdown img.flag").toggleClass("flagvisibility");
             });
@@ -70,7 +69,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                         <div class="logo">
                             <span>								
-                            <a href="index.html"><img src="img/logo (2).svg" alt="" /></a>							
+                            <a href="/"><img src="img/logo.svg" alt="" /></a>							
 						</span>
                         </div>
                         <div class="menu" hidden>
@@ -135,9 +134,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="row  mt-2">
                         <div class="col-md-8">
                             <!-- create field to enter address !-->
-                            <div class="form-group">
-                                <label for="address">Dirección</label>
+                            <div class="form-group form-floating">
                                 <input type="text" class="form-control" id="address" placeholder="Dirección">
+                                <label for="address">Dirección</label>
                                 <br/>
                             </div>
                             <!-- create card with cart resumen-->
@@ -164,21 +163,25 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                     </tbody>
                                                 </table>
                                             </div>
+
                                         </div>
                                     </div>
                                     <div class="row" id="cart_resumen_price_id">
                                         <div class="col-md-6">
-                                            <p>Subtotal</p>
-                                            <p>Envio</p>
-                                            <p>Total</p>
+                                            <p>Subtotal: <span id="check_subtotal"></span></p>
+                                            <p>Envio: <span id="check_shipment"></span></p>
+                                            <p>Total: <span id="check_total"></span></p>
                                         </div>
                                         <div class="col-md-6">
-                                            <p id="check_subtotal"></p>
-                                            <p id="check_shipment"></p>
-                                            <p id="check_total"></p>
                                             <br/>
                                         </div>
+                                        <div class="form-floating">
+                                            <textarea class="form-control order-comments" placeholder="Añada instrucciones o comentarios" id="order-comments"></textarea>
+                                            <label for="order-comments">Añada instrucciones o comentarios</label>
+                                        </div>
+
                                     </div>
+
                                 </div>
                             </div>
 
@@ -187,11 +190,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <div class="col-md-4 ml-auto">
                             <form id="form-modal-id" class="h6">
 
+
                             </form>
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Añada instrucciones o comentarios" id="floatingTextarea2" style="height: 100px"></textarea>
-                                <label for="floatingTextarea2">Añada instrucciones o comentarios</label>
-                            </div>
+
                         </div>
 
                     </div>

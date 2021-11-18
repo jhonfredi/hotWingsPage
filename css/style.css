@@ -145,11 +145,6 @@ html {
     text-align: center;
 }
 
-.header-center {
-    /*align all divs to center */
-    display: flex;
-}
-
 .header {
     display: flex;
     flex-direction: row;
@@ -193,6 +188,7 @@ html {
     text-align: center;
     z-index: 9;
     background-color: #01e675;
+    box-shadow: 0px 10px 10px -6px rgba(0, 0, 0, 0.75);
 }
 
 .Btn-whatsapp a i {
@@ -200,10 +196,21 @@ html {
     color: white;
 }
 
+.container2 {
+    background-color: aqua;
+}
+
 
 /*Login buttons area*/
 
-#login-with-google {}
+.form-login {
+    margin: 0;
+}
+
+#log-with-facebook {
+    background-color: #5890FF;
+    color: white;
+}
 
 
 /*End logins btn area*/

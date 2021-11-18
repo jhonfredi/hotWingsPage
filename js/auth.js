@@ -1,5 +1,10 @@
 //This allow to show/hide password
+
+
 document.addEventListener('DOMContentLoaded', function() {
+
+
+    firebase.auth().useDeviceLanguage();
 
     checkAndGoBackLogged();
     const passwordEle = document.getElementById('password');
@@ -30,16 +35,53 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const logWithGoogle = document.getElementById('log-with-google');
-    console.log(logWithGoogle);
     if (logWithGoogle) {
         logWithGoogle.addEventListener('click', function() {
-            console.log("click");
             loginWithGoogle();
         });
         catchForm();
     }
 
+    const logWithFacebook = document.getElementById('log-with-facebook');
+    if (logWithFacebook) {
+        logWithFacebook.addEventListener('click', function() {
+            console.log("Log with fb");
+            loginWithFacebook();
+        });
+    }
+
 });
+
+function loginWithFacebook() {
+    const provider = new firebase.auth.FacebookAuthProvider();
+    firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+            /** @type {firebase.auth.OAuthCredential} */
+            var credential = result.credential;
+            // The signed-in user info.
+            var user = result.user;
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            var accessToken = credential.accessToken;
+            //navigate to /
+            sucessLoginCallback(user);
+
+            // ...
+        })
+        .catch((error) => {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+
+            // ...
+        });
+
+}
 
 function loginWithGoogle() {
     var provider = new firebase.auth.GoogleAuthProvider();
@@ -70,7 +112,7 @@ function sucessRegisterCallback(user) {
 }
 
 function sucessLoginCallback(user) {
-    window.location.href = "index.html";
+    window.location.href = "/";
     showToastSuccessMessage('success', 'Bienvenido');
 }
 

@@ -15,9 +15,9 @@ This is call whe n user click on comprar or Agregar al carrito
 async function addToCart(id, name, description, image, price, categoryId, option) {
 
     image = image.replace("/hot2f", "%2F");
-
     currentSubtotal = price;
     globalCategory = null;
+
     await getCategorieById(categoryId, (snapshot) => {
 
         const data = snapshot.data();
@@ -65,7 +65,6 @@ function showModalToAditionals(id, name, description, image, price, myCategory, 
     var priceMiles = formatNumberToMil(price);
 
     //create dynamic form for the body of the modal with the data of myCategory divide by menuOptions and their optionItems
-
     var modal = `
         <div class="modal modal-wide" tabindex="-1" id="contenedor-modal">
             <div class="modal-xl modal-dialog">
@@ -116,7 +115,6 @@ function showModalToAditionals(id, name, description, image, price, myCategory, 
         </div>
     `;
     modalWrap.innerHTML = modal;
-
 
     modalWrap.querySelector('.modal-success-btn').addEventListener('click', function() {
 
@@ -228,8 +226,24 @@ function saveProductOnLocalStorage(id, name, description, image, price, category
     }
 }
 
+function validateAllMandatory() {
+
+    var mandatories = document.getElementsByClassName("data-menu-mandatory-valid");
+    //loop through all the mandatory fields
+    for (let index = 0; index < mandatories.length; index++) {
+        const element = mandatories[index];
+        //Get the atribute data-menu-mandatory-valid and check if it is true
+        if (element.getAttribute("data-menu-mandatory-valid") == "false") {
+            return false;
+        }
+    }
+
+    return true;
+
+}
+
 /*
-Create a field for each optionItem
+Create a field for each optionItem, also validate if the optionItem is mandatory in disable the button to add the item
 */
 function createField(optionItem, menuOption) {
 
@@ -241,6 +255,7 @@ function createField(optionItem, menuOption) {
 
     //search the section to the current menuOption
     var fieldset = document.getElementById("cart_fi_" + menuOption.id);
+
     if (fieldset == null) {
         fieldset = document.createElement("fieldset");
         fieldset.setAttribute("id", "cart_fi_" + menuOption.id);
@@ -263,6 +278,15 @@ function createField(optionItem, menuOption) {
         form.append(fieldset);
 
     }
+    fieldset.setAttribute("data-menu-mandatory", menuOption.mandatory);
+    if (menuOption.mandatory == false) {
+        fieldset.setAttribute("data-menu-mandatory-valid", "true");
+    } else {
+        fieldset.setAttribute("data-menu-mandatory-valid", "false");
+    }
+    //add class data-menu-mandatory-valid to the fieldset
+    fieldset.setAttribute("class", "data-menu-mandatory-valid");
+
     var fieldContent = "";
 
     if (optionItem.fieldType === 'check') {
@@ -283,7 +307,8 @@ function createField(optionItem, menuOption) {
 
                 var element = event.target;
 
-                var optionMandatory = element.getAttribute("data-menu-mandatory");
+                //var optionMandatory = element.getAttribute("data-menu-mandatory");
+                var optionMandatory = fieldset.getAttribute("data-menu-mandatory");
 
                 var totalChecked = 0;
                 var checkboxes = fieldset.getElementsByTagName("input");
@@ -302,9 +327,13 @@ function createField(optionItem, menuOption) {
                     //TODO: wait to btn sucess be created
                     if (optionMandatory == "true" && (totalChecked >= menuOption.minLimit && totalChecked <= menuOption.maxLimit)) {
 
-                        buttonModalAdd.disabled = false;
+                        fieldset.setAttribute("data-menu-mandatory-valid", "true");
 
+                        if (validateAllMandatory()) {
+                            buttonModalAdd.disabled = false;
+                        }
                     } else {
+                        fieldset.setAttribute("data-menu-mandatory-valid", "false");
                         //Enable the button to add the product
                         buttonModalAdd.disabled = true;
                     }
@@ -377,7 +406,7 @@ function createField(optionItem, menuOption) {
                     var aditionalPrice = parenNode.getAttribute("aditional-price");
                     var currentSubtotalElement = document.getElementById("sp_current_subtotal_id");
                     var optionItemName = parenNode.getAttribute("data-aditional-name");
-                    var optionMandatory = parenNode.getAttribute("data-menu-mandatory");
+                    var optionMandatory = fieldset.getAttribute("data-menu-mandatory");
 
                     //get the text on the current subtotal and convert to number
                     var localSubtotal = currentSubtotalElement.innerHTML;

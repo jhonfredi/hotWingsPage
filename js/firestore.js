@@ -126,21 +126,22 @@ async function getCategorieById(id, callback) {
 async function getMenuOptionByCategoryId(category, callback, onFinishCallback) {
 
     var db = firebase.firestore();
-    db.collection("menuOptionOnItemInCar").where("categoryId", "==", category.id.toString()).onSnapshot(function(querySnapshot) {
+    db.collection("menuOptionOnItemInCar").where("categoryId", "==", category.id.toString()).orderBy("order").onSnapshot(function(querySnapshot) {
+        console.log(querySnapshot.data());
         callback(querySnapshot, category, onFinishCallback);
     });
 }
 
 async function getMenuOptionByCategoryId(category, callback, onFinishCallback) {
     var db = firebase.firestore();
-    db.collection("menuOptionOnItemInCar").where("categoryId", "==", category.id.toString()).onSnapshot(function(querySnapshot) {
+    db.collection("menuOptionOnItemInCar").where("categoryId", "==", category.id.toString()).orderBy("order").onSnapshot(function(querySnapshot) {
         callback(querySnapshot, category, onFinishCallback);
     });
 }
 
 async function getMenuOptionOnItemByMenuId(menuOption, index, category, callback, onFinishCallback) {
     var db = firebase.firestore();
-    await db.collection("OptionOnItemInCar").where("menuOptionOnItemInCarId", "==", menuOption.id.toString()).onSnapshot(function(querySnapshot) {
+    await db.collection("OptionOnItemInCar").where("menuOptionOnItemInCarId", "==", menuOption.id.toString()).orderBy("order").onSnapshot(function(querySnapshot) {
 
         var cat2 = callback(querySnapshot, menuOption, index, category, onFinishCallback);
 
@@ -168,9 +169,7 @@ async function getItemsMenuByMenuOptionId(menuOptionId) {
         console.log("the log");
         console.log(doc.id, '=>', doc.data());
     }
-
 }
-
 
 /*Autentications and auth*/
 function createUserWitEmailAndPassword(email, password, sucessCallback, errorCallback) {

@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const logWithFacebook = document.getElementById('log-with-facebook');
     if (logWithFacebook) {
         logWithFacebook.addEventListener('click', function() {
-            console.log("Log with fb");
             loginWithFacebook();
         });
     }

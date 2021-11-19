@@ -72,12 +72,8 @@ function loginWithFacebook() {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
-            // The email of the user's account used.
-            var email = error.email;
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential;
+            errorRegisterCallback(errorCode, errorMessage);
 
-            // ...
         });
 
 }
@@ -127,6 +123,9 @@ function errorRegisterCallback(errorCode, errorMessage) {
             break;
         case 'auth/weak-password':
             showToastMessage('error', "Contraseña débil");
+            break;
+        case 'erroodeauth/popup-closed-by-user':
+            showToastMessage('error', "El usuario canceló la operación");
             break;
         default:
             showToastMessage('error', errorMessage);

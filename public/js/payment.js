@@ -1,7 +1,33 @@
 //on load document
 $(document).ready(function() {
     loadCurrentCart();
+    onlyOneOption();
 });
+
+function onlyOneOption() {
+    var checkboxes = document.getElementsByName('checkg')
+
+    //Select just one option on checkbox change
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].onchange = function() {
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i] != this)
+                    checkboxes[i].checked = false
+            }
+
+            //validate if the option checked have id for_delivery_id and delete hidden property to section_for_delivery other case hide
+            if (this.id == "for-delivery-id" && this.checked) {
+                $("#section-for-delivery-id").removeAttr("hidden");
+            } else {
+                $("#section-for-delivery-id").attr("hidden", "hidden");
+            }
+
+        }
+    }
+
+}
+
+var globalTotalPrice = 0;
 
 function loadCurrentCart() {
 
@@ -14,14 +40,15 @@ function loadCurrentCart() {
     //order the currentAdictionals by menuId desc
 
     //get table with id cart_list_id
-    var cartListTable = $("#cart_list_id");
+
     var tableBody = $("#cart_list_id tbody");
     //get element by id check_subtotal
     var checkSubtotal = $("#check_subtotal");
     var checkShipment = $("#check_shipment");
     var checkTotal = $("#check_total");
+    globalTotalPrice = cart.totalPrice;
     checkSubtotal.html(`$${formatNumberToMil(cart.totalPrice)}`);
-    checkShipment.html(`~$10.000 varia según dirección`);
+    checkShipment.html(`Entre $4.000 y $10.000`);
     checkTotal.html(`~$${formatNumberToMil(cart.totalPrice + 10000)}`);
 
     //create var stringto store all the items with the currentAdictionals
@@ -125,23 +152,46 @@ function loadCurrentCart() {
 } //end loadCurrentCart
 
 
-
 function sendWhatsapp(cartToWhatsapp) {
 
     //get element with id address
     var adressElement = $("#address");
     var address = adressElement.val();
-    //validate if address is not null and is define
-    if (address && address != "" && address != "undefined" && address != "null" && address != " " && address.length > 5) {
-        var message = `${cartToWhatsapp} - Dirección: ${address} `;
+    var orderComments = $("#order-comments").val();
 
-        var url = `https://wa.me/573208649988?text=${message}`;
-        window.open(url);
-
-    } else {
-        adressElement.focus();
-        showError("Debe ingresar una dirección válida");
+    //get which check is checked
+    var forTakeAway = $("#for-take-away-id").is(":checked");
+    var forDelivery = $("#for-delivery-id").is(":checked");
+    console.log(forDelivery);
+    console.log(forTakeAway);
+    //validate if forDelivery is false and forTakeAway is false
+    if (!forDelivery && !forTakeAway) {
+        showError("Debe seleccionar una opción de entrega");
+        return;
     }
+
+    if (forDelivery && (address == "" || address == "undefined" || address == "null" || address == " " || address.length < 6)) {
+        showError("Debe ingresar una dirección válida");
+        return;
+    }
+
+    //validate if adictionalComments is not null and is define
+    if (orderComments && orderComments != "" && orderComments != "undefined" && orderComments != "null" && orderComments != " ") {
+        //add adictionalComments to cartToWhatsapp
+        cartToWhatsapp += `, instrucciones: ${orderComments}`;
+    }
+
+    var message = `${cartToWhatsapp}`;
+
+    if (forDelivery) {
+        message += `- entrega: ${address}`;
+    } else {
+        message += `- para recoger`;
+    }
+
+    var url = `https://wa.me/573208649988?text=${message}`;
+    window.open(url);
+
 
 }
 

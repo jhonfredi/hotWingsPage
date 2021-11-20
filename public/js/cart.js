@@ -6,7 +6,10 @@ var currentMandatory = false;
 
 $(document).ready(function() {
     updateCart();
+
 })
+
+
 
 //search component by id "total_items_cart" 
 /*

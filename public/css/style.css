@@ -117,7 +117,7 @@ html {
 }
 
 
-/*Show see password*/
+/*Show password*/
 
 .toggle {
     align-items: center;
@@ -239,6 +239,28 @@ Section for payment
 .order-comments {
     height: 80px;
 }
+
+.complete-order {
+    display: flex;
+    flex-direction: row;
+}
+
+.order-resumen {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 4%;
+}
+
+.title-your-order {
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+.container-fluid {}
+
+.card {}
 
 
 /*End payment section*/
@@ -2543,6 +2565,10 @@ fieldset.input input[type="submit"]:hover {
     .login-page {
         border-right: none;
         padding-right: 0;
+    }
+    .complete-order {
+        display: flex;
+        flex-direction: column;
     }
 }
 

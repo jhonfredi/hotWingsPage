@@ -10,9 +10,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <head>
     <title>Free Snow Bootstrap Website Template | Checkout :: w3layouts</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="css/style.css" rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
+    <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+    <link href="css/style.css" rel='stylesheet' type='text/css' />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
@@ -127,93 +127,83 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     </div>
 
     <div class="main">
-        <div class="shop_top">
-            <div class="container">
-                <h4 class="title">Tu pedido</h4>
-                <div class="container-fluid">
-                    <div class="row  mt-2">
-                        <div class="col-md-8">
-                            <!-- create field to enter address !-->
+        <div class="shop_top1  col-md-12">
+            <h2 class="title-your-order">Tu pedido</h2>
+            <div class="container cold-md-12 complete-order ">
 
-                            <!-- create card with cart resumen-->
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4>Resumen de tu pedido</h4>
-                                </div>
-                                <div class="card-body">
-                                    <!--create div to show the list of products -->
-                                    <div class="row">
-                                        <div class="col-md-10">
-                                            <div class="table-responsive">
-                                                <table class="table table-striped" id="cart_list_id">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Producto</th>
-                                                            <th>Opciones</th>
-                                                            <th>Precio</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="table_cart_body">
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="row" id="cart_resumen_price_id">
-                                        <div class="col-md-6">
-                                            <p>Subtotal: <span id="check_subtotal"></span></p>
-
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="for-take-away-id" name="checkg">
-                                                <label class="form-check-label" for="for-take-away-id">Para recoger</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="for-delivery-id" name="checkg">
-                                                <label class="form-check-label" for="for-delivery-id">Domicilio</label>
-                                                <div id="section-for-delivery-id" hidden>
-                                                    <div class="form-group form-floating">
-                                                        <input type="text" class="form-control" id="address" placeholder="Dirección">
-                                                        <label for="address">Dirección</label>
-                                                        <br/>
-                                                    </div>
-                                                    <p>Envio: <span id="check_shipment">
-                                                 </div>   
-                                                
-                                            </div>
-                                            </span></p>
-                                                    <p>Total: <span id="check_total"></span></p>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <br/>
-                                                </div>
-                                                <div class="form-floating">
-                                                    <textarea class="form-control order-comments" placeholder="Añada instrucciones o comentarios" id="order-comments"></textarea>
-                                                    <label for="order-comments">Añada instrucciones o comentarios</label>
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                                <div class="col-md-4 ml-auto">
-                                    <form id="form-modal-id" class="h6">
-
-
-                                    </form>
-
-                                </div>
-
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3 ml-auto"></div>
-                                <div class="col-md-2 ml-auto"></div>
-                            </div>
+                <div class="col-md-6 ">
+                    <div class="card ">
+                        <div class="card-header">
+                            <h4>Resumen de tu pedido</h4>
                         </div>
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped" id="cart_list_id">
+                                            <thead>
+                                                <tr>
+                                                    <th>Producto</th>
+                                                    <th>Opciones</th>
+                                                    <th>Precio</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="table_cart_body">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="col-md-4 ml-auto">
+                        <form id="form-modal-id" class="h6">
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-8 order-resumen">
+
+                    <div id="cart_resumen_price_id">
+                        <div>
+                            <p>Subtotal: <span id="check_subtotal"></span></p>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="for-take-away-id" name="checkg">
+                                <label class="form-check-label" for="for-take-away-id">Para recoger</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="for-delivery-id" name="checkg">
+                                <label class="form-check-label" for="for-delivery-id">Domicilio</label>
+                                <div id="section-for-delivery-id" hidden>
+                                    <div class="form-group form-floating">
+                                        <input type="text" class="form-control" id="address" placeholder="Dirección">
+                                        <label for="address">Dirección</label>
+                                        <br/>
+                                    </div>
+                                    <p>Envio: <span id="check_shipment">
+                                         </div>   
+                                        
+                                    </div>
+                                    </span></p>
+                                    <p>Total: <span id="check_total"></span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <br/>
+                                </div>
+                                <div class="form-floating">
+                                    <textarea class="form-control order-comments" placeholder="Añada instrucciones o comentarios" id="order-comments"></textarea>
+                                    <label for="order-comments">Añada instrucciones o comentarios</label>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
                     </div>
                 </div>
             </div>

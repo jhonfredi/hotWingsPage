@@ -1,5 +1,10 @@
 /*change font*/
 
+
+/*
+test
+*/
+
 * {
     margin: 0;
     padding: 0;
@@ -82,6 +87,7 @@ i.white:hover {
     background: rgb(182, 7, 7);
     padding: 1%;
     text-align: center;
+    margin-top: 2%;
 }
 
 .btn-continue-whatsapp {
@@ -2569,6 +2575,9 @@ fieldset.input input[type="submit"]:hover {
     .complete-order {
         display: flex;
         flex-direction: column;
+    }
+    .img-banner {
+        display: none;
     }
 }
 

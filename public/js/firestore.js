@@ -12,7 +12,7 @@ const category = {
 
 const firebaseConfig = {
     apiKey: "AIzaSyCYuuQM8vQus29Jsq2z9ZfTijblR38I13c",
-    authDomain: "hotwingscartagena.firebaseapp.com",
+    authDomain: "hotwingsctg.com",
     projectId: "hotwingscartagena",
     storageBucket: "hotwingscartagena.appspot.com",
     messagingSenderId: "1042930989666",

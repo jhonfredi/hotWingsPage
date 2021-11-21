@@ -164,7 +164,6 @@ async function getItemsMenuByMenuOptionId(menuOptionId) {
     let citiesRef = db.collection("optionOnItemInCar").where("menuOptionOnItemInCarId", "==", menuOptionId);
     let allCities = await citiesRef.get();
 
-    console.log(allCities);
     for (const doc of allCities.docs) {
         console.log("the log");
         console.log(doc.id, '=>', doc.data());
@@ -174,7 +173,6 @@ async function getItemsMenuByMenuOptionId(menuOptionId) {
 /*Autentications and auth*/
 function createUserWitEmailAndPassword(email, password, sucessCallback, errorCallback) {
     var db = firebase.firestore();
-    console.log(db);
 
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
@@ -196,5 +194,12 @@ function loginWithEmail(email, password, sucessCallback, errorCallback) {
         var errorCode = error.code;
         var errorMessage = error.message;
         errorCallback(errorCode, errorMessage);
+    });
+}
+
+function getAllNeighborhoods(callback) {
+    var db = firebase.firestore();
+    db.collection("neighborhoods").get().then((querySnapshot) => {
+        callback(querySnapshot);
     });
 }

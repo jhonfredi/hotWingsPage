@@ -11,54 +11,22 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <title>Free Snow Bootstrap Website Template | Checkout :: w3layouts</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
     <link href="css/style.css" rel='stylesheet' type='text/css' />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
     <link rel="shortcut icon" type="image/jpg" href="img/favicon.ico" />
-    <script type="application/x-javascript">
-        addEventListener("load", function() {
-            setTimeout(hideURLbar, 0);
-        }, false);
 
-        function hideURLbar() {
-            window.scrollTo(0, 1);
-        }
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="js/jquery.min.js"></script>
-    <script src="js/payment.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $(".dropdown img.flag").addClass("flagvisibility");
-
-            $(".dropdown dt a").click(function() {
-                $(".dropdown dd ul").toggle();
-            });
-
-            $(".dropdown dd ul li a").click(function() {
-                var text = $(this).html();
-                $(".dropdown dt a span").html(text);
-                $(".dropdown dd ul").hide();
-                $("#result").html("Selected value is: " + getSelectedValue("sample"));
-            });
-
-            function getSelectedValue(id) {
-                return $("#" + id).find("dt a span.value").html();
-            }
-
-            $(document).bind('click', function(e) {
-                var $clicked = $(e.target);
-                if (!$clicked.parents().hasClass("dropdown"))
-                    $(".dropdown dd ul").hide();
-            });
-
-            $("#flagSwitcher").click(function() {
-                $(".dropdown img.flag").toggleClass("flagvisibility");
-            });
-        });
-    </script>
+    <script src="js/firestore.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="js/payment.js"></script>
 </head>
 
 <body>
@@ -129,9 +97,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <div class="main">
         <div class="shop_top1  col-md-12">
             <h2 class="title-your-order">Tu pedido</h2>
-            <div class="container cold-md-12 complete-order">
+            <div class="container cold-md-12 complete-order row">
 
-                <div class="col-md-6 ">
+                <div class="col-md-7 ">
                     <div class="card ">
                         <div class="card-header">
                             <h4>Resumen de tu pedido</h4>
@@ -165,11 +133,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </form>
                     </div>
                 </div>
-                <div class="col-md-8 order-resumen">
+                <div class="col-md-5 order-resumen">
 
                     <div id="cart_resumen_price_id">
                         <div>
-                            <p>Subtotal: <span id="check_subtotal"></span></p>
+                            <p><span class="fw-bold">Subtotal: </span><span id="check-subtotal"></span></p>
 
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="for-take-away-id" name="checkg">
@@ -179,54 +147,64 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 <input class="form-check-input" type="checkbox" id="for-delivery-id" name="checkg">
                                 <label class="form-check-label" for="for-delivery-id">Domicilio</label>
                                 <div id="section-for-delivery-id" hidden>
+
+                                    <div class="form-group2 form-floating1">
+
+                                        <!-- Dropdown -->
+                                        <select id='select-neighborhood-id' style='width: 100%;'>
+                                                <option value='-1'>Seleccione el barrio</option> 
+                                                
+                                        </select>
+                                    </div>
+
                                     <div class="form-group form-floating">
+
                                         <input type="text" class="form-control" id="address" placeholder="Dirección">
                                         <label for="address">Dirección</label>
-                                        <br/>
+                                        <p><span class="fw-bold">Envio: </span><span id="check-shipment"></span>
                                     </div>
-                                    <p>Envio: <span id="check_shipment">
-                                         </div>   
-                                        
-                                    </div>
-                                    </span></p>
-                                    <p>Total: <span id="check_total"></span></p>
-                                </div>
-                                <div class="col-md-6">
-                                    <br/>
-                                </div>
-                                <div class="form-floating">
-                                    <textarea class="form-control order-comments" placeholder="Añada instrucciones o comentarios" id="order-comments"></textarea>
-                                    <label for="order-comments">Añada instrucciones o comentarios</label>
                                 </div>
 
                             </div>
-
+                            </span>
+                            </p>
+                            <p>
+                                <span class="fw-bold">Total: </span><span id="check-total"></span>
+                            </p>
+                        </div>
+                        <div class="form-floating">
+                            <textarea class="form-control order-comments" placeholder="Añada instrucciones o comentarios" id="order-comments"></textarea>
+                            <label for="order-comments">Añada instrucciones o comentarios</label>
                         </div>
 
-
                     </div>
+
                 </div>
+
+
             </div>
+        </div>
+    </div>
 
-            <div class="footer">
+    <div class="footer">
 
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <ul class="footer_box">
-                                <h4>Síguenos</h4>
-                                <ul class="social">
-                                    <span class="shadown"><a href="https://www.facebook.com/Hot-Wings-CTG-102904348862417" target="_blank">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="footer_box">
+                        <h4>Síguenos</h4>
+                        <ul class="social">
+                            <span class="shadown"><a href="https://www.facebook.com/Hot-Wings-CTG-102904348862417" target="_blank">
                             <i class="fab fa-facebook-square"></i></a></span>
-                                    <span><a href="https://www.instagram.com/hotwingsctg/" target="_blank"><i class="fab fa-instagram"></i></a></span>
-                                    <span><a href="https://wa.me/message/XPI5CC3DXRLZL1" target="_blank"><i class="fab fa-whatsapp"></i></a></span>
-                                </ul>
+                            <span><a href="https://www.instagram.com/hotwingsctg/" target="_blank"><i class="fab fa-instagram"></i></a></span>
+                            <span><a href="https://wa.me/message/XPI5CC3DXRLZL1" target="_blank"><i class="fab fa-whatsapp"></i></a></span>
+                        </ul>
 
-                            </ul>
-                        </div>
-                    </div>
+                    </ul>
                 </div>
             </div>
+        </div>
+    </div>
 </body>
 
 </html>

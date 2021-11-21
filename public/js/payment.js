@@ -1,8 +1,97 @@
-//on load document
+var globalTotalPrice = 0;
+var globalShipment = 10000;
 $(document).ready(function() {
     loadCurrentCart();
     onlyOneOption();
+    loadNeigboordhods();
 });
+
+function loadNeigboordhods() {
+
+    // Initialize select2
+    $("#select-neighborhood-id").select2();
+
+    //on change select option
+    $('#select-neighborhood-id').change(function() {
+        var neighborHood = $('#select-neighborhood-id option:selected').text();
+        var userid = $('#select-neighborhood-id').val();
+        var price = $('#select-neighborhood-id option:selected').attr("price");
+        var distance = $('#select-neighborhood-id option:selected').attr("distance");
+        var time = $('#select-neighborhood-id option:selected').attr("time");
+
+        //validate price not null not empty and no 0
+        if (price && price != "" && price != "undefined" && price != "null" && price != " " && price != 0) {
+            globalShipment = price;
+            $("#check-shipment").text(`$${formatNumberToMil(price)}`);
+
+            globalTotalPrice = parseInt(price) + parseInt(globalSubtotal);
+            $("#check-total").text(`$${formatNumberToMil(globalTotalPrice)}`);
+        } else {
+            $("#check-shipment").text(`Entre $4.000 y $10.000`);
+            //get the current check-subtotal and convert to number
+            $("#check-total").text(`Entre ${formatNumberToMil(globalSubtotal+4000)} y ${formatNumberToMil(globalSubtotal+10000)}`);
+
+        }
+
+    });
+
+    //get neigbordhods from localstorage
+    var neigborhoods = JSON.parse(localStorage.getItem("add"));
+
+    //currnt date
+    var currentDate = new Date();
+
+    //validate if neigborhoods.date is grater than current date - 7 days
+
+    if (neigborhoods != null && neigborhoods.expDate && neigborhoods.expDate < currentDate.getTime()) {
+        neigborhoods = null;
+    }
+
+    if (neigborhoods == null) {
+
+        neigborhoods = {
+            "neig": [],
+            "expDate": currentDate.getTime()
+        };
+
+        getAllNeighborhoods((querySnapshot) => {
+
+            querySnapshot.forEach(function(doc) {
+
+                let data = doc.data();
+                let option = {};
+                option.id = doc.id;
+                option.name = data.name;
+                option.price = data.price;
+                option.distance = data.distance;
+                option.time = data.time;
+                neigborhoods.neig.push(option);
+
+                $("#select-neighborhood-id").append($('<option>', {
+                    value: option.id,
+                    text: option.name
+                }));
+            });
+            neigborhoods.expDate = currentDate.getTime() + (1 * 24 * 60 * 60 * 1000);
+
+            localStorage.setItem("add", JSON.stringify(neigborhoods));
+        });
+
+
+    } else {
+
+        neigborhoods.neig.forEach(function(neigborhood) {
+            $("#select-neighborhood-id").append($('<option>', {
+                value: neigborhood.id,
+                text: neigborhood.name,
+                price: neigborhood.price,
+                distance: neigborhood.distance,
+                time: neigborhood.time
+            }));
+        });
+    }
+}
+
 
 function onlyOneOption() {
     var checkboxes = document.getElementsByName('checkg')
@@ -18,20 +107,31 @@ function onlyOneOption() {
             //validate if the option checked have id for_delivery_id and delete hidden property to section_for_delivery other case hide
             if (this.id == "for-delivery-id" && this.checked) {
                 $("#section-for-delivery-id").removeAttr("hidden");
+                $("#check-shipment").text(`$${formatNumberToMil(globalShipment)}`);
+                $("#check-total").text(`$${formatNumberToMil(globalTotalPrice)}`);
             } else {
                 $("#section-for-delivery-id").attr("hidden", "hidden");
+                //set the check-total equals to check-subtotal
+
+                $("#check-total").text(`$${formatNumberToMil(globalSubtotal)}`);
+
+
             }
 
         }
     }
-
 }
 
-var globalTotalPrice = 0;
+
 
 function loadCurrentCart() {
 
     var cart = localStorage.getItem("cart");
+
+    //validate if cart is not null
+    if (cart == null) {
+        return;
+    }
 
     if (cart) {
         cart = JSON.parse(cart);
@@ -42,14 +142,16 @@ function loadCurrentCart() {
     //get table with id cart_list_id
 
     var tableBody = $("#cart_list_id tbody");
-    //get element by id check_subtotal
-    var checkSubtotal = $("#check_subtotal");
-    var checkShipment = $("#check_shipment");
-    var checkTotal = $("#check_total");
+
+    var checkSubtotal = $("#check-subtotal");
+    var checkShipment = $("#check-shipment");
+
+    var checkTotal = $("#check-total");
     globalTotalPrice = cart.totalPrice;
+    globalSubtotal = cart.totalPrice;
     checkSubtotal.html(`$${formatNumberToMil(cart.totalPrice)}`);
     checkShipment.html(`Entre $4.000 y $10.000`);
-    checkTotal.html(`~$${formatNumberToMil(cart.totalPrice + 10000)}`);
+    checkTotal.html(`$${formatNumberToMil(cart.totalPrice)}`);
 
     //create var stringto store all the items with the currentAdictionals
     var cartToWhatsapp = "";
@@ -151,6 +253,51 @@ function loadCurrentCart() {
     }
 } //end loadCurrentCart
 
+function validateOrder() {
+
+
+    //get element with id address
+    var adressElement = $("#address");
+    var address = adressElement.val();
+    var orderComments = $("#order-comments").val();
+    //get  value: neigborhood.id,neigborhood.name,neigborhood.price,neigborhood.distance,neigborhood. to the selUser option selected with all values
+    var selUser = $("#select-neighborhood-id option:selected");
+    var id = selUser.attr("value");
+
+
+    //get which check is checked
+    var forTakeAway = $("#for-take-away-id").is(":checked");
+    var forDelivery = $("#for-delivery-id").is(":checked");
+
+    //validate if forDelivery is false and forTakeAway is false
+    if (!forDelivery && !forTakeAway) {
+        showError("Debe seleccionar una opción de entrega");
+        return false;
+    }
+
+    if (forDelivery) {
+
+        if (id == -1) {
+            showError("Debe seleccionar un barrio");
+            return false;
+        }
+
+        var price = selUser.attr("price");
+        var time = selUser.attr("time");
+
+
+        if (address == "" || address == "undefined" || address == "null" || address == " " || address.length < 6) {
+            showError("Debe ingresar una dirección válida");
+            return false;
+        }
+    }
+
+
+
+
+
+    return true
+}
 
 function sendWhatsapp(cartToWhatsapp) {
 
@@ -158,22 +305,20 @@ function sendWhatsapp(cartToWhatsapp) {
     var adressElement = $("#address");
     var address = adressElement.val();
     var orderComments = $("#order-comments").val();
+    //get  value: neigborhood.id,neigborhood.name,neigborhood.price,neigborhood.distance,neigborhood. to the selUser option selected with all values
+    var selUser = $("#select-neighborhood-id option:selected");
+    var id = selUser.attr("value");
+    var neighborHood = selUser.text();
+    var price = selUser.attr("price");
+    var distance = selUser.attr("distance");
 
-    //get which check is checked
-    var forTakeAway = $("#for-take-away-id").is(":checked");
+
     var forDelivery = $("#for-delivery-id").is(":checked");
-    console.log(forDelivery);
-    console.log(forTakeAway);
-    //validate if forDelivery is false and forTakeAway is false
-    if (!forDelivery && !forTakeAway) {
-        showError("Debe seleccionar una opción de entrega");
-        return;
+
+    if (!validateOrder()) {
+        return false;
     }
 
-    if (forDelivery && (address == "" || address == "undefined" || address == "null" || address == " " || address.length < 6)) {
-        showError("Debe ingresar una dirección válida");
-        return;
-    }
 
     //validate if adictionalComments is not null and is define
     if (orderComments && orderComments != "" && orderComments != "undefined" && orderComments != "null" && orderComments != " ") {
@@ -184,14 +329,13 @@ function sendWhatsapp(cartToWhatsapp) {
     var message = `${cartToWhatsapp}`;
 
     if (forDelivery) {
-        message += `- entrega: ${address}`;
+        message += `- entrega: ${neighborHood} - ${address}`;
     } else {
         message += `- para recoger`;
     }
 
     var url = `https://wa.me/573208649988?text=${message}`;
     window.open(url);
-
 
 }
 

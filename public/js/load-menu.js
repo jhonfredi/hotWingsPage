@@ -70,7 +70,7 @@ function connectFirebase() {
             };
 
             var newItem =
-                `<div class="col-md-3 mar-top-10 shop_box">
+                `<div class="shop_box">
 					<a >
 						<img src="${combo.image}" class="img-fluid" alt=""/>`;
 
@@ -81,6 +81,7 @@ function connectFirebase() {
             }
             if (combo.onSale === true) {
                 var discount = (combo.originalPrice - combo.price) / combo.originalPrice * 100;
+                discount = Math.trunc(discount);
                 newItem += `<span class="sale-box">
 							<span class="sale-label">-${discount} %</span>
 						</span>`;

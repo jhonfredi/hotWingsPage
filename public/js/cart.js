@@ -7,9 +7,7 @@ var currentMandatory = false;
 $(document).ready(function() {
     updateCart();
 
-})
-
-
+});
 
 //search component by id "total_items_cart" 
 /*
@@ -17,6 +15,7 @@ This is call whe n user click on comprar or Agregar al carrito
 */
 async function addToCart(id, name, description, image, price, categoryId, option) {
 
+    //This is because the imagUrl have that caracter and when I pass by href it is not working
     image = image.replace("/hot2f", "%2F");
     currentSubtotal = price;
     globalCategory = null;
@@ -67,10 +66,14 @@ function showModalToAditionals(id, name, description, image, price, myCategory, 
 
     var priceMiles = formatNumberToMil(price);
 
+    //We decide to eliminate this image
+    //<div class="col-md-4" ><img src="${image}" class="img-fluid" alt=""/></div>
+
     //create dynamic form for the body of the modal with the data of myCategory divide by menuOptions and their optionItems
+    //Bug: When I use fade, does not work
     var modal = `
-        <div class="modal modal-wide" tabindex="-1" id="contenedor-modal">
-            <div class="modal-xl modal-dialog">
+        <div class="modal modal-wide" tabindex="-1" id="contenedor-modal" >
+            <div class="modal-lg modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-light">
                     <div>
@@ -83,11 +86,8 @@ function showModalToAditionals(id, name, description, image, price, myCategory, 
                         <p class="fs-6">${description}</p>
                         <div class="row">
                         </div>                     
-                        <div class="row  mt-2">
-                          <div class="col-md-4" ><img src="${image}" class="img-fluid" alt=""/>
-                          </div>
-                          
-                          <div class="col-md-8 ">
+                        <div class="row  mt-2">                          
+                          <div class="col-md-10 ">
                             <form id="form-modal-id" class="h6">
                                                         
                             </form>

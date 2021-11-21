@@ -94,13 +94,13 @@ function connectFirebase() {
 
             if (combo.onSale === true) {
                 newItem +=
-                    `<span class="reducedfrom">${combo.originalPrice}</span>
+                    `<span class="reducedfrom">$${formatNumberToMil(combo.originalPrice)}</span>
 					`
             }
 
             var imgUrl = combo.image.replace("%2F", "/hot2f");
 
-            newItem += `<span class="actual">${combo.price}</span><br>
+            newItem += `<span class="actual">$${formatNumberToMil(combo.price)}</span><br>
 							<ul class="buttons col-md-12">								
 								<li id="${combo.category}_${doc.id}_id}" class="cart btn btn-primary"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',0)">Agregar</a></li>
 								<li id="${combo.category}_${doc.id}_id_buy}" class="cart btn btn-primary"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',1)">Comprar</a></li>

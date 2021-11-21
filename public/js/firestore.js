@@ -199,7 +199,7 @@ function loginWithEmail(email, password, sucessCallback, errorCallback) {
 
 function getAllNeighborhoods(callback) {
     var db = firebase.firestore();
-    db.collection("neighborhoods").get().then((querySnapshot) => {
+    db.collection("neighborhoods").orderBy("name").get().then((querySnapshot) => {
         callback(querySnapshot);
     });
 }

@@ -1,5 +1,7 @@
 var globalTotalPrice = 0;
 var globalShipment = 10000;
+var globalSubtotal = 0;
+
 $(document).ready(function() {
     loadCurrentCart();
     onlyOneOption();
@@ -19,18 +21,17 @@ function loadNeigboordhods() {
         var distance = $('#select-neighborhood-id option:selected').attr("distance");
         var time = $('#select-neighborhood-id option:selected').attr("time");
 
+        console.log(price);
         //validate price not null not empty and no 0
         if (price && price != "" && price != "undefined" && price != "null" && price != " " && price != 0) {
             globalShipment = price;
             $("#check-shipment").text(`$${formatNumberToMil(price)}`);
-
             globalTotalPrice = parseInt(price) + parseInt(globalSubtotal);
             $("#check-total").text(`$${formatNumberToMil(globalTotalPrice)}`);
         } else {
             $("#check-shipment").text(`Entre $4.000 y $10.000`);
             //get the current check-subtotal and convert to number
             $("#check-total").text(`Entre ${formatNumberToMil(globalSubtotal+4000)} y ${formatNumberToMil(globalSubtotal+10000)}`);
-
         }
 
     });
@@ -40,8 +41,6 @@ function loadNeigboordhods() {
 
     //currnt date
     var currentDate = new Date();
-
-    //validate if neigborhoods.date is grater than current date - 7 days
 
     if (neigborhoods != null && neigborhoods.expDate && neigborhoods.expDate < currentDate.getTime()) {
         neigborhoods = null;
@@ -53,7 +52,7 @@ function loadNeigboordhods() {
             "neig": [],
             "expDate": currentDate.getTime()
         };
-
+        //firestore.js
         getAllNeighborhoods((querySnapshot) => {
 
             querySnapshot.forEach(function(doc) {
@@ -72,8 +71,11 @@ function loadNeigboordhods() {
                     text: option.name
                 }));
             });
-            neigborhoods.expDate = currentDate.getTime() + (1 * 24 * 60 * 60 * 1000);
+            //one day
+            //neigborhoods.expDate = currentDate.getTime() + (1 * 24 * 60 * 60 * 1000); 
+            //1 hora
 
+            neigborhoods.expDate = currentDate.getTime() + (1 * 1 * 60 * 60 * 1000);
             localStorage.setItem("add", JSON.stringify(neigborhoods));
         });
 

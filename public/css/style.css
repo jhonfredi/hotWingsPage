@@ -2531,6 +2531,14 @@ Section for payment
         .img-on-log-reg {
             display: none;
         }
+        .wrapper {
+            display: flex;
+            flex-direction: column-reverse;
+            padding: 5px;
+        }
+        .img-banner {
+            margin-top: 10px;
+        }
         @media (max-width:640px) {
             .header_right {
                 width: 11%;

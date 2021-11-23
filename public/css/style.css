@@ -65,6 +65,22 @@ test
     html {
         font-size: 1rem;
     }
+    /*Top header*/
+    
+    .top-header-nav {
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .display-next {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    .space-icon-log {
+        margin-right: 3px;
+    }
     
     i.white {
         color: white;
@@ -84,7 +100,6 @@ test
     
     .footer {
         background: rgb(182, 7, 7);
-        padding: 1%;
         text-align: center;
         margin-top: 2%;
     }
@@ -144,7 +159,6 @@ test
     
     .footer {
         background: rgb(182, 7, 7);
-        padding: 1%;
         text-align: center;
     }
     
@@ -155,13 +169,10 @@ test
         align-content: center;
         background-color: rgb(0, 0, 0);
         justify-content: space-between;
-        /*Align child the center*/
-        padding: 1rem;
-        /*Add padding*/
         box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
-        /*Add shadow*/
         z-index: 1;
-        /*Add z-index*/
+        height: 56px;
+        width: 100%;
     }
     
     .header-left {
@@ -179,7 +190,7 @@ test
         justify-content: end;
     }
     
-    .Btn-whatsapp {
+    .btn-whatsapp {
         display: block;
         width: 40px;
         height: 40px;
@@ -194,13 +205,9 @@ test
         box-shadow: 0px 10px 10px -6px rgba(0, 0, 0, 0.75);
     }
     
-    .Btn-whatsapp a i {
+    .btn-whatsapp a i {
         border-color: white;
         color: white;
-    }
-    
-    .container2 {
-        background-color: aqua;
     }
     /*Login buttons area*/
     
@@ -252,12 +259,6 @@ Section for payment
         color: #333;
         text-align: center;
     }
-    
-    .container-fluid {}
-    
-    .card {}
-    /*End payment section*/
-    /* end my owns*/
     
     .clear {
         clear: both;
@@ -378,6 +379,7 @@ Section for payment
             background: #222;
             top: 72px;
             z-index: 111;
+            max-width: 95%;
         }
         .nav:after {
             content: '';
@@ -419,22 +421,6 @@ Section for payment
         .nav li:first-child a {
             border-top: none;
         }
-    }
-    
-    .sb-search {
-        position: absolute;
-        top: 7px;
-        right: 0px;
-        width: 0%;
-        min-width: 45px;
-        height: 45px;
-        float: right;
-        overflow: hidden;
-        -webkit-transition: width 0.3s;
-        -moz-transition: width 0.3s;
-        transition: width 0.3s;
-        z-index: 0;
-        margin-left: 20px;
     }
     
     .sb-search-input {
@@ -710,7 +696,7 @@ Section for payment
     
     li.list_desc {
         float: left;
-        width: 50%;
+        width: 90%;
     }
     
     li.list_desc h4 a {
@@ -734,6 +720,11 @@ Section for payment
         color: white;
         text-decoration: none;
         margin-right: 10px;
+        cursor: pointer;
+    }
+    
+    .header-btn-righ:hover {
+        color: rgb(122, 122, 122);
     }
     
     .icon1 .profile_img {
@@ -816,7 +807,6 @@ Section for payment
         text-decoration: none;
         border: none;
         cursor: pointer;
-        padding: 8px;
         outline: none;
         -webkit-transition: all 0.3s;
         -moz-transition: all 0.3s;
@@ -2395,11 +2385,6 @@ Section for payment
         .menu li a {
             padding: 5px 10px;
         }
-        .header_right {
-            display: flex;
-            align-items: center;
-            width: 20%;
-        }
         .icon1 ul {
             width: 250px;
             top: 59px;
@@ -2431,9 +2416,6 @@ Section for payment
     @media (max-width:800px) {
         .menu {
             margin: 10px 0 0;
-        }
-        .header_right {
-            width: 10%;
         }
         .icon1 ul {
             width: 250px;
@@ -2540,9 +2522,6 @@ Section for payment
             margin-top: 10px;
         }
         @media (max-width:640px) {
-            .header_right {
-                width: 11%;
-            }
             .etalage_zoom_area div {
                 width: 250px !important;
                 height: 250px !important;
@@ -2552,9 +2531,6 @@ Section for payment
             }
         }
         @media (max-width:480px) {
-            .header_right {
-                width: 15%;
-            }
             .etalage_zoom_area div {
                 width: 100px !important;
                 height: 100px !important;
@@ -2621,9 +2597,6 @@ Section for payment
             }
         }
         @media (max-width:320px) {
-            .header_right {
-                width: 24%;
-            }
             .copy {
                 float: none;
             }

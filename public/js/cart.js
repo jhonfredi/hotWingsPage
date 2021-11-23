@@ -568,10 +568,9 @@ function updateCart() {
         cart.items.forEach(element => {
             //convert to number
             totalItemsCart += Number(element.cont);
-            cartElement.innerHTML +=
-                `
-                                <li class="list_img"><img src="https://www.google.com/imgres?imgurl=https%3A%2F%2Fphotos.bigoven.com%2Frecipe%2Fhero%2Fgarlic-ginger-chicken-wings-39730d.jpg%3Fh%3D300%26w%3D300&imgrefurl=https%3A%2F%2Fwww.bigoven.com%2Frecipe%2Fgarlic-ginger-chicken-wings%2F2367387&tbnid=GXsltK55QfHSRM&vet=12ahUKEwjHmK-w2PXzAhXFBd8KHT1cC4sQMygDegUIARDKAQ..i&docid=MX0isnFxWj45gM&w=256&h=256&itg=1&q=chicken%20wing&hl=es-419&ved=2ahUKEwjHmK-w2PXzAhXFBd8KHT1cC4sQMygDegUIARDKAQ" alt=""/></li>
-                            <li class="list_desc"><h4><a href="#">${element.name}</a></h4><span class="actual">${element.cont} x
+            cartElement.innerHTML += `
+                                
+                            <li class="list_desc list_img"><h4><a>${element.name}</a></h4><span class="actual">${element.cont} x
                             ${element.price}</span></li>
                 `;
         });

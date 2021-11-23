@@ -66,71 +66,61 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/firestore.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
 </head>
 
 <body>
 
     <div class="header">
-        <div class="container">
-            <div class="row">
-                <div class="header-center">
+        <div class="top-header-nav container">
+            <div class="header-left col-md-9">
 
-                    <div class="header-left col-md-6">
-                        <div class="logo">
-                            <span>								
-                            <a href="index.html"><img src="img/logo.svg" alt="" /></a>							
+                <div class="logo">
+                    <span>								
+                            <a href="/"><img src="img/logo.svg" alt="" class="img-fluid"/></a>							
 						</span>
-                        </div>
-                        <div class="menu" hidden>
-                            <a class="toggleMenu" href="#"><img src="img/nav.png" alt="" /></a>
-                            <ul class="nav" id="nav">
-                                <li class="current"><a href="index.html">Menú</a></li>
-                                <li><a href="contact.html">Contactanos</a></li>
-                                <div class="clear"></div>
-                            </ul>
-                            <script type="text/javascript" src="js/responsive-nav.js"></script>
-                        </div>
-                        <div class="clear"></div>
-                    </div>
-
-
-                    <div class="header_right col-md-4" data-bs-dismiss="modal">
-
-                        <ul class="icon1 sub-icon1 profile_img">
-
-                            <li>
-                                <span>
-									<a class="header-btn-righ fas fa-shopping-cart" href="#"> </a>
-								</span>
-
-                                <span class="" id="total_items_cart"></span>
-                                <ul class="sub-icon1 list" id="ul_cart_id">
-                                    <div class="product_control_buttons">
-                                        <a href="javascript:deleteAllCart()" id="trashbin_icon_id"><img src="images/trashbin.png" alt="" /></a>
-                                        <a href="javascript:closeCart()" data-bs-dismiss="modal"><img src="images/close_edit.png" alt="" /></a>
-                                    </div>
-                                    <div class="clear"></div>
-                                    <div id="cart_div_id">
-
-                                    </div>
-
-                                    <div class="login_buttons">
-                                        <div class="check_button"><a href="checkout.html" id="go_to_pay_id">Ir a Pagar </a></div>
-
-                                        <div class="clear"></div>
-                                    </div>
-                                    <div class="clear"></div>
-                                </ul>
-
-                            </li>
-
-                        </ul>
-                        <div class="clear"></div>
-                        <span class="px-3" id="btn-user-log">
-                            
-                        </span>
-                    </div>
                 </div>
+
+                <div class="clear"></div>
+            </div>
+
+            <div class="header_right col-md-3" data-bs-dismiss="modal">
+
+                <ul class="icon1 sub-icon1 profile_img">
+
+                    <li>
+                        <div class="cart-and-total">
+                            <span>
+									<a class="header-btn-righ fas fa-shopping-cart" href="#"> </a>                                   
+                            </span>
+                            <span class="" id="total_items_cart"></span>
+                        </div>
+
+
+
+                        <ul class="sub-icon1 list" id="ul_cart_id">
+                            <div class="product_control_buttons">
+                                <a href="javascript:deleteAllCart()" id="trashbin_icon_id"><img src="images/trashbin.png" alt="" /></a>
+                                <a href="javascript:closeCart()" data-bs-dismiss="modal"><img src="images/close_edit.png" alt="" /></a>
+                            </div>
+                            <div class="clear"></div>
+                            <div id="cart_div_id">
+
+                            </div>
+
+                            <div class="login_buttons">
+                                <div class="check_button"><a href="checkout.html" id="go_to_pay_id">Ir a Pagar </a></div>
+
+                                <div class="clear"></div>
+                            </div>
+                            <div class="clear"></div>
+                        </ul>
+
+                    </li>
+
+                </ul>
+                <div class="clear"></div>
+
             </div>
         </div>
     </div>

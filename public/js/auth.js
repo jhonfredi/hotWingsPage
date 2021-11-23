@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     firebase.auth().useDeviceLanguage();
 
-    checkAndGoBackLogged();
+    //checkAndGoBackLogged();
     const passwordEle = document.getElementById('password');
     const toggleEle = document.getElementById('toggle');
     if (passwordEle && toggleEle) {
@@ -49,7 +49,46 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    checkLoggedChangeBtn(userLogCheckedCallBack);
 });
+
+function checkLoggedChangeBtn(userLogCheckedCallBack) {
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // User is signed in.            
+            userLogCheckedCallBack(true)
+        } else {
+            userLogCheckedCallBack(false)
+        }
+    });
+}
+
+function userLogCheckedCallBack(logged) {
+
+    var btnLogout = document.getElementById('btn-user-log');
+
+    if (btnLogout) {
+        if (logged) {
+            btnLogout.innerHTML = `<div class="display-next header-btn-righ">
+            <span href="#" class="fas space-icon-log">
+                Salir 
+            </span>
+                <span class="fas fa-sign-out-alt"></span>           
+            </div>`;
+
+            btnLogout.onclick = function() {
+                logout();
+            }
+        } else {
+            btnLogout.innerHTML = `<div class="display-next header-btn-righ">
+            <span class="fas space-icon-log" href="login.html">
+                Entrar
+            </span>
+            <span class="fas fa-sign-in-alt"></span>								                            
+            </div>`;
+        }
+    }
+}
 
 function loginWithFacebook() {
     const provider = new firebase.auth.FacebookAuthProvider();
@@ -225,11 +264,8 @@ function processForm(e) {
 }
 
 
-
-
-
 function errorLoginCallback(errorCode, errorMessage) {
-    console.log("erroode" + errorCode);
+
     switch (errorCode) {
         case 'auth/email-already-in-use':
             showToastMessage('error', "El email ya se encuentra en uso");
@@ -239,6 +275,12 @@ function errorLoginCallback(errorCode, errorMessage) {
             break;
         case 'auth/weak-password':
             showToastMessage('error', "Contraseña débil");
+            break;
+        case 'auth/wrong-password':
+            showToastMessage('error', "Email o Contraseña incorrecta");
+            break;
+        case 'auth/user-not-found':
+            showToastMessage('error', "Email o Contraseña incorrecta");
             break;
         default:
             showToastMessage('error', errorMessage);

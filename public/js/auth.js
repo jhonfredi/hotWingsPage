@@ -70,9 +70,9 @@ function userLogCheckedCallBack(logged) {
     if (btnLogout) {
         if (logged) {
             btnLogout.innerHTML = `<div class="display-next header-btn-righ">
-            <span href="#" class="fas space-icon-log">
+            <a href="#" class="fas space-icon-log log-hover">
                 Salir 
-            </span>
+            </a>
                 <span class="fas fa-sign-out-alt"></span>           
             </div>`;
 
@@ -81,11 +81,14 @@ function userLogCheckedCallBack(logged) {
             }
         } else {
             btnLogout.innerHTML = `<div class="display-next header-btn-righ">
-            <span class="fas space-icon-log" href="login.html">
+            <span class="fas space-icon-log log-hover">
                 Entrar
             </span>
             <span class="fas fa-sign-in-alt"></span>								                            
             </div>`;
+            btnLogout.onclick = function() {
+                window.location.href = "login.html";
+            }
         }
     }
 }

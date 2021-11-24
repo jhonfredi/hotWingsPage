@@ -727,6 +727,16 @@ Section for payment
         color: rgb(122, 122, 122);
     }
     
+    .log-hover:hover {
+        color: rgb(122, 122, 122);
+    }
+    
+    .log-hover {
+        color: white;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    
     .icon1 .profile_img {
         margin-top: 3px;
     }

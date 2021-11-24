@@ -14,7 +14,37 @@
             "**/node_modules/**"
         ],
         "cleanUrls": true,
-        "trailingSlash": true
+        "trailingSlash": true,
+        "rewrites": [{
+                "source": "/",
+                "destination": "/index.html"
+            },
+            {
+                "source": "/login",
+                "destination": "/login.html"
+            },
+            {
+                "source": "/register",
+                "destination": "/register.html"
+            },
+            {
+                "source": "/checkout",
+                "destination": "/checkout.html"
+            },
+            {
+                "source": "/404",
+                "destination": "/404.html"
+            },
+            {
+                "source": "/404",
+                "destination": "/404.html"
+            },
+            {
+                "source": "/contact",
+                "destination": "/contact.html"
+            }
+
+        ]
     },
     "storage": {
         "rules": "storage.rules"

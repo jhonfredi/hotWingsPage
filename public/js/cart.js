@@ -563,6 +563,7 @@ function updateCart() {
     const totalItemsCartElement = document.getElementById('total_items_cart');
     const goToPayElement = document.getElementById('go_to_pay_id');
     const trashbinIcon = document.getElementById('trashbin_icon_id');
+    var cartIconBlock = document.getElementById('fa-shopping-cart-block');
 
     if (cart != null) {
         cart.items.forEach(element => {
@@ -580,15 +581,21 @@ function updateCart() {
             totalItemsCartElement.classList.remove('total_items_cart');
             totalItemsCartElement.innerHTML = '';
             goToPayElement.innerHTML = `Ver menú`;
+            //trashbinIcon.classList.remove('trashbin_icon');
+            //search element by id fa-shopping-cart
+
+            //Hidde cartIconBlock
+            cartIconBlock.classList.add('d-none');
         } else {
             totalItemsCartElement.innerHTML = `${totalItemsCart}
             `;
             //add class to totalItemsCartElement
             totalItemsCartElement.classList.add('total_items_cart');
             goToPayElement.innerHTML = `Ir a Pagar: $${formatNumberToMil(cart.totalPrice)}`;
+            trashbinIcon.classList.add('trashbin_icon');
 
-            //display trashbin inline
-            trashbinIcon.style.display = 'inline'
+            //Show cartIconBlock
+            cartIconBlock.classList.remove('d-none');
         }
     } else {
         //delete all classes from the element
@@ -596,6 +603,9 @@ function updateCart() {
         totalItemsCartElement.innerHTML = '';
         goToPayElement.innerHTML = `Ver menú`;
         trashbinIcon.style.display = 'none';
+
+        //Hide cartIconBlock
+        cartIconBlock.classList.add('d-none');
     }
 }
 

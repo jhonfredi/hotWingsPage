@@ -104,9 +104,9 @@ function showModalToAditionals(id, name, description, image, price, myCategory, 
                     <div class="my-modal-footer bg-light">
                         <div class="col-md-2 subtotal-modal">
                           <span>Subtotal: $</span><span id="sp_current_subtotal_id">${formatNumberToMil(currentSubtotal)}</span>
-                        </div>
+                        </div>                    
                         <div class="col-md-4">
-                          <button type="button" class="btn btn-secondary col-md-6" data-bs-dismiss="modal ml-2 btn-modal-close">Cerrar</button>`;
+                          <button type="button" class="btn btn-secondary col-md-6" data-bs-dismiss="modal">Cerrar</button>`;
     if (option == 0) {
         modal += `<button type="button" class="btn btn-primary modal-success-btn col-md-6" id="modal-success-btn">Agregar</button>`;
     } else if (option == 1) {

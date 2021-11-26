@@ -71,14 +71,26 @@ function loadMainMenu() {
             var imgUrl = combo.image.replace("%2F", "/hot2f");
 
             newItem += `<span class="actual">$${formatNumberToMil(combo.price)}</span>
+                </div>`;
+
+
+            newItem += `
+            <div class="btns-on-product">
+                        <a class="text-white col-md-5 btn btn-action-item" href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',0)">Agregar</a>
+                        <a class="text-white col-md-5 btn btn-action-item" href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',1)"><span id="${combo.category}_${doc.id}_id_buy}">Comprar</a>
             </div>`;
 
-            newItem += `<div class="buttons col-md-12 btns-on-product">								
+            newItem += `</div>  `;
+
+
+
+            /* newItem += `<div class="buttons col-md-12 btns-on-product">								
                             <a class="text-white col-md-6 left" href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',0)"><span id="${combo.category}_${doc.id}_id}" class="btn btn-action-item ">Agregar</span></a>
                             <a class="text-white col-md-6 right" href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',1)"><span id="${combo.category}_${doc.id}_id_buy}" class="btn btn-action-item right">Comprar</span></a>
                                 <div class="clear"> </div>
 						</div>
 				</div>`;
+                */
             comboxContainer.innerHTML += newItem;
 
 

@@ -21,7 +21,6 @@ function loadNeigboordhods() {
         var distance = $('#select-neighborhood-id option:selected').attr("distance");
         var time = $('#select-neighborhood-id option:selected').attr("time");
 
-        console.log(price);
         //validate price not null not empty and no 0
         if (price && price != "" && price != "undefined" && price != "null" && price != " " && price != 0) {
             globalShipment = price;

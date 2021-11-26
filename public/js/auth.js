@@ -55,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function() {
 function checkLoggedChangeBtn(userLogCheckedCallBack) {
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
-            // User is signed in.            
             userLogCheckedCallBack(true)
         } else {
             userLogCheckedCallBack(false)
@@ -149,7 +148,8 @@ function sucessRegisterCallback(user) {
 }
 
 function sucessLoginCallback(user) {
-    window.location.href = "/";
+    //Visit the previous page
+    window.history.back();
     showToastSuccessMessage('success', 'Bienvenido');
 }
 
@@ -199,10 +199,10 @@ function checkAndGoBackLogged() {
 
 function logout() {
     firebase.auth().signOut().then(function() {
-        // Sign-out successful.
-        window.location.href = "index.html";
+
+        window.history.back();
     }).catch(function(error) {
-        // An error happened.
+
     });
 }
 

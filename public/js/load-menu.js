@@ -18,11 +18,12 @@ function loadMainMenu() {
 
     var db = firebase.firestore();
     var comboxContainer = document.getElementById('combox-container');
-    comboxContainer.innerHTML = "";
+    $("#combox-container div").text("");
 
     //get combos collection where status == "A"
-    db.collection("combos").where("status", "==", "A").onSnapshot(function(querySnapshot) {
+    db.collection("combos").where("status", "==", "A").orderBy("order").onSnapshot(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
+
             const task = doc.data();
             //map task to a new object
             const combo = {
@@ -40,7 +41,7 @@ function loadMainMenu() {
 
             var newItem =
                 `<div class="shop_box">
-					<a >
+					
 						<img src="${combo.image}" class="img-fluid img-thumbnail rounded float-left" alt="${combo.name}"/>`;
 
             if (combo.isNew === true) {
@@ -67,17 +68,16 @@ function loadMainMenu() {
                     `<span class="reducedfrom">$${formatNumberToMil(combo.originalPrice)}</span>
 					`
             }
-
             var imgUrl = combo.image.replace("%2F", "/hot2f");
 
-            newItem += `<span class="actual">$${formatNumberToMil(combo.price)}</span><br>
-							<ul class="buttons col-md-12">								
-								<li id="${combo.category}_${doc.id}_id}" class="cart btn btn-primary"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',0)">Agregar</a></li>
-								<li id="${combo.category}_${doc.id}_id_buy}" class="cart btn btn-primary"><a href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',1)">Comprar</a></li>
+            newItem += `<span class="actual">$${formatNumberToMil(combo.price)}</span>
+            </div>`;
+
+            newItem += `<div class="buttons col-md-12 btns-on-product">								
+                            <a class="text-white col-md-6 left" href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',0)"><span id="${combo.category}_${doc.id}_id}" class="btn btn-action-item ">Agregar</span></a>
+                            <a class="text-white col-md-6 right" href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',1)"><span id="${combo.category}_${doc.id}_id_buy}" class="btn btn-action-item right">Comprar</span></a>
                                 <div class="clear"> </div>
-							</ul>
-                            </div>
-                            </a>
+						</div>
 				</div>`;
             comboxContainer.innerHTML += newItem;
 

@@ -2,10 +2,53 @@
     /*
 test
 */
+    /*Modal*/
+    
+    .subtotal-modal {
+        display: flex;
+        justify-content: flex-start;
+    }
+    
+    .my-modal-footer {
+        display: flex;
+        flex-wrap: wrap;
+        flex-shrink: 0;
+        justify-content: space-between;
+        padding: 0.75rem;
+        border-top: 1px solid #dee2e6;
+        border-bottom-right-radius: calc(0.3rem - 1px);
+        border-bottom-left-radius: calc(0.3rem - 1px);
+    }
     
     * {
         margin: 0;
         padding: 0;
+    }
+    
+    .btns-action-card {
+        color: #fff;
+    }
+    
+    .btns-on-product {
+        justify-content: center;
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .btn-modal-close {
+        margin-right: 20px;
+    }
+    
+    .btn-action-item {
+        color: #fff;
+        background-color: rgb(41, 216, 132);
+        border-color: rgb(41, 216, 132);
+    }
+    
+    .btn-action-item:hover {
+        color: #fff;
+        background-color: rgb(51, 163, 109);
+        border-color: rgb(45, 189, 119);
     }
     
     .icon1 ul li {

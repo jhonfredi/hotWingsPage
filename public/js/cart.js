@@ -23,6 +23,8 @@ async function addToCart(id, name, description, image, price, categoryId, option
     await getCategorieById(categoryId, (snapshot) => {
 
         const data = snapshot.data();
+
+        console.log(data);
         var myCategory = {
             id: snapshot.id,
             name: data.name,
@@ -99,16 +101,16 @@ function showModalToAditionals(id, name, description, image, price, myCategory, 
                         </div>                       
                       </div>
                     </div>
-                    <div class="modal-footer bg-light">
-                        <div class="col-sm-2">
+                    <div class="my-modal-footer bg-light">
+                        <div class="col-md-2 subtotal-modal">
                           <span>Subtotal: $</span><span id="sp_current_subtotal_id">${formatNumberToMil(currentSubtotal)}</span>
                         </div>
-                        <div class="col-sm-2">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>`;
+                        <div class="col-md-4">
+                          <button type="button" class="btn btn-secondary col-md-6" data-bs-dismiss="modal ml-2 btn-modal-close">Cerrar</button>`;
     if (option == 0) {
-        modal += `<button type="button" class="btn btn-primary modal-success-btn" id="modal-success-btn">Agregar</button>`;
+        modal += `<button type="button" class="btn btn-primary modal-success-btn col-md-6" id="modal-success-btn">Agregar</button>`;
     } else if (option == 1) {
-        modal += `<button type="button" class="btn btn-primary modal-success-btn"  id="modal-success-btn">Comprar</button>`;
+        modal += `<button type="button" class="btn btn-primary modal-success-btn col-md-6"  id="modal-success-btn">Comprar</button>`;
     }
     modal += `
                         </div>

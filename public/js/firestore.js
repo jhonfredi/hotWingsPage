@@ -125,14 +125,14 @@ async function getCategorieById(id, callback) {
 
 async function getMenuOptionByCategoryId(category, callback, onFinishCallback) {
     var db = firebase.firestore();
-    db.collection("menuOptionOnItemInCar").where("categoryId", "==", category.id.toString()).orderBy("order").onSnapshot(function(querySnapshot) {
+    db.collection("menuOptionOnItemInCar").orderBy("order").onSnapshot(function(querySnapshot) {
         callback(querySnapshot, category, onFinishCallback);
     });
 }
 
 async function getMenuOptionOnItemByMenuId(menuOption, index, category, callback, onFinishCallback) {
     var db = firebase.firestore();
-    await db.collection("OptionOnItemInCar").where("menuOptionOnItemInCarId", "==", menuOption.id.toString()).orderBy("order").onSnapshot(function(querySnapshot) {
+    await db.collection("OptionOnItemInCar").orderBy("order").onSnapshot(function(querySnapshot) {
 
         var cat2 = callback(querySnapshot, menuOption, index, category, onFinishCallback);
 

@@ -24,7 +24,6 @@ async function addToCart(id, name, description, image, price, categoryId, option
 
         const data = snapshot.data();
 
-        console.log(data);
         var myCategory = {
             id: snapshot.id,
             name: data.name,
@@ -143,14 +142,23 @@ function showModalToAditionals(id, name, description, image, price, myCategory, 
 
 }
 
+/*
+Callback on finish category
+**/
 async function onCompleteMenuOptionsByCategory(querySnapshot, category, onFinishCallback) {
 
     querySnapshot.forEach(function(doc) {
         var menuOption = doc.data();
         menuOption.id = doc.id;
         menuOption.optionItems = [];
-        category.menuOptions.push(menuOption);
         globalCategory = category;
+
+        let categoriesToAplyInmenu = menuOption.categories.split(',');
+
+        if (categoriesToAplyInmenu.includes(category.id)) {
+            category.menuOptions.push(menuOption);
+
+        }
 
     });
 
@@ -178,10 +186,16 @@ function onCompleteGetItemsMenuByMenuOptionId(querySnapshot, menuOption, index, 
         let optionItem = data;
         optionItem.id = doc.id;
 
-        category.menuOptions[index].optionItems.push(optionItem);
-        globalCategory.menuOptions[index].optionItems.push(optionItem);
+        let optionsMenu = optionItem.options.split(',');
+        
+        if (optionsMenu.includes(menuOption.id)) {
+            category.menuOptions[index].optionItems.push(optionItem);
+            globalCategory.menuOptions[index].optionItems.push(optionItem);
+            createField(optionItem, menuOption);
 
-        createField(optionItem, menuOption);
+        }
+
+
     });
 }
 
@@ -685,4 +699,5 @@ function closeCart() {
 
 
 
+}
 }

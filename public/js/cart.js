@@ -143,7 +143,7 @@ function showModalToAditionals(id, name, description, image, price, myCategory, 
 }
 
 /*
-Callback on finish category
+Get menu options by category
 **/
 async function onCompleteMenuOptionsByCategory(querySnapshot, category, onFinishCallback) {
 
@@ -152,6 +152,7 @@ async function onCompleteMenuOptionsByCategory(querySnapshot, category, onFinish
         menuOption.id = doc.id;
         menuOption.optionItems = [];
         globalCategory = category;
+        var appliesAll = menuOption.appliesAll;
 
         let categoriesToAplyInmenu = menuOption.categories.split(',');
 
@@ -185,7 +186,7 @@ function onCompleteGetItemsMenuByMenuOptionId(querySnapshot, menuOption, index, 
 
         let optionItem = data;
         optionItem.id = doc.id;
-
+        let appliesAll = optionItem.appliesAll;
         let optionsMenu = optionItem.options.split(',');
 
         if (optionsMenu.includes(menuOption.id)) {

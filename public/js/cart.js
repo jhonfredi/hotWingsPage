@@ -677,12 +677,3 @@ function deleteAllCart() {
     });
 
 }
-
-function closeCart() {
-
-
-
-
-
-
-}

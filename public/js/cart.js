@@ -6,15 +6,62 @@ var currentMandatory = false;
 
 $(document).ready(function() {
     updateCart();
+    setCartHover();
 
 });
 
+
+$('html').click(function(e) {
+    if (!$(e.target).hasClass('cart-resume-id') && !$(e.target).hasClass('shoping-cart-id')) {
+        hideUlCart();
+    }
+});
+
+
+function setCartHover() {
+
+    var ulCart = document.getElementById("cart-resume-id");
+
+    //get element by id close-edit-id
+    var closeEdit = document.getElementById("close-edit-id");
+
+    var shoppingCart = document.getElementById("shoping-cart-id");
+
+    closeEdit.addEventListener("click", function() {
+        hideUlCart();
+
+    });
+
+    shoppingCart.addEventListener("click", function() {
+        ulCart.style.visibility = "visible";
+        ulCart.style.opacity = "1";
+        ulCart.style.margin = "0";
+        ulCart.style.zIndex = "9999";
+
+    });
+
+    ulCart.addEventListener("mouseleave", function() {
+        hideUlCart();
+    });
+}
+
+
+function hideUlCart() {
+
+    var ulCart = document.getElementById("cart-resume-id");
+    ulCart.style.visibility = "hidden";
+    ulCart.style.opacity = "0";
+    ulCart.style.margin = "0";
+    ulCart.style.zIndex = "-9999";
+
+
+}
 //search component by id "total_items_cart" 
 /*
 This is call whe n user click on comprar or Agregar al carrito
 */
 async function addToCart(id, name, description, image, price, categoryId, option) {
-
+    hideUlCart();
     //This is because the imagUrl have that caracter and when I pass by href it is not working
     image = image.replace("/hot2f", "%2F");
     currentSubtotal = price;

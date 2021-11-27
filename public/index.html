@@ -38,7 +38,7 @@
 </head>
 
 <body>
-    <div class="header">
+    <div class="header" id="header-id">
         <div class="top-header-nav container">
             <div class="header-left col-md-9">
 
@@ -51,22 +51,23 @@
                 <div class="clear"></div>
             </div>
 
-            <div class="header_right col-md-3" data-bs-dismiss="modal">
+            <div class="header_right col-md-3">
 
                 <ul class="icon1 sub-icon1 profile_img">
 
                     <li>
                         <div class="display-next" id="fa-shopping-cart-block">
                             <span>
-									<a class="header-btn-righ fas fa-shopping-cart" href="#"> </a>                                   
+									<a class="header-btn-righ fas fa-shopping-cart shoping-cart-id" href="#" id="shoping-cart-id"> </a>                                   
                             </span>
                             <span class="" id="total_items_cart"></span>
                         </div>
 
-                        <ul class="sub-icon1 list" id="ul_cart_id">
+
+                        <ul class="sub-icon1 list this-show-up css-.icon1 li:hover cart-resume-id" id="cart-resume-id">
                             <div class="product_control_buttons">
                                 <a href="javascript:deleteAllCart()" id="trashbin_icon_id"><img src="images/trashbin.png" alt="" /></a>
-                                <a href="javascript:closeCart()" data-bs-dismiss="modal"><img src="images/close_edit.png" alt="" /></a>
+                                <a id="close-edit-id"><img src="img/close_edit.png" alt="" /></a>
                             </div>
                             <div class="clear"></div>
                             <div id="cart_div_id">
@@ -84,6 +85,7 @@
                     </li>
 
                 </ul>
+
                 <div class="clear"></div>
                 <span class="px-3" id="btn-user-log">
                             
@@ -96,7 +98,7 @@
         <a href="https://wa.me/message/XPI5CC3DXRLZL1" target="_blank">
             <i class="fab fa-whatsapp fa-2x"></i></a>
     </div>
-    <div class="container">
+    <div class="container" id="menucontainer">
         <div class="row">
             <div class="shop-container" id="combox-container">
 

@@ -608,13 +608,15 @@ Section for payment
         -moz-box-shadow: 0 0 10px #AAA;
         -o-box-shadow: 0 0 10px #AAA;
     }
-    
+    /*
+    Comment this, was hard to close from the X
     .icon1 li:hover>ul {
         opacity: 1;
         visibility: visible;
         margin: 0;
         z-index: 9999;
-    }
+        background-color: red;
+    }*/
     
     .icon1 ul ul {
         top: 6px;

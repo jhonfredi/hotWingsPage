@@ -36,10 +36,7 @@ function loadNeigboordhods() {
             $("#select-neighborhood-id").append($('<option>', {
                 value: option.id,
                 text: option.name,
-                price: option.price,
-                distance: option.distance,
-                time: option.time
-
+                price: option.price
             }));
         });
 

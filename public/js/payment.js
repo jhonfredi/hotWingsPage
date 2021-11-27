@@ -3,9 +3,9 @@ var globalShipment = 10000;
 var globalSubtotal = 0;
 
 $(document).ready(function() {
+    loadNeigboordhods();
     loadCurrentCart();
     onlyOneOption();
-    loadNeigboordhods();
 });
 
 function loadNeigboordhods() {
@@ -13,13 +13,50 @@ function loadNeigboordhods() {
     // Initialize select2
     $("#select-neighborhood-id").select2();
 
+
+
+    //get neigbordhods from localstorage
+    var neigborhoods = neigborhoods = {
+        "neig": []
+    };
+    //firestore.js
+    getAllNeighborhoods((querySnapshot) => {
+
+        querySnapshot.forEach(function(doc) {
+
+            let data = doc.data();
+            let option = {};
+            option.id = doc.id;
+            option.name = data.name;
+            option.price = data.price;
+            option.distance = data.distance;
+            option.time = data.time;
+            neigborhoods.neig.push(option);
+
+            $("#select-neighborhood-id").append($('<option>', {
+                value: option.id,
+                text: option.name
+            }));
+        });
+
+        setSelectNeighborhoodBehavior();
+
+    });
+}
+
+function setSelectNeighborhoodBehavior() {
+
+    console.log("finish loadding");
     //on change select option
     $('#select-neighborhood-id').change(function() {
+
         var neighborHood = $('#select-neighborhood-id option:selected').text();
         var userid = $('#select-neighborhood-id').val();
         var price = $('#select-neighborhood-id option:selected').attr("price");
         var distance = $('#select-neighborhood-id option:selected').attr("distance");
         var time = $('#select-neighborhood-id option:selected').attr("time");
+
+        console.log("price " + price);
 
         //validate price not null not empty and no 0
         if (price && price != "" && price != "undefined" && price != "null" && price != " " && price != 0) {
@@ -32,67 +69,8 @@ function loadNeigboordhods() {
             //get the current check-subtotal and convert to number
             $("#check-total").text(`Entre ${formatNumberToMil(globalSubtotal+4000)} y ${formatNumberToMil(globalSubtotal+10000)}`);
         }
-
     });
-
-    //get neigbordhods from localstorage
-    var neigborhoods = JSON.parse(localStorage.getItem("add"));
-
-    //currnt date
-    var currentDate = new Date();
-
-    if (neigborhoods != null && neigborhoods.expDate && neigborhoods.expDate < currentDate.getTime()) {
-        neigborhoods = null;
-    }
-
-    if (neigborhoods == null) {
-
-        neigborhoods = {
-            "neig": [],
-            "expDate": currentDate.getTime()
-        };
-        //firestore.js
-        getAllNeighborhoods((querySnapshot) => {
-
-            querySnapshot.forEach(function(doc) {
-
-                let data = doc.data();
-                let option = {};
-                option.id = doc.id;
-                option.name = data.name;
-                option.price = data.price;
-                option.distance = data.distance;
-                option.time = data.time;
-                neigborhoods.neig.push(option);
-
-                $("#select-neighborhood-id").append($('<option>', {
-                    value: option.id,
-                    text: option.name
-                }));
-            });
-            //one day
-            //neigborhoods.expDate = currentDate.getTime() + (1 * 24 * 60 * 60 * 1000); 
-            //1 hora
-
-            neigborhoods.expDate = currentDate.getTime() + (1 * 1 * 60 * 60 * 1000);
-            localStorage.setItem("add", JSON.stringify(neigborhoods));
-        });
-
-
-    } else {
-
-        neigborhoods.neig.forEach(function(neigborhood) {
-            $("#select-neighborhood-id").append($('<option>', {
-                value: neigborhood.id,
-                text: neigborhood.name,
-                price: neigborhood.price,
-                distance: neigborhood.distance,
-                time: neigborhood.time
-            }));
-        });
-    }
 }
-
 
 function onlyOneOption() {
     var checkboxes = document.getElementsByName('checkg')

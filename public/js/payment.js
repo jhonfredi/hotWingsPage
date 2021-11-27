@@ -35,7 +35,11 @@ function loadNeigboordhods() {
 
             $("#select-neighborhood-id").append($('<option>', {
                 value: option.id,
-                text: option.name
+                text: option.name,
+                price: option.price,
+                distance: option.distance,
+                time: option.time
+
             }));
         });
 
@@ -46,8 +50,6 @@ function loadNeigboordhods() {
 
 function setSelectNeighborhoodBehavior() {
 
-    console.log("finish loadding");
-    //on change select option
     $('#select-neighborhood-id').change(function() {
 
         var neighborHood = $('#select-neighborhood-id option:selected').text();
@@ -55,8 +57,6 @@ function setSelectNeighborhoodBehavior() {
         var price = $('#select-neighborhood-id option:selected').attr("price");
         var distance = $('#select-neighborhood-id option:selected').attr("distance");
         var time = $('#select-neighborhood-id option:selected').attr("time");
-
-        console.log("price " + price);
 
         //validate price not null not empty and no 0
         if (price && price != "" && price != "undefined" && price != "null" && price != " " && price != 0) {

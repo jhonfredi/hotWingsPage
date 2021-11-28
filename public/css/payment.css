@@ -8,6 +8,8 @@
     color: #fff;
 }
 
+.order-comments {}
+
 .full-withd {
     width: 100%;
 }
@@ -24,7 +26,6 @@
     font-weight: bold;
     color: #333;
     text-align: center;
-    background-color: rebeccapurple;
 }
 
 .qr-bancolombia {

@@ -274,10 +274,6 @@ Section for payment
         margin-bottom: 10px;
     }
     
-    .order-comments {
-        height: 80px;
-    }
-    
     .complete-order {
         display: flex;
         flex-direction: row;

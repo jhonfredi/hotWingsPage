@@ -8,7 +8,9 @@
     color: #fff;
 }
 
-.order-comments {}
+.nota_payment_avise {
+    font-size: 12px;
+}
 
 .full-withd {
     width: 100%;

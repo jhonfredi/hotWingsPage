@@ -3,6 +3,7 @@ $(document).ready(function() {
     firebase.initializeApp(firebaseConfig);
 });
 
+
 const category = {
     id: "",
     name: "",
@@ -116,10 +117,65 @@ async function getItemBycategoryId(id) {
 async function getCategorieById(id, callback) {
     //Get category collection
     var db = firebase.firestore();
-
     const snapshot = await db.collection('categories').doc(id).get();
 
     callback(snapshot);
+}
+
+function precioDomicilio(agent) {
+    var barrio = agent.parameters.barrio;
+    agent.add("buscando domicilio a " + barrio);
+    db.collection("neighborhoods").where("name", "==", barrio.toUpperCase()).onSnapshot(function(querySnapshot) {
+        if (querySnapshot.empty) {
+            agent.add('Lo sentimos, no hemos encontrado el barrio ' + barrio + "puedes intentar con uno cercano");
+        } else {
+            querySnapshot.forEach(function(doc) {
+                agent.add("El domicilio a " + doc.name + " cuesta: $" + doc.price);
+            });
+        }
+    });
+}
+
+
+const neighborhoods = {
+    "neighborhoods": [{
+            "id": 102,
+            "name": "11 DE NOVIEMBRE",
+            "price": 6000,
+            "location": "10.4128333, -75.4941839",
+            "distance": 4.7,
+            "time": 19,
+            "confirmed": "VERDADERO"
+        },
+        {
+            "id": 127,
+            "name": "13 DE JUNIO",
+            "price": 5000,
+            "location": "10.4035761, -75.48617519999999",
+            "distance": 3,
+            "time": 12,
+            "confirmed": "VERDADERO"
+        },
+        {
+            "id": 128,
+            "name": "MANGA",
+            "price": 7000,
+            "location": "10.4035761, -75.48617519999999",
+            "distance": 3,
+            "time": 12,
+            "confirmed": "VERDADERO"
+        }
+    ]
+};
+
+function precioDomicilioBarrio(barrio) {
+
+    //search neighborhood by name on neighborhoods
+    var neighborhood = neighborhoods.neighborhoods.find(function(neighborhood) {
+        return neighborhood.name.toLowerCase() == barrio.toLowerCase();
+    });
+
+    return neighborhood;
 
 }
 
@@ -133,9 +189,7 @@ async function getMenuOptionByCategoryId(category, callback, onFinishCallback) {
 async function getMenuOptionOnItemByMenuId(menuOption, index, category, callback, onFinishCallback) {
     var db = firebase.firestore();
     await db.collection("OptionOnItemInCar").orderBy("order").onSnapshot(function(querySnapshot) {
-
-        var cat2 = callback(querySnapshot, menuOption, index, category, onFinishCallback);
-
+        callback(querySnapshot, menuOption, index, category, onFinishCallback);
     });
 
     return category;

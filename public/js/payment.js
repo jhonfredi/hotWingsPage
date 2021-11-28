@@ -90,15 +90,11 @@ function onlyOneOption() {
                 //set the check-total equals to check-subtotal
 
                 $("#check-total").text(`$${formatNumberToMil(globalSubtotal)}`);
-
-
             }
 
         }
     }
 }
-
-
 
 function loadCurrentCart() {
 
@@ -171,7 +167,7 @@ function loadCurrentCart() {
                 adi += ", </br>";
                 adiToWhatsapp += ", ";
             }
-            //remove last , </br>
+
             adi = adi.substring(0, adi.length - 7);
             adi += "</br>";
             adiToWhatsapp = adiToWhatsapp.substring(0, adiToWhatsapp.length - 2);
@@ -183,7 +179,7 @@ function loadCurrentCart() {
         }
 
         var row = $("<tr></tr>");
-        var image = `<div class="media">
+        var image = `<div class="media img-fluid">
                         <div class="d-flex">
                             <img src="${image}" alt=""
                                 style="width: 100px; height: 100px;">
@@ -207,13 +203,6 @@ function loadCurrentCart() {
             cartToWhatsapp += `${name} `;
         }
     }
-
-    //create button to call whatsapp and send message
-    var button = $("<button></button>");
-    button.attr("id", "send_whatsapp");
-    button.attr("class", "btn btn-continue-whatsapp");
-    button.html("Ordenar via whatsapp");
-    $("#cart_resumen_price_id").append(button);
 
     //add event to button
     $("#send_whatsapp").click(function() {
@@ -267,10 +256,6 @@ function validateOrder() {
             return false;
         }
     }
-
-
-
-
 
     return true
 }

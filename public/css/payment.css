@@ -1,0 +1,71 @@
+.btn-continue-whatsapp:hover {
+    color: rgb(255, 255, 255);
+    background-color: #20c773
+}
+
+.btn-continue-whatsapp {
+    background-color: #01e675;
+    color: #fff;
+}
+
+.full-withd {
+    width: 100%;
+}
+
+.to-center {
+    text-align: center;
+}
+
+.payment-methods {
+    margin-top: 0.5rem;
+}
+
+.title-your-order {
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    background-color: rebeccapurple;
+}
+
+.qr-bancolombia {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    flex-direction: column;
+}
+
+.download_qr {
+    text-decoration: none;
+    color: #fff;
+    background-color: #01e675;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-top: 0.2rem;
+}
+
+.download_qr:hover {
+    color: #fff;
+    background-color: #20c773;
+    border-radius: 15px;
+}
+
+.payment-method {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1px;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 768px) {
+    .payment-method {
+        flex-direction: column;
+    }
+    .qr_bancolombia {
+        display: none;
+    }
+    .download_qr {
+        margin-top: 0;
+    }
+}

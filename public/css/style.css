@@ -145,11 +145,6 @@ test
         margin-top: 2%;
     }
     
-    .btn-continue-whatsapp {
-        background-color: #01e675;
-        color: #fff;
-    }
-    
     html {
         font-size: 1rem;
     }
@@ -293,12 +288,6 @@ Section for payment
         flex-direction: column;
         justify-content: space-between;
         padding: 4%;
-    }
-    
-    .title-your-order {
-        font-weight: bold;
-        color: #333;
-        text-align: center;
     }
     
     .clear {

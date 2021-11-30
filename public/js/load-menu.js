@@ -51,7 +51,9 @@ function loadMainMenu() {
             }
             if (combo.onSale === true) {
                 var discount = (combo.originalPrice - combo.price) / combo.originalPrice * 100;
-                discount = Math.trunc(discount);
+                //round up discout 
+
+                discount = Math.round(discount);
                 newItem += `<span class="sale-box">
 							<span class="sale-label">-${discount} %</span>
 						</span>`;
@@ -81,16 +83,6 @@ function loadMainMenu() {
             </div>`;
 
             newItem += `</div>  `;
-
-
-
-            /* newItem += `<div class="buttons col-md-12 btns-on-product">								
-                            <a class="text-white col-md-6 left" href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',0)"><span id="${combo.category}_${doc.id}_id}" class="btn btn-action-item ">Agregar</span></a>
-                            <a class="text-white col-md-6 right" href="javascript:addToCart('${doc.id}','${combo.name}','${combo.description}','${imgUrl}','${combo.price}','${combo.category}',1)"><span id="${combo.category}_${doc.id}_id_buy}" class="btn btn-action-item right">Comprar</span></a>
-                                <div class="clear"> </div>
-						</div>
-				</div>`;
-                */
             comboxContainer.innerHTML += newItem;
 
 

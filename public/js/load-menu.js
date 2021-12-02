@@ -37,7 +37,7 @@ function checkOpening() {
         if (todayDay === undefined || todayDay === null) {
             //get the near day to open
             var nextDay = allDays.find(x => x.day > today);
-            ourSchedulemessage = `Cerrado, abrimos el próximo  ${nextDay.id} a las ${nextDay.start}:${nextDay.startMinutes}, domicilios a toda Cartagena`;
+            ourSchedulemessage = `Cerrado, abrimos el próximo  ${nextDay.id} a las ${nextDay.start}:${nextDay.startMinutes}, domicilios a toda Cartagena <a href='https://www.instagram.com/hotwingsctg' target='_blank' class='no-decoration-red'>@hotwingsctg</a>`;
             weAreClose.style.backgroundColor = "#272727";
             weAreClose.style.color = "red";
 
@@ -54,11 +54,11 @@ function checkOpening() {
 
             //validate if date is before to start and startMinutes
             if (hours < start || (hours === start && minutes < startMinutes)) {
-                ourSchedulemessage = `Abrimos a las ${start}:${startMinutes} domicilios a toda Cartagena`;
+                ourSchedulemessage = `Abrimos a las ${start}:${startMinutes} domicilios a toda Cartagena <a href='https://www.instagram.com/hotwingsctg' target='_blank' class='no-decoration-white'>@hotwingsctg</a>`;
                 weAreClose.style.backgroundColor = "#272727";
                 weAreClose.style.color = "red";
             } else {
-                ourSchedulemessage = `Cerramos a las ${end}:${endMinutes} domicilios a toda Cartagena`;
+                ourSchedulemessage = `Cerramos a las ${end}:${endMinutes} domicilios a toda Cartagena <a href='https://www.instagram.com/hotwingsctg' target='_blank' class='no-decoration-white'>@hotwingsctg</a>`;
                 weAreClose.style.backgroundColor = "#01e675";
                 weAreClose.style.color = "white";
             }

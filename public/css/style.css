@@ -25,6 +25,16 @@ test
         padding: 0;
     }
     
+    .no-decoration-red {
+        text-decoration: none;
+        color: red;
+    }
+    
+    .no-decoration-white {
+        text-decoration: none;
+        color: white;
+    }
+    
     .btns-action-card {
         color: #fff;
     }

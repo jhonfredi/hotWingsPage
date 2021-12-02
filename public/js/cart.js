@@ -625,7 +625,7 @@ function updateCart() {
     let totalItemsCart = 0;
     const totalItemsCartElement = document.getElementById('total_items_cart');
     const goToPayElement = document.getElementById('go_to_pay_id');
-    const trashbinIcon = document.getElementById('trashbin_icon_id');
+
     var cartIconBlock = document.getElementById('fa-shopping-cart-block');
 
     if (cart != null) {
@@ -644,10 +644,6 @@ function updateCart() {
             totalItemsCartElement.classList.remove('total_items_cart');
             totalItemsCartElement.innerHTML = '';
             goToPayElement.innerHTML = `Ver menú`;
-            //trashbinIcon.classList.remove('trashbin_icon');
-            //search element by id fa-shopping-cart
-
-            //Hidde cartIconBlock
             cartIconBlock.classList.add('d-none');
         } else {
             totalItemsCartElement.innerHTML = `${totalItemsCart}
@@ -655,7 +651,6 @@ function updateCart() {
             //add class to totalItemsCartElement
             totalItemsCartElement.classList.add('total_items_cart');
             goToPayElement.innerHTML = `Ir a Pagar: $${formatNumberToMil(cart.totalPrice)}`;
-            trashbinIcon.classList.add('trashbin_icon');
 
             //Show cartIconBlock
             cartIconBlock.classList.remove('d-none');
@@ -665,8 +660,6 @@ function updateCart() {
         totalItemsCartElement.classList.remove('total_items_cart');
         totalItemsCartElement.innerHTML = '';
         goToPayElement.innerHTML = `Ver menú`;
-        trashbinIcon.style.display = 'none';
-
         //Hide cartIconBlock
         cartIconBlock.classList.add('d-none');
     }
@@ -706,12 +699,9 @@ function showAditionalOrder() {
     }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-            const trashbinIcon = document.getElementById('trashbin_icon_id');
             localStorage.removeItem('cart');
             updateCart();
             //hide the trashbin icon
-            trashbinIcon.style.display = 'none';
-
         }
     });
 }
@@ -728,12 +718,8 @@ function deleteAllCart() {
     }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-            const trashbinIcon = document.getElementById('trashbin_icon_id');
             localStorage.removeItem('cart');
             updateCart();
-            //hide the trashbin icon
-            trashbinIcon.style.display = 'none';
-
         }
     });
 

@@ -251,6 +251,10 @@ test
         box-shadow: 0px 10px 10px -6px rgba(0, 0, 0, 0.75);
     }
     
+    .swal2-styled.swal2-confirm {
+        background-color: #01e675;
+    }
+    
     .btn-whatsapp a i {
         border-color: white;
         color: white;

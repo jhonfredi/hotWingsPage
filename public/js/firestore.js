@@ -270,7 +270,7 @@ function getAllNeighborhoods(callback) {
 function getAllDays(callback) {
     var db = firebase.firestore();
 
-    db.collection("scheduler").orderBy("day").onSnapshot(function(querySnapshot) {
+    db.collection("scheduler").orderBy("day").where("status", "==", "A").onSnapshot(function(querySnapshot) {
         callback(querySnapshot);
     });
 

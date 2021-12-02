@@ -33,8 +33,9 @@ function checkOpening() {
         var todayDay = allDays.find(x => x.day === today);
 
         var ourSchedulemessage = "";
+
         //validate todayIs null or undefined
-        if (todayDay === undefined || todayDay === null) {
+        if (todayDay === undefined || todayDay === null || todayDay === "" || (todayDay.end <= date.getHours() && todayDay.endMinutes < date.getMinutes())) {
             //get the near day to open
             var nextDay = allDays.find(x => x.day > today);
             ourSchedulemessage = `Cerrado, abrimos el próximo  ${nextDay.id} a las ${nextDay.start}:${nextDay.startMinutes}, domicilios a toda Cartagena <a href='https://www.instagram.com/hotwingsctg' target='_blank' class='no-decoration-red'>@hotwingsctg</a>`;
@@ -54,10 +55,37 @@ function checkOpening() {
 
             //validate if date is before to start and startMinutes
             if (hours < start || (hours === start && minutes < startMinutes)) {
-                ourSchedulemessage = `Abrimos a las ${start}:${startMinutes} domicilios a toda Cartagena <a href='https://www.instagram.com/hotwingsctg' target='_blank' class='no-decoration-white'>@hotwingsctg</a>`;
+                ourSchedulemessage = `Abrimos a las ${start}:${startMinutes} domicilios a toda Cartagena <a href='https://www.instagram.com/hotwingsctg' target='_blank' class='no-decoration-red'>@hotwingsctg</a>`;
                 weAreClose.style.backgroundColor = "#272727";
                 weAreClose.style.color = "red";
+                //create a countdown to start
+                var countDownDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), start, startMinutes);
+                var x = setInterval(function() {
+                    var now = new Date().getTime();
+                    var distance = countDownDate - now;
+                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+                    if (distance < 120000 && distance > 60000) {
+                        weAreClose.innerHTML = `Abrimos en 2 minutos domicilios a toda Cartagena <a href='https://www.instagram.com/hotwingsctg' target='_blank' class='no-decoration-red'>@hotwingsctg</a>`;
+                    } else if (distance < 60000) {
+                        weAreClose.style.color = "red";
+                        weAreClose.innerHTML = `Abrimos en 1 minuto domicilios a toda Cartagena <a href='https://www.instagram.com/hotwingsctg' target='_blank' class='no-decoration-red'>@hotwingsctg</a>`;
+                    } else {
+                        weAreClose.innerHTML = `Abrimos en ${hours}h : ${minutes} minutos domicilios a toda Cartagena <a href='https://www.instagram.com/hotwingsctg' target='_blank' class='no-decoration-red'>@hotwingsctg</a>`;
+                    }
+
+                    if (distance < 0) {
+                        clearInterval(x);
+                        weAreClose.innerHTML = `Cerramos a las ${end}:${endMinutes} domicilios a toda Cartagena <a href='https://www.instagram.com/hotwingsctg' target='_blank' class='no-decoration-white'>@hotwingsctg</a>`;
+                        weAreClose.style.backgroundColor = "#01e675";
+                        weAreClose.style.color = "white";
+                    }
+                }, 100);
+
+
             } else {
+
                 ourSchedulemessage = `Cerramos a las ${end}:${endMinutes} domicilios a toda Cartagena <a href='https://www.instagram.com/hotwingsctg' target='_blank' class='no-decoration-white'>@hotwingsctg</a>`;
                 weAreClose.style.backgroundColor = "#01e675";
                 weAreClose.style.color = "white";

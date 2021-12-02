@@ -37,7 +37,7 @@ function checkOpening() {
         if (todayDay === undefined || todayDay === null) {
             //get the near day to open
             var nextDay = allDays.find(x => x.day > today);
-            ourSchedulemessage = `Cerrado, abrimos el próximo  ${nextDay.id} a las ${nextDay.start}:${nextDay.startMinutes} domicilios a toda Cartagena`;
+            ourSchedulemessage = `Cerrado, abrimos el próximo  ${nextDay.id} a las ${nextDay.start}:${nextDay.startMinutes}, domicilios a toda Cartagena`;
             weAreClose.style.backgroundColor = "#272727";
             weAreClose.style.color = "red";
 

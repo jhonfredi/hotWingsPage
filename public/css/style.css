@@ -255,6 +255,13 @@ test
         background-color: #5890FF;
         color: white;
     }
+    
+    .we-are-close {
+        background-color: rgb(27, 27, 27);
+        color: red;
+        text-align: center;
+        font-size: 0.8rem;
+    }
     /*End logins btn area*/
     /*
 Buttons on cart

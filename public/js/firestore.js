@@ -1,8 +1,26 @@
 //on document ready
 $(document).ready(function() {
     firebase.initializeApp(firebaseConfig);
+
 });
 
+var weekday = new Array(7);
+weekday[0] = "lunes";
+weekday[1] = "martes";
+weekday[2] = "miercoles";
+weekday[3] = "jueves";
+weekday[4] = "viernes";
+weekday[5] = "sabado";
+weekday[6] = "domingo";
+
+var dayweek = new Array(7);
+dayweek['lunes'] = 0;
+dayweek['martes'] = 1;
+dayweek['miercoles'] = 2;
+dayweek['jueves'] = 3;
+dayweek['viernes'] = 4;
+dayweek['sabado'] = 5;
+dayweek['domingo'] = 6;
 
 const category = {
     id: "",
@@ -247,4 +265,13 @@ function getAllNeighborhoods(callback) {
     db.collection("neighborhoods").orderBy("name").get().then((querySnapshot) => {
         callback(querySnapshot);
     });
+}
+
+function getAllDays(callback) {
+    var db = firebase.firestore();
+
+    db.collection("scheduler").orderBy("day").onSnapshot(function(querySnapshot) {
+        callback(querySnapshot);
+    });
+
 }

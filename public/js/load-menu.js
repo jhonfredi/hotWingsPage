@@ -1,5 +1,6 @@
 $(document).ready(function() {
     loadMainMenu();
+    checkOpening();
 });
 
 
@@ -14,11 +15,71 @@ function checkLogged2(userLogCheckedCallBack) {
     });
 }
 
+function checkOpening() {
+
+    let weAreClose = document.getElementById("we-are-close");
+
+    getAllDays((querySnapshot) => {
+
+        var date = new Date();
+        let allDays = [];
+        querySnapshot.forEach(function(doc) {
+            const data = doc.data();
+            data.id = doc.id;
+            allDays.push(data);
+        });
+        var today = date.getDay();
+        //search today in allDays
+        var todayDay = allDays.find(x => x.day === today);
+
+        var ourSchedulemessage = "";
+        //validate todayIs null or undefined
+        if (todayDay === undefined || todayDay === null) {
+            //get the near day to open
+            var nextDay = allDays.find(x => x.day > today);
+            ourSchedulemessage = `Cerrado, abrimos el próximo  ${nextDay.id} a las ${nextDay.start}:${nextDay.startMinutes} domicilios a toda Cartagena`;
+            weAreClose.style.backgroundColor = "#272727";
+            weAreClose.style.color = "red";
+
+        } else {
+
+            var start = todayDay.start;
+            var startMinutes = todayDay.startMinutes;
+            var end = todayDay.end;
+            var endMinutes = todayDay.endMinutes;
+
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+
+
+            //validate if date is before to start and startMinutes
+            if (hours < start || (hours === start && minutes < startMinutes)) {
+                ourSchedulemessage = `Abrimos a las ${start}:${startMinutes} domicilios a toda Cartagena`;
+                weAreClose.style.backgroundColor = "#272727";
+                weAreClose.style.color = "red";
+            } else {
+                ourSchedulemessage = `Cerramos a las ${end}:${endMinutes} domicilios a toda Cartagena`;
+                weAreClose.style.backgroundColor = "#01e675";
+                weAreClose.style.color = "white";
+            }
+
+        }
+
+        weAreClose.innerHTML = ourSchedulemessage;
+
+
+
+
+    });
+
+}
+
 function loadMainMenu() {
 
     var db = firebase.firestore();
     var comboxContainer = document.getElementById('combox-container');
-    $("#combox-container div").text("");
+    //$("#combox-container div").text("");
+
 
     //get combos collection where status == "A"
     db.collection("combos").where("status", "==", "A").orderBy("order").onSnapshot(function(querySnapshot) {

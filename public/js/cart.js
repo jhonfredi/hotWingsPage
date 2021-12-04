@@ -618,6 +618,9 @@ function deleteOneItemFromLocalStorageCart(position) {
     var cart = JSON.parse(localStorage.getItem('cart'));
     let items = cart.items;
     items.splice(position, 1);
+    if (items.length == 0) {
+        hideUlCart();
+    }
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCart();
 
@@ -661,7 +664,6 @@ function updateCart() {
             //delete all classes from the element
             totalItemsCartElement.classList.remove('total_items_cart');
             totalItemsCartElement.innerHTML = '';
-            goToPayElement.innerHTML = `Ver menú`;
             cartIconBlock.classList.add('d-none');
         } else {
             totalItemsCartElement.innerHTML = `${totalItemsCart}

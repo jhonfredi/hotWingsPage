@@ -252,7 +252,7 @@ test
     }
     
     .swal2-styled.swal2-confirm {
-        background-color: #01e675;
+        background-color: #01e675 !important;
     }
     
     .btn-whatsapp a i {

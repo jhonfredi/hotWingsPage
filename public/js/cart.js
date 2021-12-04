@@ -9,13 +9,15 @@ $(document).ready(function() {
     setCartHover();
 });
 
-
+/*This close the cart when click on others element*/
 $('html').click(function(e) {
-    if (!$(e.target).hasClass('cart-resume-id') && !$(e.target).hasClass('shoping-cart-id')) {
-        hideUlCart();
+    if (!$(e.target).hasClass('cart-resume-id') && !$(e.target).hasClass('shoping-cart-id') && !$(e.target).hasClass('trashbin_icon_id_element')) {
+        //validate if the parent of the element is not the cart
+        if (!$(e.target).parents().hasClass('cart-resume-id')) {
+            hideUlCart();
+        }
     }
 });
-
 
 function setCartHover() {
 
@@ -612,7 +614,18 @@ function createElements(category) {
 var modalWrap = null;
 
 
+function deleteOneItemFromLocalStorageCart(position) {
+    var cart = JSON.parse(localStorage.getItem('cart'));
+    let items = cart.items;
+    items.splice(position, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCart();
 
+}
+/*
+ Load from localStorage the products
+ carga los productos de localStorage al carrito
+*/
 function updateCart() {
     //get cart from local storage
     var cart = JSON.parse(localStorage.getItem('cart'));
@@ -629,13 +642,18 @@ function updateCart() {
     var cartIconBlock = document.getElementById('fa-shopping-cart-block');
 
     if (cart != null) {
+
         cart.items.forEach(element => {
+
+            //get the current position of the cart
+            var currentPosition = cart.items.indexOf(element);
+
             //convert to number
             totalItemsCart += Number(element.cont);
-            cartElement.innerHTML += `
-                                
-                            <li class="list_desc list_img"><h4><a>${element.name}</a></h4><span class="actual">${element.cont} x
-                            ${element.price}</span></li>
+            cartElement.innerHTML += `                                
+                            <li class="list_desc list_img"><h4><a>${element.name}</a> <a href="javascript:deleteOneItemFromLocalStorageCart(${currentPosition})" id="trashbin_icon_id_element" class="trashbin_icon_id_element"><img src="images/trashbin.png" alt="" /></a>  
+                            </h4><span class="actual">${element.cont} x
+                            ${element.price}</span> </li>
                 `;
         });
 

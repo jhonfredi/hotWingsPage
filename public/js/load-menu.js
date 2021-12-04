@@ -94,10 +94,6 @@ function checkOpening() {
         }
 
         weAreClose.innerHTML = ourSchedulemessage;
-
-
-
-
     });
 
 }

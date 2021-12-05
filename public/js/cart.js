@@ -613,7 +613,6 @@ function createElements(category) {
 
 var modalWrap = null;
 
-
 function deleteOneItemFromLocalStorageCart(position) {
     var cart = JSON.parse(localStorage.getItem('cart'));
     let items = cart.items;

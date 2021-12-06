@@ -81,8 +81,7 @@ function setClipboard(field, text) {
             field.innerHTML = "Copiado";
             setTimeout(function() {
                 field.innerHTML = "Copiar";
-                //delete the focus
-                field.blur();
+
 
             }, 1500);
         },

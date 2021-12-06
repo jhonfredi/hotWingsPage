@@ -53,6 +53,7 @@ function checkOpening() {
             var minutes = date.getMinutes();
 
 
+
             //validate if date is before to start and startMinutes
             if (hours < start || (hours === start && minutes < startMinutes)) {
                 ourSchedulemessage = `Abrimos a las ${start}:${startMinutes} domicilios a toda Cartagena <a href='https://www.instagram.com/hotwingsctg' target='_blank' class='no-decoration-red'>@hotwingsctg</a>`;

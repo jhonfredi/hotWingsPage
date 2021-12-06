@@ -61,6 +61,22 @@
     flex-direction: column;
 }
 
+.btn-clipboard {
+    margin-left: 0.5rem;
+    padding: 0.25rem rem 0.5rem;
+    font-size: .65em;
+    color: #0d6efd;
+    background-color: #fff;
+    border: 1px solid;
+    border-radius: 0.25rem;
+}
+
+.btn-clipboard:hover,
+.btn-clipboard:focus {
+    color: #fff;
+    background-color: #0d6efd;
+}
+
 @media screen and (max-width: 768px) {
     .payment-method {
         flex-direction: column;

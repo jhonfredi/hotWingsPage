@@ -297,7 +297,6 @@ function validateOrder() {
         $("#order-person-name").focus();
         return false;
     }
-
     return true
 }
 

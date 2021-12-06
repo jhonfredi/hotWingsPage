@@ -276,6 +276,12 @@ test
         text-align: center;
         font-size: 0.8rem;
     }
+    
+    .instagram-logo {
+        max-width: 1.5rem;
+        max-height: 1.5rem;
+        margin: 0.2rem;
+    }
     /*End logins btn area*/
     /*
 Buttons on cart

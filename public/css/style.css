@@ -282,6 +282,11 @@ test
         max-height: 1.5rem;
         margin: 0.2rem;
     }
+    
+    .instagram-logo:hover {
+        transform: scale3d(1.25, 1.25, 1.25);
+        transition-delay: 0.1s;
+    }
     /*End logins btn area*/
     /*
 Buttons on cart

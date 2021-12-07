@@ -983,7 +983,6 @@ Section for payment
     .nbs-flexisel-item>img {
         width: 100%;
         cursor: pointer;
-        positon: relative;
         margin-top: 10px;
         margin-bottom: 10px;
         max-width: 210px;
@@ -1270,7 +1269,7 @@ Section for payment
     /*--footer--*/
     
     .footer_box {
-        padding: 0;
+        padding: 0.5rem;
         display: flex;
         flex-direction: column;
         justify-content: center;

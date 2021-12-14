@@ -61,6 +61,10 @@ function setSelectNeighborhoodBehavior() {
             $("#check-shipment").text(`$${formatNumberToMil(price)}`);
             globalTotalPrice = parseInt(price) + parseInt(globalSubtotal);
             $("#check-total").text(`$${formatNumberToMil(globalTotalPrice)}`);
+
+            //hide the element with id select-neighborhood-error-id
+            $("#select-neighborhood-error-id").hide();
+
         } else {
             $("#check-shipment").text(`Entre $4.000 y $10.000`);
             //get the current check-subtotal and convert to number
@@ -279,6 +283,8 @@ function validateOrder() {
         if (id == -1) {
             showError("Debe seleccionar un barrio");
             $("#select-neighborhood-id").focus();
+            //show the element with id select-neighborhood-error-id
+            $("#select-neighborhood-error-id").show();
             return false;
         }
         var time = selUser.attr("time");

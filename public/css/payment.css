@@ -3,6 +3,12 @@
     background-color: #20c773
 }
 
+.error-red {
+    color: red;
+    font-size: 0.8rem;
+    display: none;
+}
+
 .btn-continue-whatsapp {
     background-color: #01e675;
     color: #fff;
